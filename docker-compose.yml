@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  minicrm:
+    build: ./.
+    container_name: miniCrmContainer
+    ports:
+      - "9000:3000"
+    volumes:
+      - ./:/usr/src/app/
+    depends_on:
+      - mongo
+    tty: true
+
+  mongo:
+    container_name: mongoContainer
+    image: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
