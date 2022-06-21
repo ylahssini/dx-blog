@@ -1,9 +1,9 @@
 import { Container, Grid, GridItem, Center, Circle } from '@chakra-ui/react';
-import { PhoneIcon } from '@chakra-ui/icons'
+import { BiUserCircle } from "react-icons/bi";
 
 export default function Layout({ children }) {
     return (
-        <Container maxW='1024'>
+        <Container maxW='1280'>
             <Grid
                 templateAreas={`
                     "header"
@@ -14,10 +14,12 @@ export default function Layout({ children }) {
                 gridTemplateColumns="1fr"
             >
                 <GridItem area={'header'}>
-                    <Center p={5}>
+                    <Center p={5} gap="2">
                         <Circle size='40px' bg='tomato' color='white'>
-                            <PhoneIcon />
+                            <BiUserCircle size={30} />
                         </Circle>
+
+                        Mini-CRM
                     </Center>
                 </GridItem>
                 {children}

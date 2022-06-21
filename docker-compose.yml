@@ -8,6 +8,8 @@ services:
       - "9000:3000"
     volumes:
       - ./:/usr/src/app/
+    env_file:
+      - "./.env"
     depends_on:
       - mongo
     tty: true
