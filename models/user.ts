@@ -1,23 +1,11 @@
 import mongoose from 'mongoose';
 
-const ContactSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
     {
-        first_name: {
+        user_name: {
             type: String,
             required: [true, 'Please provide first name of contact'],
             maxlength: [60, 'First name cannot be more than 60 characters'],
-        },
-
-        last_name: {
-            type: String,
-            required: [true, 'Please provide last name of contact'],
-            maxlength: [60, 'Last name cannot be more than 60 characters'],
-        },
-
-        type: {
-            type: String,
-            enum: ['b2c', 'b2b'],
-            default: 'b2c',
         },
 
         email: {
@@ -29,28 +17,16 @@ const ContactSchema = new mongoose.Schema(
             match: [/^\S+@\S+\.\S+$/, 'Please fill a valid email address'],
         },
 
-        gender: {
+        role: {
             type: String,
-            enum: ['', 'male', 'female'],
-            default: '',
+            enum: [null, 'admin', 'crm', 'order'],
+            default: 'order',
         },
 
         password: {
             type: String,
             required: true,
             minlength: [8, 'The password must have more than 8 characters'],
-        },
-
-        customer_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Customer',
-        },
-
-        addresses: {
-            type: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Address',
-            }],
         },
     },
     {
@@ -61,4 +37,4 @@ const ContactSchema = new mongoose.Schema(
     },
 );
 
-export default mongoose.models.Contact || mongoose.model('Contact', ContactSchema);
+export default mongoose.models.User || mongoose.model('User', UserSchema);
