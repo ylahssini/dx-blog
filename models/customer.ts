@@ -22,6 +22,11 @@ const CustomerSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Contact',
             }],
+        },
+        
+        created_by: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
         }
     },
     {
