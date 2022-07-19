@@ -2,10 +2,16 @@ import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
     {
-        user_name: {
+        first_name: {
             type: String,
             required: [true, 'Please provide first name of contact'],
             maxlength: [60, 'First name cannot be more than 60 characters'],
+        },
+
+        last_name: {
+            type: String,
+            required: [true, 'Please provide last name of contact'],
+            maxlength: [60, 'Last name cannot be more than 60 characters'],
         },
 
         email: {

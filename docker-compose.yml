@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   minicrm:
@@ -8,8 +8,7 @@ services:
       - "9000:3000"
     volumes:
       - ./:/usr/src/app/
-    env_file:
-      - "./.env"
+    env_file: ./.env
     depends_on:
       - mongo
     tty: true
@@ -18,7 +17,9 @@ services:
     container_name: mongoContainer
     image: mongo
     restart: always
+    env_file:
+      - "./.env"
     volumes:
-      - ./data:/data/db
-    ports:
-      - "27017:27017"
+      - ./mongodb:/data/db
+      - ./lib/:/docker-entrypoint-initdb.d
+

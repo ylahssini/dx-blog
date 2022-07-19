@@ -1,5 +1,5 @@
 node_modules
 .next
 .pnpm-store
-data
+mongodb
 .DS_store
