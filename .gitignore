@@ -1,5 +1,6 @@
 node_modules
 .next
 .pnpm-store
-mongodb
+mongodb/*
+!mongodb/README.md
 .DS_store

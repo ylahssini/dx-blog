@@ -19,7 +19,9 @@ services:
     restart: always
     env_file:
       - "./.env"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin_password
     volumes:
       - ./mongodb:/data/db
-      - ./lib/:/docker-entrypoint-initdb.d
-
+      - ./scripts:/docker-entrypoint-initdb.d
