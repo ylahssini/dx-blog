@@ -6,9 +6,11 @@ export default function Layout({ children }) {
     return (
         <Container w="100%" maxW="100%" h="100vh" p={0}>
             <Flex justifyContent="center" h="100%">
-                <Box w="50%" h="100%">
-                    <Logo />
-                    {children}
+                <Box w="50%" h="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                    <Box as="main">
+                        <Logo />
+                        {children}
+                    </Box>
                 </Box>
                 <Abstract />
             </Flex>

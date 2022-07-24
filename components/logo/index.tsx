@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import Image from 'next/image';
-import MiniCRM from '@/assets/minicrm-logo.png';
+import MiniCRM from '@/assets/images/minicrm-logo.png';
 
 export default function Logo() {
     return (
