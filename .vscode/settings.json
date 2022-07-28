@@ -2,5 +2,20 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#CAEBF5",
+        "statusBar.background": "#CAEBF5",
+        "activityBarBadge.background": "#0a7ae3",
+        "activityBarBadge.foreground": "#CAEBF5",
+        "activityBar.border": "#CAEBF5",
+        "activityBar.foreground": "#0a7ae3",
+        "activityBar.activeBorder": "#0a7ae3",
+        "activityBar.inactiveForeground": "#000000",
+        "statusBar.foreground": "#000000",
+        "statusBar.border": "#CAEBF5",
+        "titleBar.inactiveBackground": "#CAEBF5",
+        "titleBar.activeBackground": "#CAEBF5",
+        "titleBar.activeForeground": "#000000",
+    }
 }
