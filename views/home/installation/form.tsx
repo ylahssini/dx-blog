@@ -1,78 +1,62 @@
-import { Button, Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { ReactNode, createRef, useState } from 'react';
+import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react';
 import { FormControl, FormErrorMessage } from '@chakra-ui/react';
-import { TbAt, TbUserCircle, TbLock } from 'react-icons/tb';
+import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm } from 'react-hook-form';
-import { ReactNode } from 'react';
-
-const fields = [
-    {
-        key: 'email',
-        icon: <TbAt />,
-        type: 'email',
-        placeholder: 'Email Address',
-        validation: {
-            required: 'Please provide your email address',
-            pattern: { value: /^\S+@\S+$/i, message: 'Please provide a valid email address' },
-        },
-    },
-    {
-        key: 'first_name',
-        icon: <TbUserCircle />,
-        type: 'text',
-        placeholder: 'First Name',
-        validation: { required: 'Please provide your first name' },
-    },
-    {
-        key: 'last_name',
-        icon: <TbUserCircle />,
-        type: 'text',
-        placeholder: 'Last Name',
-        required: true,
-        validation: { required: 'Please provide your last name' },
-    },
-    {
-        key: 'password',
-        icon: <TbLock />,
-        type: 'password',
-        placeholder: 'Password',
-        validation: { required: 'Please provide your password' },
-    },
-    {
-        key: 'confirm_password',
-        icon: <TbLock />,
-        type: 'password',
-        placeholder: 'Confirm password',
-        validation: { required: 'Please confirm your password' },
-    },
-]
+import fields from './fields';
 
 export default function Form() {
-    const {
-        handleSubmit,
-        register,
-        formState: { errors, isSubmitting },
-    } = useForm();
+    const [show, setShow] = useState(false);
+    const { handleSubmit, register, formState: { errors, isSubmitting }, watch } = useForm();
+
+    function handleShow() {
+        setShow(state => !state);
+    }
 
     function handleRegister(values) {
         console.log(values);
     }
 
+    const refs: Record<string, any> = {};
+    fields.forEach((field) => {
+        refs[field.key] = createRef();
+
+        if (field.key === 'password') {
+            refs[field.key].current = watch('password', '');
+        }
+    });
+
     return (
         <Box as="form" onSubmit={handleSubmit(handleRegister)} noValidate animation="homeForm .2s 1 0s ease-out">
-            {fields.map((field) => (
-                <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]}>
-                    <InputGroup>
-                        <InputLeftElement color={errors[field.key] ? 'red' : 'black'}>{field.icon}</InputLeftElement>
-                        <Input
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            autoComplete="none"
-                            {...register(field.key, { ...field.validation })}
-                        />
-                    </InputGroup>
-                    <FormErrorMessage fontSize="xs">{(errors[field.key] ? errors[field.key].message : null) as unknown as ReactNode}</FormErrorMessage>
-                </FormControl>
-            ))}
+            {fields.map((field) => {
+                let validate = null;
+                if (field.key === 'confirm_password') {
+                    validate = (value) => refs.password.current !== value ? 'The two passwords are not matched' : null;
+                }
+
+                return (
+                    <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]}>
+                        <InputGroup>
+                            <InputLeftElement color={errors[field.key] ? 'red' : 'black'}>{field.icon}</InputLeftElement>
+                            <Input
+                                ref={refs[field.key]}
+                                type={field.type === 'password' && show ? 'text' : field.type}
+                                placeholder={field.placeholder}
+                                autoComplete="none"
+                                {...register(field.key, { ...field.validation, validate })}
+                            />
+                            {field.key === 'password' ? (
+                                <InputRightElement width='3rem'>
+                                    <Button h='1.75rem' size='sm' onClick={handleShow}>
+                                        {show ? <TbEyeOff /> : <TbEye />}
+                                    </Button>
+                              </InputRightElement>
+                            ) : null}
+                        </InputGroup>
+                        <FormErrorMessage fontSize="xs">{(errors[field.key] ? errors[field.key].message : null) as unknown as ReactNode}</FormErrorMessage>
+                    </FormControl>
+                );
+            })}
 
             <Button colorScheme="blue" w="100%" variant='solid' isLoading={isSubmitting} loadingText='Submitting' type="submit">
                 Sign up
