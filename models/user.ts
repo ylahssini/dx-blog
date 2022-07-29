@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model, Document } from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
     {
@@ -34,6 +34,12 @@ const UserSchema = new mongoose.Schema(
             required: true,
             minlength: [8, 'The password must have more than 8 characters'],
         },
+
+        status: {
+            type: Boolean,
+            required: true,
+            default: true,
+        }
     },
     {
         timestamps: {
@@ -43,4 +49,21 @@ const UserSchema = new mongoose.Schema(
     },
 );
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+export interface ModelUser extends Document {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role: null | 'admin' | 'sales' | 'order',
+    password: string;
+    status: boolean;
+    createdAt: Date | number;
+    updatedAt: Date | number;
+}
+
+const User = (
+    mongoose.models.User as Model<ModelUser>
+    || mongoose.model<ModelUser>('User', UserSchema)
+);
+
+export default User;

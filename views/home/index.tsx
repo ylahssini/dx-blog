@@ -18,9 +18,5 @@ export default function HomeView() {
 
     if (error) return <Text color="red">Error!</Text>
     
-    return (
-        <>
-            {!data.exist ? <Instalation />  : <Login />}
-        </>
-    )
+    return !data.exist ? <Instalation />  : <Login />;
 }

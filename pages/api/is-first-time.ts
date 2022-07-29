@@ -1,20 +1,21 @@
+import { NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 
-export default function handler(req, res) {
+export default function isFirstTime(_, response: NextApiResponse) {
     return new Promise(async (resolve, reject) => {
         try {
-            const connection = await dbConnect();
-            connection.connection.db.listCollections({name: 'users'}).next((e, c) => {
+            const mongoose = await dbConnect();
+            mongoose.connection.db.listCollections({name: 'users'}).next((e, c) => {
                 if (c) {
-                    res.status(200).json({ exist: true });
+                    response.status(200).json({ exist: true });
                     resolve(true);
                 } else {
-                    res.status(200).json({ exist: false });
+                    response.status(200).json({ exist: false });
                     resolve(false);
                 }
             })
         } catch (e) {
-            res.status(500).json(e);
+            response.status(500).json(e);
             reject();
         }
     });
