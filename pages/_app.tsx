@@ -3,7 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import '@/assets/styles/global.css';
 import '@/assets/styles/animations.css';
 
-function MyApp({ Component, pageProps }) {
+function MiniCRMApp({ Component, pageProps }) {
     const getLayout = Component.getLayout || ((page) => page);
 
     return (
@@ -26,4 +26,4 @@ function MyApp({ Component, pageProps }) {
     );
 }
 
-export default MyApp
+export default MiniCRMApp;

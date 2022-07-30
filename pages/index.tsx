@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react';
 import Layout from '@/components/layout/auth';
 import HomeView from '@/views/home';
 
@@ -13,8 +13,8 @@ const Home = () => {
             <HomeView />
         </Box>
     );
-}
+};
 
-Home.getLayout = (page) => <Layout>{page}</Layout>
+Home.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Home;

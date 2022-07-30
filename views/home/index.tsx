@@ -12,7 +12,7 @@ export default function HomeView() {
                 <Spinner size="md" />
                 <Text as="span">Loading...</Text>
             </Box>
-        )
+        );
     }
 
     if (error) {

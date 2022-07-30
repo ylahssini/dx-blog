@@ -56,5 +56,5 @@ export default function Form() {
                 Log in
             </Button>
         </Box>
-    )
+    );
 }

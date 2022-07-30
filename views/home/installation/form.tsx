@@ -88,5 +88,5 @@ export default function Form() {
                 Sign up
             </Button>
         </Box>
-    )
+    );
 }
