@@ -7,6 +7,7 @@ specifiers:
   '@chakra-ui/system': '>=2.0.0-next.0'
   '@emotion/react': ^11
   '@emotion/styled': ^11
+  '@types/bcryptjs': ^2.4.2
   '@types/node': ^18.0.0
   '@types/react': ^18.0.14
   '@types/react-dom': ^18.0.5
@@ -45,6 +46,7 @@ dependencies:
 devDependencies:
   '@babel/core': 7.18.9
   '@chakra-ui/system': 2.2.2_a6f2jn6urn4xnjrjtmy4o3vhia
+  '@types/bcryptjs': 2.4.2
   '@types/node': 18.0.6
   '@types/react': 18.0.15
   '@types/react-dom': 18.0.6
@@ -1431,6 +1433,10 @@ packages:
     resolution: {integrity: sha512-6JrF+fdUK2zbGpJIlN7G3v966PQjyx/dPt1T9km2wj+EUBqgrxCk3uX4Kct16MIm9gGxfKRcfax2hVf5jvlTzA==}
     dependencies:
       tslib: 2.4.0
+
+  /@types/bcryptjs/2.4.2:
+    resolution: {integrity: sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==}
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}

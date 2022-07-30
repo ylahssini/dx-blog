@@ -1,4 +1,7 @@
 import mongoose, { Model, Document } from 'mongoose';
+import bcrypt from 'bcryptjs';
+
+const SALT = 12;
 
 const UserSchema = new mongoose.Schema(
     {
@@ -48,6 +51,31 @@ const UserSchema = new mongoose.Schema(
         }
     },
 );
+
+UserSchema.pre('save', function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    bcrypt.genSalt(SALT, (error, salt) => {
+        if (error) return next(error);
+
+        bcrypt.hash(this.password, salt, (err, hash) => {
+            if (err) return next(err);
+
+            this.password = hash;
+            next();
+        });
+    });
+});
+
+UserSchema.methods.comparePassword = function (userPassword, next) {
+    bcrypt.compare(userPassword, this.password, (error, isMatch) => {
+        if (error) return next(error);
+
+        next(null, isMatch);
+    });
+};
 
 export interface ModelUser extends Document {
     id: string;

@@ -1,5 +1,5 @@
 import { ReactNode, createRef, useState } from 'react';
-import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react';
+import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, useToast } from '@chakra-ui/react';
 import { FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ export default function Form() {
     const [posting, setPosting] = useState(false);
     const { mutate } = useSWR(`${process.env.NEXT_PUBLIC_HOST}api/is-first-time`, fetcher);
     const { handleSubmit, register, formState: { errors }, watch, reset } = useForm();
+    const toast = useToast();
 
     function handleShow() {
         setShow(state => !state);
@@ -25,9 +26,17 @@ export default function Form() {
             const result = await axios.post(`${process.env.NEXT_PUBLIC_HOST}api/instalation`, values);
 
             if (result.status === 202) {
-                console.log('Success');
                 reset();
+
+                toast({
+                    status: 'success',
+                    title: 'Success',
+                    description: 'Your account is created',
+                    duration: 5000,
+                    isClosable: true,
+                });
                 setPosting(false);
+
                 mutate();
             }
         } catch (e) {
@@ -61,7 +70,7 @@ export default function Form() {
                                 ref={refs[field.key]}
                                 type={field.type === 'password' && show ? 'text' : field.type}
                                 placeholder={field.placeholder}
-                                autoComplete="none"
+                                autoComplete="off"
                                 {...register(field.key, { ...field.validation, validate })}
                             />
                             {field.key === 'password' ? (

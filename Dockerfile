@@ -4,8 +4,6 @@ LABEL maintener="Youssef Lahssini"
 
 WORKDIR /usr/src/app
 
-COPY app/package*.json ./
-
 RUN npm install -g pnpm@6.32.14
 RUN pnpm install --force
 

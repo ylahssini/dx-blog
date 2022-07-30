@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { Box, Spinner, Text } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner, Text } from '@chakra-ui/react';
 import Login from './login';
 import Instalation from './installation';
 import { fetcher } from '@/utils/functions';
@@ -16,7 +16,15 @@ export default function HomeView() {
         )
     }
 
-    if (error) return <Text color="red">Error!</Text>
+    if (error) {
+        return (
+            <Alert status="error">
+                <AlertIcon />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>Something goes wrong!</AlertDescription>
+            </Alert>
+        );
+    }
     
-    return !data.exist ? <Instalation />  : <Login />;
+    return !data.exist ? <Instalation /> : <Login />;
 }
