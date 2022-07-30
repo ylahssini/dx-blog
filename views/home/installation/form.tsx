@@ -53,7 +53,7 @@ export default function Form() {
     });
 
     return (
-        <Box as="form" onSubmit={handleSubmit(handleRegister)} noValidate animation="homeForm .2s 1 0s ease-out">
+        <Box as="form" onSubmit={handleSubmit(handleRegister)} noValidate animation="homeForm 1s 1 0s ease-out">
             {fields.map((field) => {
                 let validate = null;
                 if (field.key === 'confirm_password') {
