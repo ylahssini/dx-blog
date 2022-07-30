@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 
-export default function isFirstTime(_, response: NextApiResponse) {
+export default function isFirstInstallTime(_, response: NextApiResponse) {
     return new Promise(async (resolve, reject) => {
         try {
             const mongoose = await dbConnect();

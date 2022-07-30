@@ -1,11 +1,10 @@
-import useSWR from 'swr';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner, Text } from '@chakra-ui/react';
 import Login from './login';
 import Instalation from './installation';
-import { fetcher } from '@/utils/functions';
+import { useFirstInstallTime } from '@/apis/auth';
 
 export default function HomeView() {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_HOST}api/is-first-time`, fetcher);
+    const { data, error } = useFirstInstallTime();
 
     if (!data) {
         return (

@@ -4,14 +4,12 @@ import { FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm } from 'react-hook-form';
 import fields from './fields';
-import axios from 'axios';
-import useSWR from 'swr';
-import { fetcher } from '@/utils/functions';
+import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
 
 export default function Form() {
     const [show, setShow] = useState(false);
     const [posting, setPosting] = useState(false);
-    const { mutate } = useSWR(`${process.env.NEXT_PUBLIC_HOST}api/is-first-time`, fetcher);
+    const { mutate } = useFirstInstallTime();
     const { handleSubmit, register, formState: { errors }, watch, reset } = useForm();
     const toast = useToast();
 
@@ -23,7 +21,7 @@ export default function Form() {
         try {
             setPosting(true);
 
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_HOST}api/instalation`, values);
+            const result = await createAdminUser(values);
 
             if (result.status === 202) {
                 reset();
