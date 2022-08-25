@@ -70,10 +70,10 @@ UserSchema.pre('save', function (next) {
 });
 
 UserSchema.methods.comparePassword = function (userPassword, next) {
-    bcrypt.compare(userPassword, this.password, (error, isMatch) => {
+    bcrypt.compare(userPassword, this.password, (error, isMatched) => {
         if (error) return next(error);
 
-        next(null, isMatch);
+        next(null, isMatched);
     });
 };
 

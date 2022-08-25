@@ -19,10 +19,7 @@ const fields = [
         icon: <TbLock />,
         type: 'password',
         placeholder: 'Password',
-        validation: {
-            required: 'Please provide your password',
-            pattern: { value: /(?=(?:.*\d){1,})/g, message: 'Please add at least one number in your password' }
-        },
+        validation: { required: 'Please provide your password' },
     },
 ];
 
