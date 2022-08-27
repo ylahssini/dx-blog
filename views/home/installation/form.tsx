@@ -84,7 +84,7 @@ export default function Form() {
                 );
             })}
 
-            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} loadingText="Creating the account..." type="submit">
+            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Creating the account..." type="submit">
                 Sign up
             </Button>
         </Box>

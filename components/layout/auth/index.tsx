@@ -1,8 +1,11 @@
 import { Container, Flex, Box } from '@chakra-ui/react';
 import Logo from '@/components/logo';
 import Abstract from './abstract';
+import { useIsConnected } from '@/utils/hooks';
 
-export default function Layout({ children }) {
+export default function AuthLayout({ children }) {
+    useIsConnected({ to: '/dashboard', redirectIfFound: true });
+
     return (
         <Container w="100%" maxW="100%" h="100vh" p={0}>
             <Flex justifyContent="center" h="100%">
@@ -15,5 +18,5 @@ export default function Layout({ children }) {
                 <Abstract />
             </Flex>
         </Container>
-    )
+    );
 }

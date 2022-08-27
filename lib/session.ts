@@ -11,6 +11,6 @@ export const sessionOptions: IronSessionOptions = {
 
 declare module 'iron-session' {
     interface IronSessionData {
-        user: UserSession,
+        user?: UserSession,
     }
 }

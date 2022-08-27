@@ -1,7 +1,9 @@
 import React, { ReactNode, useState } from 'react';
+import Router from 'next/router';
 import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { TbAt, TbLock } from 'react-icons/tb';
+import { login } from '@/apis/auth';
 
 const fields = [
     {
@@ -28,8 +30,19 @@ export default function Form() {
     const { handleSubmit, register, formState: { errors } } = useForm();
 
     async function handleLogin(values) {
-        setPosting(false);
-        console.log(values);
+        try {
+            setPosting(true);
+
+            const result = await login(values);
+
+            if (result.status === 200) {
+                Router.push('/dashboard/');
+                setPosting(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setPosting(false);
+        }
     }
 
     return (
@@ -49,7 +62,7 @@ export default function Form() {
                 </FormControl>
             ))}
 
-            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} loadingText="Logging in..." type="submit">
+            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Logging in..." type="submit">
                 Log in
             </Button>
         </Box>
