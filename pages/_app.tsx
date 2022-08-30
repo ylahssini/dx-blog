@@ -1,10 +1,19 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
+import { AnimatePresence } from 'framer-motion';
 import '@/assets/styles/global.css';
 import '@/assets/styles/animations.css';
 
 function MiniCRMApp({ Component, pageProps }) {
+    const { route } = useRouter();
     const getLayout = Component.getLayout || ((page) => page);
+
+    function handleExitComplete() {
+        if (typeof window !== 'undefined') {
+            window.scrollTo({ top: 0 });
+        }
+    }
 
     return (
         <>
@@ -20,7 +29,9 @@ function MiniCRMApp({ Component, pageProps }) {
             </Head>
 
             <ChakraProvider>
-                {getLayout(<Component {...pageProps} />)}
+                <AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
+                    {getLayout(<Component {...pageProps} key={route} />)}
+                </AnimatePresence>
             </ChakraProvider>
         </>
     );

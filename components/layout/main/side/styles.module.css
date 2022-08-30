@@ -1,0 +1,9 @@
+.menu_item > a {
+    color: white;
+    display: block;
+}
+
+.menu_item > button {
+    color: white;
+    display: block;
+}

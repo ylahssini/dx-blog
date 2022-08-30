@@ -4,8 +4,6 @@ import AuthLayout from '@/components/layout/auth';
 import HomeView from '@/views/home';
 
 function Home() {
-    
-
     return (
         <Box as="section" pt="2rem">
             <Head>
