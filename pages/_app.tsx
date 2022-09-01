@@ -29,7 +29,7 @@ function MiniCRMApp({ Component, pageProps }) {
             </Head>
 
             <ChakraProvider>
-                <AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
+                <AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete} initial={false}>
                     {getLayout(<Component {...pageProps} key={route} />)}
                 </AnimatePresence>
             </ChakraProvider>
