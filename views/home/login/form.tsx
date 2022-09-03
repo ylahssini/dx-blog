@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import Router from 'next/router';
-import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { TbAt, TbLock } from 'react-icons/tb';
 import { login } from '@/apis/auth';
@@ -28,6 +28,7 @@ const fields = [
 export default function Form() {
     const [posting, setPosting] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
+    const toast = useToast();
 
     async function handleLogin(values) {
         try {
@@ -41,6 +42,14 @@ export default function Form() {
             }
         } catch (error) {
             console.log(error);
+            toast({
+                title: 'Error',
+                description: error.response.data.message,
+                status: 'error',
+                duration: 8000,
+                isClosable: true,
+                position: 'top',
+            });
             setPosting(false);
         }
     }

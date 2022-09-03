@@ -1,20 +1,32 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Text, useToast } from '@chakra-ui/react';
 import Logo from '@/components/logo';
 import { logout } from '@/apis/auth';
 import styles from './styles.module.css';
 import { useIsConnected } from '@/utils/hooks';
 
 export default function Side() {
+    const [logginOut, setLoggingOut] = useState(false);
     const { mutate } = useIsConnected({});
+    const toast = useToast();
 
     async function handleClick() {
         try {
+            setLoggingOut(true);
             await logout();
             mutate();
             Router.push('/');
         } catch (error) {
+            setLoggingOut(false);
+            toast({
+                title: 'Error',
+                description: error.response.data.message,
+                duration: 5000,
+                status: 'error',
+                isClosable: true,
+            });
             console.log(error);
         }
     }
@@ -46,7 +58,15 @@ export default function Side() {
                 <ul>
                     <li className={styles.menu_item}><Link href="/settings">Settings</Link></li>
                     <li className={styles.menu_item}>
-                        <Button textDecoration="none" onClick={handleClick} colorScheme="white" variant="link">
+                        <Button
+                            onClick={handleClick}
+                            colorScheme="white"
+                            variant="link"
+                            fontWeight={400}
+                            disabled={logginOut}
+                            isLoading={logginOut}
+                            _hover={{ textDecoration: 'none' }}
+                        >
                             Log out
                         </Button>
                     </li>

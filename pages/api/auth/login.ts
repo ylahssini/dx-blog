@@ -19,6 +19,7 @@ async function login(request: NextApiRequest, response: NextApiResponse) {
                         if (err) return reject(error);
 
                         if (!isMatched) {
+                            response.status(500).json({ success: false, message: 'The email or password are not correct', error });
                             return reject({ error: 'The password is incorrect' });
                         }
 
