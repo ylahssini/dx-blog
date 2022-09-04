@@ -1,9 +1,36 @@
-.menu_item > a {
-    color: white;
-    display: block;
+.menu_item {
+    padding: .35rem 0;
+    margin-bottom: .5rem;
+    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
+    background-color: transparent;
+    border-radius: 0;
 }
 
-.menu_item > button {
+.menu_item:hover {
+    border-radius: 6px;
+    background-color: #FFF;
+    padding: .35rem .7rem;
+}
+
+.menu_item:hover > a, .menu_item:hover > button, .menu_item:hover > a > svg, .menu_item:hover > button > svg {
+    color: var(--primary);
+}
+
+.menu_item > a, .menu_item > button {
     color: white;
-    display: block;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    font-size: 0.95rem;
+    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.menu_item > a:after {
+    display: none;
+}
+
+.menu_item > a > svg, .menu_item > button > svg {
+    width: 24px;
+    height: 24px;
+    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
 }

@@ -2,10 +2,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Box, Button, Text, useToast } from '@chakra-ui/react';
+import { MdOutlineDashboard, MdOutlineShoppingCart, MdOutlinePeople, MdOutlineStorefront, MdOutlineSettings, MdLogout } from 'react-icons/md';
 import Logo from '@/components/logo';
 import { logout } from '@/apis/auth';
 import styles from './styles.module.css';
 import { useIsConnected } from '@/utils/hooks';
+
+const menu = [
+    { href: '/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
+    { href: '/orders', text: 'Orders', icon: <MdOutlineShoppingCart /> },
+    { href: '/customers', text: 'Customers', icon: <MdOutlinePeople /> },
+    { href: '/products', text: 'Products', icon: <MdOutlineStorefront /> },
+];
 
 export default function Side() {
     const [logginOut, setLoggingOut] = useState(false);
@@ -31,23 +39,16 @@ export default function Side() {
         }
     }
 
-    const menu = [
-        { href: '/dashboard', text: 'Dashboard', icon: 'dashboard' },
-        { href: '/orders', text: 'Orders', icon: '' },
-        { href: '/customers', text: 'Customers', icon: '' },
-        { href: '/products', text: 'Products', icon: '' },
-    ];
-
     return (
         <>
             <Box as="header" mb="1.5rem"><Logo color="#fff" /></Box>
 
             <Box p="2rem 0 0">
-                <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Menu</Text>
+                <Text as="h4" casing="uppercase" color="white" fontSize="0.75rem" pb="1rem">Menu</Text>
                 <ul>
                     {menu.map((item) => (
                         <Box key={item.href} as="li" className={styles.menu_item}>
-                            <Link href={item.href}>{item.text}</Link>
+                            <Link href={item.href}><a>{item.icon} {item.text}</a></Link>
                         </Box>
                     ))}
                 </ul>
@@ -56,7 +57,7 @@ export default function Side() {
             <Box p="2rem 0 0">
                 <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Hello, Se</Text>
                 <ul>
-                    <li className={styles.menu_item}><Link href="/settings">Settings</Link></li>
+                    <li className={styles.menu_item}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></li>
                     <li className={styles.menu_item}>
                         <Button
                             onClick={handleClick}
@@ -67,7 +68,7 @@ export default function Side() {
                             isLoading={logginOut}
                             _hover={{ textDecoration: 'none' }}
                         >
-                            Log out
+                            <MdLogout /> Log out
                         </Button>
                     </li>
                 </ul>
