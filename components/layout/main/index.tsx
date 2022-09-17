@@ -1,8 +1,9 @@
 import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { useIsConnected } from '@/utils/hooks';
 import Side from './side';
+import Header from './header';
 
-function MainLayout({ children }) {
+function MainLayout({ title, children }) {
     useIsConnected({});
 
     return (
@@ -12,6 +13,7 @@ function MainLayout({ children }) {
                     <Side />
                 </GridItem>
                 <GridItem area="content" h="100%">
+                    <Header title={title} />
                     {children}
                 </GridItem>
             </Grid>

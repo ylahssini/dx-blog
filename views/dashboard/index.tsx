@@ -1,5 +1,3 @@
 export default function DashboardView() {
-    return (
-        <h1>Dashboard view</h1>
-    );
+    return null;
 }

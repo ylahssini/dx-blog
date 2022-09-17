@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Box, Button, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { MdOutlineDashboard, MdOutlineShoppingCart, MdOutlinePeople, MdOutlineStorefront, MdOutlineSettings, MdLogout } from 'react-icons/md';
 import Logo from '@/components/logo';
 import { logout } from '@/apis/auth';
@@ -10,14 +11,21 @@ import { useIsConnected } from '@/utils/hooks';
 
 const menu = [
     { href: '/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
-    { href: '/orders', text: 'Orders', icon: <MdOutlineShoppingCart /> },
+    { href: '/orders', text: 'Orders', icon: <MdOutlineShoppingCart /> },
     { href: '/customers', text: 'Customers', icon: <MdOutlinePeople /> },
     { href: '/products', text: 'Products', icon: <MdOutlineStorefront /> },
 ];
 
+const container = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { delayChildren: 0.5, staggerDirection: -1 } },
+};
+
+const item = { hidden: { opacity: 0 }, show: { opacity: 1 } };
+
 export default function Side() {
     const [logginOut, setLoggingOut] = useState(false);
-    const { mutate } = useIsConnected({});
+    const { user, mutate } = useIsConnected({});
     const toast = useToast();
 
     async function handleClick() {
@@ -28,13 +36,7 @@ export default function Side() {
             Router.push('/');
         } catch (error) {
             setLoggingOut(false);
-            toast({
-                title: 'Error',
-                description: error.response.data.message,
-                duration: 5000,
-                status: 'error',
-                isClosable: true,
-            });
+            toast({ title: 'Error', description: error.response.data.message, duration: 5000, status: 'error', isClosable: true });
             console.log(error);
         }
     }
@@ -45,20 +47,20 @@ export default function Side() {
 
             <Box p="2rem 0 0">
                 <Text as="h4" casing="uppercase" color="white" fontSize="0.75rem" pb="1rem">Menu</Text>
-                <ul>
+                <motion.ul variants={container} initial="hidden" animate="show">
                     {menu.map((item) => (
-                        <Box key={item.href} as="li" className={styles.menu_item}>
+                        <motion.li key={item.href} className={styles.menu_item} variants={item}>
                             <Link href={item.href}><a>{item.icon} {item.text}</a></Link>
-                        </Box>
+                        </motion.li>
                     ))}
-                </ul>
+                </motion.ul>
             </Box>
 
             <Box p="2rem 0 0">
-                <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Hello, Se</Text>
-                <ul>
-                    <li className={styles.menu_item}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></li>
-                    <li className={styles.menu_item}>
+                <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Hello, {user?.data?.first_name || <Spinner color="white" size='xs' />}</Text>
+                <motion.ul variants={container} initial="hidden" animate="show">
+                    <motion.li className={styles.menu_item} variants={item}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></motion.li>
+                    <motion.li className={styles.menu_item} variants={item}>
                         <Button
                             onClick={handleClick}
                             colorScheme="white"
@@ -66,12 +68,13 @@ export default function Side() {
                             fontWeight={400}
                             disabled={logginOut}
                             isLoading={logginOut}
+                            loadingText="Logging out..."
                             _hover={{ textDecoration: 'none' }}
                         >
                             <MdLogout /> Log out
                         </Button>
-                    </li>
-                </ul>
+                    </motion.li>
+                </motion.ul>
             </Box>
         </>
     );

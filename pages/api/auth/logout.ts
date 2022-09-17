@@ -1,10 +1,12 @@
 import { sessionOptions } from '@/lib/session';
+import { sleep } from '@/utils/functions';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-function logout(request: NextApiRequest, response: NextApiResponse) {
+async function logout(request: NextApiRequest, response: NextApiResponse) {
     if (request.method === 'POST') {
         request.session.destroy();
+        await sleep(2000); // fake waiting
         response.status(200).json({ sucess: true, message: 'user log out successfuly' });
     }
 

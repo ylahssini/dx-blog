@@ -1,19 +1,7 @@
 .menu_item {
-    padding: .35rem 0;
     margin-bottom: .5rem;
-    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
     background-color: transparent;
     border-radius: 0;
-}
-
-.menu_item:hover {
-    border-radius: 6px;
-    background-color: #FFF;
-    padding: .35rem .7rem;
-}
-
-.menu_item:hover > a, .menu_item:hover > button, .menu_item:hover > a > svg, .menu_item:hover > button > svg {
-    color: var(--primary);
 }
 
 .menu_item > a, .menu_item > button {
@@ -21,16 +9,35 @@
     display: flex;
     gap: 1rem;
     align-items: center;
-    font-size: 0.95rem;
-    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.menu_item > a:after {
-    display: none;
+    justify-content: flex-start;
+    padding: .35rem 0;
+    font-size: .95rem;
+    transition: all .25s ease-in-out;
+    width: 100%;
 }
 
 .menu_item > a > svg, .menu_item > button > svg {
     width: 24px;
     height: 24px;
-    transition: all .25s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all .25s ease-in-out;
+}
+
+.menu_item > a:hover, .menu_item > button:hover {
+    border-radius: 6px;
+    background-color: #FFF;
+    color: var(--primary);
+    padding: .35rem .7rem;
+}
+
+.menu_item:hover > a > svg, .menu_item:hover > button > svg {
+    color: var(--primary);
+}
+
+.menu_item > button:disabled:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.menu_item > a:after {
+    display: none;
 }
