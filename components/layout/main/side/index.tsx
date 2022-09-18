@@ -16,16 +16,16 @@ const menu = [
     { href: '/products', text: 'Products', icon: <MdOutlineStorefront /> },
 ];
 
-const container = {
+const framerUl = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { delayChildren: 0.5, staggerDirection: -1 } },
+    show: { opacity: 1, transition: { delayChildren: 0.8, staggerDirection: -1 } },
 };
 
-const item = { hidden: { opacity: 0 }, show: { opacity: 1 } };
+const framerLi = { hidden: { opacity: 0 }, show: { opacity: 1 } };
 
 export default function Side() {
     const [logginOut, setLoggingOut] = useState(false);
-    const { user, mutate } = useIsConnected({});
+    const { user, mutate } = useIsConnected();
     const toast = useToast();
 
     async function handleClick() {
@@ -47,9 +47,9 @@ export default function Side() {
 
             <Box p="2rem 0 0">
                 <Text as="h4" casing="uppercase" color="white" fontSize="0.75rem" pb="1rem">Menu</Text>
-                <motion.ul variants={container} initial="hidden" animate="show">
+                <motion.ul initial={framerUl.hidden} animate={framerUl.show}>
                     {menu.map((item) => (
-                        <motion.li key={item.href} className={styles.menu_item} variants={item}>
+                        <motion.li key={item.href} className={styles.menu_item} initial={framerLi.hidden} animate={framerLi.show}>
                             <Link href={item.href}><a>{item.icon} {item.text}</a></Link>
                         </motion.li>
                     ))}
@@ -58,9 +58,9 @@ export default function Side() {
 
             <Box p="2rem 0 0">
                 <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Hello, {user?.data?.first_name || <Spinner color="white" size='xs' />}</Text>
-                <motion.ul variants={container} initial="hidden" animate="show">
-                    <motion.li className={styles.menu_item} variants={item}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></motion.li>
-                    <motion.li className={styles.menu_item} variants={item}>
+                <motion.ul initial={framerUl.hidden} animate={framerUl.show}>
+                    <motion.li className={styles.menu_item} initial={framerLi.hidden} animate={framerLi.show}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></motion.li>
+                    <motion.li className={styles.menu_item} initial={framerLi.hidden} animate={framerLi.show}>
                         <Button
                             onClick={handleClick}
                             colorScheme="white"

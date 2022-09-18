@@ -1,10 +1,11 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionOptions } from '@/lib/session';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { ModelUser } from '@/models/user';
 
 export type UserSession = {
     isLogged: boolean;
-    data: Record<string, string>;
+    data: ModelUser;
 }
 
 async function isConnected(request: NextApiRequest, response: NextApiResponse) {

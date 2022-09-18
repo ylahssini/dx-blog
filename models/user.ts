@@ -38,6 +38,11 @@ const UserSchema = new mongoose.Schema(
             minlength: [8, 'The password must have more than 8 characters'],
         },
 
+        picture: {
+            type: String,
+            default: undefined,
+        },
+
         status: {
             type: Boolean,
             required: true,
@@ -83,6 +88,7 @@ export interface ModelUser extends Document {
     last_name: string;
     email: string;
     role: null | 'admin' | 'sales' | 'order',
+    picture: string | null;
     password: string;
     status: boolean;
     createdAt: Date | number;
