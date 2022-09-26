@@ -19,9 +19,9 @@ function MainLayout({ title, children }) {
                     <AnimatePresence mode="wait">
                         <motion.div
                             className="item"
-                            initial={{ scale: 1, translateX: '100rem', opacity: 0 }}
-                            animate={{ scale: 1, translateX: '0rem', opacity: 1 }}
-                            exit={{ scale: 1, translateX: '100rem', opacity: 0 }}
+                            initial={{ scale: 1, translateY: '10rem', opacity: 0 }}
+                            animate={{ scale: 1, translateY: '0rem', opacity: 1 }}
+                            exit={{ scale: 1, translateY: '10rem', opacity: 0 }}
                             transition={{ type: 'spring' }}
                             key={asPath}
                         >

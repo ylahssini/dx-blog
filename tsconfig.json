@@ -29,7 +29,9 @@
     "include": [
         "next-env.d.ts",
         "**/*.ts",
-        "**/*.tsx"
+        "**/*.tsx",
+        "playwright.config.js",
+        "e2e/*.spec.js"
     ],
     "exclude": [
         "node_modules"
