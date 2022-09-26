@@ -4,3 +4,6 @@ node_modules
 mongodb/*
 !mongodb/README.md
 .DS_store
+/test-results/
+/playwright-report/
+/playwright/.cache/

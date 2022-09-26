@@ -1,0 +1,1 @@
+docker build . -f Dockerfile.e2e -t minicrm_e2e

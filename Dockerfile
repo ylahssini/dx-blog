@@ -1,12 +1,17 @@
 FROM node:18.3.0-alpine3.15
+FROM mcr.microsoft.com/playwright:focal
 
 LABEL maintener="Youssef Lahssini"
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm@6.32.14
-RUN pnpm install --force
-
 COPY . .
 
-CMD ["pnpm", "run", "dev"]
+RUN npm install -g pnpm
+RUN pnpm install
+RUN pnpm run build
+
+RUN pnpm dlx playwright install
+
+CMD [ "pnpm", "run", "dev"]
+

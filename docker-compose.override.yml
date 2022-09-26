@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  minicrm_prod:
+    build: .
+    container_name: miniCrmProdContainer
+    image: minicrm_prod
+    command: pnpm run start
+    ports:
+      - "9000:3000"
+      - "9323:9323"
+    env_file: ./.env
+    depends_on:
+      - mongo
+    tty: true
+
+  mongo:
+    container_name: mongoContainer
+    image: mongo
+    restart: always
+    env_file:
+      - "./.env"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin_password
+    volumes:
+      - ./mongodb:/data/db
+      - ./scripts:/docker-entrypoint-initdb.d
