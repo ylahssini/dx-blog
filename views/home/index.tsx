@@ -6,24 +6,24 @@ import { useFirstInstallTime } from '@/apis/auth';
 export default function HomeView() {
     const { data, error } = useFirstInstallTime();
 
-    if (!data) {
-        return (
-            <Box display="flex" alignItems="center" justifyContent="center" gap="1rem" h="20rem">
-                <Spinner size="md" />
-                <Text as="span">Loading...</Text>
-            </Box>
-        );
-    }
-
     if (error) {
         return (
-            <Alert status="error">
+            <Alert id="error" status="error">
                 <AlertIcon />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>Something goes wrong!</AlertDescription>
             </Alert>
         );
     }
-    
+
+    if (!data) {
+        return (
+            <Box id="loading" display="flex" alignItems="center" justifyContent="center" gap="1rem" h="20rem">
+                <Spinner size="md" />
+                <Text as="span">Loading...</Text>
+            </Box>
+        );
+    }
+
     return !data.exist ? <Instalation /> : <Login />;
 }

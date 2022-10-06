@@ -55,7 +55,7 @@ export default function Form() {
     }
 
     return (
-        <Box as="form" onSubmit={handleSubmit(handleLogin)} noValidate animation="homeForm 1s 1 0s ease-out">
+        <Box id="login_form" as="form" onSubmit={handleSubmit(handleLogin)} noValidate animation="homeForm 1s 1 0s ease-out">
             {fields.map((field) => (
                 <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]}>
                     <InputGroup>

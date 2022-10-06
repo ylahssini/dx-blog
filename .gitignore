@@ -2,8 +2,11 @@ node_modules
 .next
 .pnpm-store
 mongodb/*
+mongodb-test/*
 !mongodb/README.md
+!mongodb-test/.gitkeep
 .DS_store
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/tests-examples/

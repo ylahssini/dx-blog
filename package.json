@@ -14,7 +14,7 @@
     "@chakra-ui/react": "^2.3.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@playwright/test": "^1.26.0",
+    "@playwright/test": "^1.26.1",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^7.3.5",
