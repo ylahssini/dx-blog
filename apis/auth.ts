@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import client, { fetcher } from '@/lib/client';
 
 export function createAdminUser(values: Record<string, any>) {
-    return client.post('api/auth/instalation', values);
+    return client.post('api/auth/installation', values);
 }
 
 export function login(values: { email: string; password: string }) {

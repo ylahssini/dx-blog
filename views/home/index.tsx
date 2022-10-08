@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner, Text } from '@chakra-ui/react';
 import Login from './login';
-import Instalation from './installation';
+import Installation from './installation';
 import { useFirstInstallTime } from '@/apis/auth';
 
 export default function HomeView() {
@@ -25,5 +25,5 @@ export default function HomeView() {
         );
     }
 
-    return !data.exist ? <Instalation /> : <Login />;
+    return !data.exist ? <Installation /> : <Login />;
 }

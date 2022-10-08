@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 import User from '@/models/user';
 
-export default function Instalation(request: NextApiRequest, response: NextApiResponse) {
+export default function Installation(request: NextApiRequest, response: NextApiResponse) {
     if (request.method === 'POST') {
         return new Promise(async (resolve, reject) => {
             try {

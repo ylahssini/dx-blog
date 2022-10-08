@@ -53,7 +53,7 @@ export default function Form() {
     });
 
     return (
-        <Box id="instalation_form" as="form" onSubmit={handleSubmit(handleRegister)} noValidate animation="homeForm 1s 1 0s ease-out">
+        <Box id="installation_form" as="form" onSubmit={handleSubmit(handleRegister)} noValidate animation="homeForm 1s 1 0s ease-out">
             {fields.map((field) => {
                 let validate = null;
                 if (field.key === 'confirm_password') {
@@ -68,7 +68,7 @@ export default function Form() {
                                 ref={refs[field.key]}
                                 type={field.type === 'password' && show ? 'text' : field.type}
                                 placeholder={field.placeholder}
-                                id={`instalation_${field.key}`}
+                                id={`installation_${field.key}`}
                                 autoComplete="off"
                                 {...register(field.key, { ...field.validation, validate })}
                             />

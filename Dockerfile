@@ -14,4 +14,3 @@ RUN pnpm run build
 RUN pnpm dlx playwright install
 
 CMD ["pnpm", "run", "dev"]
-
