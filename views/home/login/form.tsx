@@ -37,12 +37,13 @@ export default function Form() {
             const result = await login(values);
 
             if (result.status === 200) {
+                console.log('here');
                 Router.push('/dashboard/');
-                setPosting(false);
             }
         } catch (error) {
             console.log(error);
             toast({
+                id: 'error',
                 title: 'Error',
                 description: error.response.data.message,
                 status: 'error',
@@ -72,7 +73,7 @@ export default function Form() {
                 </FormControl>
             ))}
 
-            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Logging in..." type="submit">
+            <Button id="login" colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Logging in..." type="submit">
                 Log in
             </Button>
         </Box>

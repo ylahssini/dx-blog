@@ -27,18 +27,29 @@ export default function Form() {
                 reset();
 
                 toast({
-                    status: 'success',
+                    id: 'success',
                     title: 'Success',
                     description: 'Your account is created',
+                    status: 'success',
                     duration: 5000,
                     isClosable: true,
+                    position: 'top',
                 });
                 setPosting(false);
 
                 mutate();
             }
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            console.log(error);
+            toast({
+                id: 'error',
+                title: 'Error',
+                description: error.response.data.message,
+                status: 'error',
+                duration: 8000,
+                isClosable: true,
+                position: 'top',
+            });
             setPosting(false);
         }
     }

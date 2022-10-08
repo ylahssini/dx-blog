@@ -34,3 +34,21 @@ export const installationFields = [
         },
     },
 ];
+
+export const loginFields = [
+    {
+        key: 'email',
+        placeholder: 'Email Address',
+        validation: {
+            required: 'Please provide your email address',
+            pattern: 'Please provide a valid email address',
+        },
+    },
+    {
+        key: 'password',
+        placeholder: 'Password',
+        validation: {
+            required: 'Please provide your password',
+        },
+    },
+];

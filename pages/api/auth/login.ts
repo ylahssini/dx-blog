@@ -19,8 +19,9 @@ async function login(request: NextApiRequest, response: NextApiResponse) {
                         if (err) return reject(error);
 
                         if (!isMatched) {
-                            response.status(500).json({ success: false, message: 'The email or password are not correct', error });
-                            return reject({ error: 'The password is incorrect' });
+                            const message = 'The email or password are not correct';
+                            response.status(500).json({ success: false, message, error });
+                            return reject({ error: message });
                         }
 
                         const userData = pick(user, ['first_name', 'last_name', 'email', 'role', 'status']);
