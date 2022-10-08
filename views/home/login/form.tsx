@@ -63,6 +63,7 @@ export default function Form() {
                         <Input
                             type={field.type}
                             placeholder={field.placeholder}
+                            id={`login_${field.key}`}
                             autoComplete="off"
                             {...register(field.key, { ...field.validation })}
                         />

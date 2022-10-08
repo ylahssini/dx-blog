@@ -6,9 +6,10 @@ services:
     container_name: miniCrmProdContainer
     image: minicrm_prod
     command: pnpm run start
+    volumes:
+      - ./e2e:/usr/src/app/e2e
     ports:
       - "9000:3000"
-      - "9323:9323"
     env_file: ./.env
     depends_on:
       - mongo

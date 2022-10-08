@@ -3,8 +3,8 @@ import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, us
 import { FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm } from 'react-hook-form';
-import fields from './fields';
 import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
+import fields from './fields';
 
 export default function Form() {
     const [show, setShow] = useState(false);
@@ -68,6 +68,7 @@ export default function Form() {
                                 ref={refs[field.key]}
                                 type={field.type === 'password' && show ? 'text' : field.type}
                                 placeholder={field.placeholder}
+                                id={`instalation_${field.key}`}
                                 autoComplete="off"
                                 {...register(field.key, { ...field.validation, validate })}
                             />
@@ -84,7 +85,7 @@ export default function Form() {
                 );
             })}
 
-            <Button colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Creating the account..." type="submit">
+            <Button id="signup" colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Creating the account..." type="submit">
                 Sign up
             </Button>
         </Box>

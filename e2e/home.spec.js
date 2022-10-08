@@ -9,27 +9,37 @@ test.describe('Home page', () => {
         await expect(page).toHaveTitle(/Welcome to Mini-CRM/);
     });
     
-    test('Test if the instalation form is displayed', async ({ page }) => {
-        await page.route('**/is-first-install-time', (route) => {
-            route.fulfill({
-                status: 200,
-                contentType: 'application/json',
-                body: JSON.stringify({ exist: false }),
+    test.describe('Instalation form', () => {
+        test.beforeEach(async ({ page }) => {
+            await page.route('**/is-first-install-time', (route) => {
+                route.fulfill({
+                    status: 200,
+                    contentType: 'application/json',
+                    body: JSON.stringify({ exist: false }),
+                });
             });
+            await page.goto(url);
         });
-        await page.goto(url);
-        await expect(page.locator('#instalation_form')).toBeVisible();
+
+        test('Test if the instalation form is displayed', async ({ page }) => {
+            await expect(page.locator('#instalation_form')).toBeVisible();
+        });
     });
-    
-    test('Test if the loading is displayed', async ({ page}) => {
-        await page.route('**/is-first-install-time', (route) => {
-            route.fulfill({
-                status: 200,
-                contentType: 'application/json',
-                body: JSON.stringify({ exist: true }),
+
+    test.describe('Login form', () => {
+        test.beforeEach(async ({ page }) => {
+            await page.route('**/is-first-install-time', (route) => {
+                route.fulfill({
+                    status: 200,
+                    contentType: 'application/json',
+                    body: JSON.stringify({ exist: true }),
+                });
             });
+            await page.goto(url);
         });
-        await page.goto(url);
-        await expect(page.locator('#login_form')).toBeVisible();
+
+        test('Test if the login form is displayed', async ({ page}) => {
+            await expect(page.locator('#login_form')).toBeVisible();
+        });
     });
 });
