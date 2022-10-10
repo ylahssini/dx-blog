@@ -6,11 +6,11 @@ export default function Products() {
     return (
         <>
             <Head>
-                <title>List of products | Mini-CRM</title>
+                <title>Products | Mini-CRM</title>
             </Head>
             <ProductsView />
         </>
     );
 }
 
-Products.getLayout = (page) => <MainLayout title="List of products">{page}</MainLayout>;
+Products.getLayout = (page) => <MainLayout title="Products">{page}</MainLayout>;
