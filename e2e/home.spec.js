@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { installationFields, loginFields } from './mocks/home.mock';
-
-const port = process.env.PORT || 9000;
-const url = `http://localhost:${port}/`;
+import { host } from './mocks/constants.mock';
 
 test.describe('Home page', () => {
     async function testInstallationField({ section, page, field, errorKey }) {
@@ -17,7 +15,7 @@ test.describe('Home page', () => {
     }
 
     test('Test if the title is correct in the home page', async ({ page }) => {
-        await page.goto(url);
+        await page.goto(host);
         await expect(page).toHaveTitle(/Welcome to Mini-CRM/);
     });
     
@@ -30,7 +28,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify({ exist: false }),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
         });
 
         test('if the installation form is displayed', async ({ page }) => {
@@ -99,7 +97,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify({ success: true }),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
 
             const signup = page.locator('#signup');
 
@@ -137,7 +135,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify(response),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
 
             const signup = page.locator('#signup');
 
@@ -176,7 +174,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify({ exist: true }),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
         });
 
         test('if the login form is displayed', async ({ page}) => {
@@ -219,7 +217,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify({ success: true }),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
 
             const fieldValues = {
                 email: 'joedoe@test.com',
@@ -232,8 +230,8 @@ test.describe('Home page', () => {
             }
 
             await page.locator('#login').click();
-            await page.goto(url + 'dashboard');
-            await expect(page).toHaveURL(url + 'dashboard');
+            await page.goto(host + 'dashboard');
+            await expect(page).toHaveURL(host + 'dashboard');
         });
 
         test('if it shows an error toast in case that server return an error', async ({ page }) => {
@@ -245,7 +243,7 @@ test.describe('Home page', () => {
                     body: JSON.stringify(response),
                 });
             });
-            await page.goto(url);
+            await page.goto(host);
 
             const fieldValues = {
                 email: 'joedoe@test.com',
