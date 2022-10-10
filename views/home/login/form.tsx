@@ -4,6 +4,7 @@ import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLef
 import { useForm } from 'react-hook-form';
 import { TbAt, TbLock } from 'react-icons/tb';
 import { login } from '@/apis/auth';
+import { ERROR_TOAST_PARAMS } from '@/utils/constants';
 
 const fields = [
     {
@@ -37,20 +38,11 @@ export default function Form() {
             const result = await login(values);
 
             if (result.status === 200) {
-                console.log('here');
                 Router.push('/dashboard/');
             }
         } catch (error) {
             console.log(error);
-            toast({
-                id: 'error',
-                title: 'Error',
-                description: error.response.data.message,
-                status: 'error',
-                duration: 8000,
-                isClosable: true,
-                position: 'top',
-            });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response.data.message });
             setPosting(false);
         }
     }

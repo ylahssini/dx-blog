@@ -1,10 +1,10 @@
 import { ReactNode, createRef, useState } from 'react';
-import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, useToast } from '@chakra-ui/react';
-import { FormControl, FormErrorMessage } from '@chakra-ui/react';
+import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, useToast, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm } from 'react-hook-form';
 import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
 import fields from './fields';
+import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 
 export default function Form() {
     const [show, setShow] = useState(false);
@@ -26,30 +26,14 @@ export default function Form() {
             if (result.status === 202) {
                 reset();
 
-                toast({
-                    id: 'success',
-                    title: 'Success',
-                    description: 'Your account is created',
-                    status: 'success',
-                    duration: 5000,
-                    isClosable: true,
-                    position: 'top',
-                });
+                toast({ ...SUCCESS_TOAST_PARAMS, description: 'Your account is created' });
                 setPosting(false);
 
                 mutate();
             }
         } catch (error) {
             console.log(error);
-            toast({
-                id: 'error',
-                title: 'Error',
-                description: error.response.data.message,
-                status: 'error',
-                duration: 8000,
-                isClosable: true,
-                position: 'top',
-            });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response.data.message });
             setPosting(false);
         }
     }

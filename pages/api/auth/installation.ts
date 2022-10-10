@@ -11,7 +11,7 @@ export default function Installation(request: NextApiRequest, response: NextApiR
                 mongoose.connection.db.listCollections({ name: 'users' }).next(async (_, collection) => {
                     try {
                         if (collection) {
-                            response.status(401).json({ message: 'The admin user was created' });
+                            response.status(401).json({ message: 'The admin user already created' });
                             reject(false);
                             return false;
                         }
