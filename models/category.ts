@@ -5,7 +5,14 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         required: [true, 'You must provide the name of product'],
     },
-    description: String,
+    description: {
+        type: String,
+        default: '',
+    },
+    status: {
+        type: Boolean,
+        default: true,
+    },
 }, {
     timestamps: {
         createdAt: 'created_at',
@@ -17,6 +24,7 @@ export interface ModelCategory extends Document {
     id: string;
     name: string;
     description: string;
+    status: boolean;
     createdAt: Date | number;
     updatedAt: Date | number;
 }

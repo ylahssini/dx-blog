@@ -14,7 +14,11 @@ const ProductSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: [true, 'You must provide the prive'],
-    }
+    },
+    status: {
+        type: Boolean,
+        default: true,
+    },
 }, {
     timestamps: {
         createdAt: 'created_at',
@@ -27,7 +31,8 @@ export interface ModelProduct extends Document {
     name: string;
     description: string;
     photo: string;
-    category: string,
+    category: string;
+    status: boolean;
     created_by: string | null;
     createdAt: Date | number;
     updatedAt: Date | number;
