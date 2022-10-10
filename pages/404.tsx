@@ -21,7 +21,7 @@ export default function Error404() {
                 <title>Error 404 | Mini-CRM</title>
             </Head>
             <Lottie options={options} height={600} width={600} />
-            <Heading as="h1" fontWeight={200} textAlign="center">Error 404</Heading>
+            <Heading id="error_404" as="h1" fontWeight={200} textAlign="center">Error 404</Heading>
             <Text as="p" pb="1rem" textAlign="center">The page you are looking for cannot be found</Text>
             <Link href="/dashboard">
                 <Button textDecoration="none" colorScheme="blue" display="block" mx="auto">Go to dashbord</Button>
