@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import Cookies from 'universal-cookie';
 import { MdOutlineDashboard, MdOutlineShoppingCart, MdOutlinePeople, MdOutlineStorefront, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
 import Logo from '@/components/logo';
 import { logout } from '@/apis/auth';
 import styles from './styles.module.css';
 import { useIsConnected } from '@/utils/hooks';
-import Cookies from 'universal-cookie';
 
 const menu = [
     { href: '/_/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
