@@ -27,3 +27,10 @@ services:
     volumes:
       - ./mongodb:/data/db
       - ./scripts:/docker-entrypoint-initdb.d
+
+  playwright:
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./playwright-report:/usr/share/nginx/html
