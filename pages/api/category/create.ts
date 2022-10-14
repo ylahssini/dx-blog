@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
+import { withIronSessionApiRoute } from 'iron-session/next';
 import Category from '@/models/category';
+import { sessionOptions } from '@/lib/session';
 
-export default function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
+function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
     if (!request.session?.user) {
         response.status(401).json({ success: false, message: 'Not authorized' });
         return;
@@ -40,3 +42,5 @@ export default function CreateCategory(request: NextApiRequest, response: NextAp
 
     response.status(405).json({ success: false, message: 'Method not allowed' });
 }
+
+export default withIronSessionApiRoute(CreateCategory, sessionOptions);

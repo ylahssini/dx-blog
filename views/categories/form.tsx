@@ -42,22 +42,23 @@ export default function Form() {
 
             const response = await createCategory(values);
 
-            if (response.status === 202) {
+            if (response?.status === 202) {
                 reset();
 
-                toast({ ...SUCCESS_TOAST_PARAMS, description: 'Your account is created' });
+                toast({ ...SUCCESS_TOAST_PARAMS, description: `The category ${values.name} is created` });
                 onClose();
 
                 setPosting(false);
             }
         } catch (error) {
             console.log(error);
-            toast({ ...ERROR_TOAST_PARAMS, description: error.response.data.message });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal error' });
             setPosting(false);
         }
     }
 
     function handleClose() {
+        setPosting(false);
         onClose();
         reset();
     }

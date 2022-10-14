@@ -6,6 +6,7 @@ import { ModelUser } from '@/models/user';
 export type UserSession = {
     isLogged: boolean;
     data: ModelUser;
+    token: string;
 }
 
 async function isConnected(request: NextApiRequest, response: NextApiResponse) {
@@ -14,7 +15,7 @@ async function isConnected(request: NextApiRequest, response: NextApiResponse) {
         return false;
     }
 
-    response.json({ isLogged: false, data: null });
+    response.json({ isLogged: false, data: null, token: null });
 }
 
 export default withIronSessionApiRoute(isConnected, sessionOptions);

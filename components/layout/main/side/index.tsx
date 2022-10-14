@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { MdOutlineDashboard, MdOutlineShoppingCart, MdOutlinePeople, MdOutlineStorefront, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
@@ -8,13 +8,14 @@ import Logo from '@/components/logo';
 import { logout } from '@/apis/auth';
 import styles from './styles.module.css';
 import { useIsConnected } from '@/utils/hooks';
+import Cookies from 'universal-cookie';
 
 const menu = [
-    { href: '/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
-    { href: '/orders', text: 'Orders', icon: <MdOutlineShoppingCart /> },
-    { href: '/customers', text: 'Customers', icon: <MdOutlinePeople /> },
-    { href: '/categories', text: 'Categories', icon: <MdOutlineCategory /> },
-    { href: '/products', text: 'Products', icon: <MdOutlineStorefront /> },
+    { href: '/_/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
+    { href: '/_/orders', text: 'Orders', icon: <MdOutlineShoppingCart /> },
+    { href: '/_/customers', text: 'Customers', icon: <MdOutlinePeople /> },
+    { href: '/_/categories', text: 'Categories', icon: <MdOutlineCategory /> },
+    { href: '/_/products', text: 'Products', icon: <MdOutlineStorefront /> },
 ];
 
 const framerUl = {
@@ -28,13 +29,18 @@ export default function Side() {
     const [logginOut, setLoggingOut] = useState(false);
     const { user, mutate } = useIsConnected();
     const toast = useToast();
+    const { push } = useRouter();
 
     async function handleClick() {
         try {
+            const cookie = new Cookies();
+            cookie.remove('token');
+
             setLoggingOut(true);
             await logout();
+
             mutate();
-            Router.push('/');
+            push('/');
         } catch (error) {
             setLoggingOut(false);
             toast({ title: 'Error', description: error.response.data.message, duration: 5000, status: 'error', isClosable: true });

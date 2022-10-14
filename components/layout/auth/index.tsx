@@ -4,7 +4,7 @@ import Abstract from './abstract';
 import { useIsConnected } from '@/utils/hooks';
 
 export default function AuthLayout({ children }) {
-    useIsConnected({ to: '/dashboard', redirectIfFound: true });
+    useIsConnected({ to: '/_/dashboard', redirectIfFound: true });
 
     return (
         <Container w="100%" maxW="100%" h="100vh" p={0}>

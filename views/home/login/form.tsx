@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import Router from 'next/router';
+import Cookies from 'universal-cookie';
 import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { TbAt, TbLock } from 'react-icons/tb';
@@ -38,11 +39,14 @@ export default function Form() {
             const result = await login(values);
 
             if (result.status === 200) {
-                Router.push('/dashboard/');
+                const cookie = new Cookies();
+                cookie.set('token', result.data.token, { path: '/', sameSite: true });
+
+                Router.push('/_/dashboard/');
             }
         } catch (error) {
             console.log(error);
-            toast({ ...ERROR_TOAST_PARAMS, description: error.response.data.message });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message });
             setPosting(false);
         }
     }

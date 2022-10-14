@@ -1,13 +1,11 @@
 import { useRouter } from 'next/router';
 import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useIsConnected } from '@/utils/hooks';
 import Side from './side';
 import Header from './header';
 
 function MainLayout({ title, children }) {
     const { asPath } = useRouter();
-    useIsConnected();
 
     return (
         <Container w="100%" h="100vh" maxW="100%" p="0">

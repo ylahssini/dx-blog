@@ -4,6 +4,7 @@ import pick from 'lodash/pick';
 import dbConnect from '@/lib/connect';
 import User from '@/models/user';
 import { sessionOptions } from '@/lib/session';
+import { sign } from '@/lib/token';
 import { UserSession } from './is-connected';
 
 async function login(request: NextApiRequest, response: NextApiResponse) {
@@ -25,10 +26,11 @@ async function login(request: NextApiRequest, response: NextApiResponse) {
                         }
 
                         const userData = pick(user, ['first_name', 'last_name', 'email', 'role', 'status']);
-                        request.session.user = { data: userData, isLogged: true} as UserSession;
+                        const token = await sign({ id: user.id, role: userData.role });
+                        request.session.user = { data: userData, isLogged: true, token } as UserSession;
                         await request.session.save();
 
-                        response.status(200).json({ success: true, user: userData });
+                        response.status(200).json({ success: true, token });
 
                         return resolve(null);
                     });
