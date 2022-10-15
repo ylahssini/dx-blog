@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
+import { SWRConfig } from 'swr';
+import { fetcher } from '@/lib/client';
 import '@/assets/styles/global.css';
 import '@/assets/styles/animations.css';
 
@@ -9,9 +11,6 @@ function MiniCRMApp({ Component, pageProps }) {
     return (
         <>
             <Head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-                <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;700&display=swap" rel="stylesheet" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="theme-color" content="#000" />
                 <meta key="robots" name="robots" content="noindex,nofollow" />
@@ -19,9 +18,11 @@ function MiniCRMApp({ Component, pageProps }) {
                 <meta httpEquiv="content-type" content="text/html; charset=utf-8" />
             </Head>
 
-            <ChakraProvider>
-                {getLayout(<Component {...pageProps} />)}
-            </ChakraProvider>
+            <SWRConfig value={{ fetcher }}>
+                <ChakraProvider>
+                    {getLayout(<Component {...pageProps} />)}
+                </ChakraProvider>
+            </SWRConfig>
         </>
     );
 }

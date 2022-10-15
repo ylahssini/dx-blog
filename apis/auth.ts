@@ -16,7 +16,7 @@ export function logout() {
 }
 
 export function useFirstInstallTime() {
-    const { data, error, mutate } = useSWR('api/auth/is-first-install-time', fetcher);
+    const { data, error, mutate } = useSWR('api/auth/is-first-install-time');
     return { data, error, mutate };
 }
 
