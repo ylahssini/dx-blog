@@ -25,7 +25,7 @@ const CategorySchema = new mongoose.Schema({
 });
 
 export interface ModelCategory extends Document {
-    id: string;
+    _id: string;
     name: string;
     description: string;
     status: boolean;

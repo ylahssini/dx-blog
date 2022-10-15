@@ -20,41 +20,68 @@ import {
     Switch,
     useToast
 } from '@chakra-ui/react';
-import { MdOutlineControlPoint } from 'react-icons/md';
-import { createCategory, useCategories } from '@/apis/category';
+import { createCategory, editCategory, useCategories } from '@/apis/category';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
+import { ModelCategory } from '@/models/category';
 
-export default function Form() {
+interface CategoryForm {
+    children: any;
+    title: string;
+    mode?: 'add' | 'edit';
+    item?: ModelCategory | null;
+}
+
+export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
     const { mutate } = useCategories();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
+    const nameRef = useRef();
+    const [posting, setPosting] = useState(false);
+
+    let defaultValues = { name: '', description: '', status: true };
+    if (mode === 'edit') {
+        defaultValues = {
+            name: item.name,
+            description: item.description,
+            status: item.status,
+        };
+    }
+
     const {
         handleSubmit,
         register,
         reset,
         formState: { errors },
-    } = useForm();
-    const nameRef = useRef();
-    const [posting, setPosting] = useState(false);
+    } = useForm({ defaultValues });
 
     async function handleAdd(values) {
         try {
             setPosting(true);
 
-            const response = await createCategory(values);
+            let response = null;
+
+            if (mode === 'add') {
+                response = await createCategory(values);
+            } else if (mode === 'edit') {
+                response = await editCategory({ ...values, category_id: item._id });
+            }
 
             if (response?.status === 202) {
                 reset();
 
-                toast({ ...SUCCESS_TOAST_PARAMS, description: `The category ${values.name} is created` });
+                const description = mode === 'add' ? `The category ${values.name} is created` : `The category ${values.name} is edited`;
+                toast({ ...SUCCESS_TOAST_PARAMS, description });
+
                 mutate();
                 onClose();
-
-                setPosting(false);
+            } else {
+                toast({ ...ERROR_TOAST_PARAMS, description: response?.data.message || 'Internal server error' });
             }
+
+            setPosting(false);
         } catch (error) {
             console.log(error);
-            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal error' });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });
             setPosting(false);
         }
     }
@@ -67,18 +94,16 @@ export default function Form() {
 
     return (
         <aside>
-            <Button colorScheme="blue" size="sm" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
-                Add a new category
-            </Button>
+            {children({ onOpen })}
 
             <Drawer isOpen={isOpen} placement="right" initialFocusRef={nameRef} onClose={onClose} size="md">
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader borderBottomWidth="1px">Add a new category</DrawerHeader>
+                    <DrawerHeader borderBottomWidth="1px">{title}</DrawerHeader>
 
                     <DrawerBody pt="1rem">
-                        <Box id="add_new_category_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
+                        <Box id="category_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
                             <Stack spacing="24px">
                                 <FormControl isInvalid={!!errors.name} isRequired>
                                     <FormLabel htmlFor="category_name">Name</FormLabel>
@@ -114,7 +139,7 @@ export default function Form() {
                         <Button variant="outline" mr={3} onClick={handleClose}>
                             Cancel
                         </Button>
-                        <Button colorScheme="blue" form="add_new_category_form" variant="solid" isLoading={posting} disabled={posting} loadingText="sending data..." type="submit">
+                        <Button colorScheme="blue" form="category_form" variant="solid" isLoading={posting} disabled={posting} loadingText="Sending data..." type="submit">
                             Save
                         </Button>
                     </DrawerFooter>
