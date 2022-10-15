@@ -40,7 +40,7 @@
 @keyframes animationOfH {
     0% { border-radius: 0 100em 100em 0 }
     25% { border-radius: 0 0 100em 0 }
-    50% { border-radius: 0 100em 100em 0 }
+    50% { border-radius: 0 100em 0 100em }
     75% { border-radius: 100em 100em 0 100em }
     100% { border-radius: 0 100em 100em 0 }
 }
