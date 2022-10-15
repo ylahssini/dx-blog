@@ -3,13 +3,9 @@ import dbConnect from '@/lib/connect';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import Category from '@/models/category';
 import { sessionOptions } from '@/lib/session';
+import { verify } from '@/lib/token';
 
 function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
-    if (!request.session?.user) {
-        response.status(401).json({ success: false, message: 'Not authorized' });
-        return;
-    }
-
     if (request.method === 'POST') {
         return new Promise(async (resolve, reject) => {
             try {
@@ -19,10 +15,13 @@ function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
                     const { body } = request;
 
                     try {
+                        const user = await verify(request.session.user.token, true) as { id: string };
+
                         const category = new Category({
                             name: body.name,
                             description: body.description,
                             status: body.status,
+                            created_by: new mongoose.Types.ObjectId(user.id)
                         });
                         await category.save();
 

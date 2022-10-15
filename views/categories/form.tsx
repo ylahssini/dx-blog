@@ -21,10 +21,11 @@ import {
     useToast
 } from '@chakra-ui/react';
 import { MdOutlineControlPoint } from 'react-icons/md';
-import { createCategory } from '@/apis/category';
+import { createCategory, useCategories } from '@/apis/category';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 
 export default function Form() {
+    const { mutate } = useCategories();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const {
@@ -46,6 +47,7 @@ export default function Form() {
                 reset();
 
                 toast({ ...SUCCESS_TOAST_PARAMS, description: `The category ${values.name} is created` });
+                mutate();
                 onClose();
 
                 setPosting(false);

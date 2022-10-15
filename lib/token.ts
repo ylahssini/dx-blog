@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify } from 'jose';
+import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 
 const secret = process.env.SECRET_JOSE;
 
@@ -14,7 +14,7 @@ export async function sign(payload: Record<string, string | boolean>): Promise<s
         .sign(new TextEncoder().encode(secret));
 }
 
-export async function verify(token: string): Promise<boolean> {
+export async function verify(token: string, getPayload = false): Promise<JWTPayload | boolean> {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
-    return !!payload;
+    return getPayload ? payload : !!payload;
 }

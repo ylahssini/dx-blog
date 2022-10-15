@@ -1,0 +1,37 @@
+import dbConnect from '@/lib/connect';
+import Category from '@/models/category';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+function CategoryList(request: NextApiRequest, response: NextApiResponse) {
+    if (request.method === 'GET') {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const mongoose = await dbConnect();
+
+                mongoose.connection.db.listCollections({ name: 'categories' }).next(async () => {
+                    try {
+                        const items = await Category.find({}, {}, { skip: 0, limit: 20 }).exec();
+                        const count = await Category.find({}).count();
+
+                        response.status(200).json({
+                            success: true,
+                            list: { count, items },
+                        });
+
+                        resolve(null);
+                    } catch (error) {
+                        response.status(500).json({ success: false, message: 'Fail to get categories', error });
+                        reject(error);
+                    }
+                });
+            } catch (error) {
+                response.status(500).json({ success: false, message: 'Error to connect database', error });
+                reject(error);
+            }
+        });
+    }
+
+    response.status(405).json({ success: false, message: 'Method not allowed' });
+}
+
+export default CategoryList;

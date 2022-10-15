@@ -13,6 +13,10 @@ const CategorySchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    created_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }
 }, {
     timestamps: {
         createdAt: 'created_at',
@@ -25,8 +29,8 @@ export interface ModelCategory extends Document {
     name: string;
     description: string;
     status: boolean;
-    createdAt: Date | number;
-    updatedAt: Date | number;
+    created_at: Date | number;
+    updated_at: Date | number;
 }
 
 const Category = (
