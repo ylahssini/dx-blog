@@ -4,6 +4,7 @@ import { SWRConfig } from 'swr';
 import { fetcher } from '@/lib/client';
 import '@/assets/styles/global.css';
 import '@/assets/styles/animations.css';
+import '@/assets/styles/paginate.css';
 
 function MiniCRMApp({ Component, pageProps }) {
     const getLayout = Component.getLayout || ((page) => page);

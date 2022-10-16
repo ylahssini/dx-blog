@@ -10,7 +10,9 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
 
                 mongoose.connection.db.listCollections({ name: 'categories' }).next(async () => {
                     try {
-                        const items = await Category.find({}, {}, { skip: 0, limit: 20 }).exec();
+                        const { skip, limit } = request.query;
+
+                        const items = await Category.find({}, {}, { skip: skip || 0, limit: limit || 3 }).exec();
                         const count = await Category.find({}).count();
 
                         response.status(200).json({

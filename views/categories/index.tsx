@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Box, Flex, Button } from '@chakra-ui/react';
-import { useCategories } from '@/apis/category';
-import Form from './form';
-import ListingTable from '@/components/table';
-import Item from './item';
-import { type ModelCategory } from '@/models/category';
 import { MdOutlineControlPoint } from 'react-icons/md';
+import ListingTable from '@/components/table';
+import { useCategories } from '@/apis/category';
+import { type ModelCategory } from '@/models/category';
+import Form from './form';
+import Item from './item';
+import Paginate from '@/components/paginate';
 
 const columns = [
     { label: 'Name', w: '30%' },
@@ -15,7 +17,12 @@ const columns = [
 ];
 
 export default function CategoriesView() {
-    const { data, error } = useCategories();
+    const [skip, setSkip] = useState(0);
+    const { data, error } = useCategories({ skip });
+
+    function handlePage(event) {
+        setSkip((event.selected * 3) % (data?.list.count || 1));
+    }
 
     return (
         <Box p="2rem">
@@ -33,6 +40,8 @@ export default function CategoriesView() {
             <ListingTable items={data?.list.items} loading={!!data} error={error} columns={columns}>
                 {({ items }) => items.map((item: ModelCategory) => <Item key={item._id} data={item} />)}
             </ListingTable>
+
+            <Paginate count={data?.list.count} limit={3} handlePage={handlePage} />
         </Box>
     );
 }

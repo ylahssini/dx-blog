@@ -8,7 +8,7 @@ export default function Item({ data }: { data: ModelCategory }) {
     return (
         <Tr>
             <Td w="30%">{data.name}</Td>
-            <Td w="35%">{data.description}</Td>
+            <Td w="35%">{data.description || <Text color="gray.400">~</Text>}</Td>
             <Td w="7%">
                 <Box display="inline-block" mr="5px" verticalAlign="middle">{data.status ? <MdOutlineCheckCircleOutline color="var(--success)" /> : <MdHighlightOff color="var(--danger)" />}</Box>
                 {data.status ? <Text color="var(--success)" as="span">Enabled</Text> : <Text color="var(--danger)" as="span">Disabled</Text>}

@@ -6,7 +6,7 @@ import Error from './error';
 import Loading from './loading';
 
 export default function ListingTable({ children, loading, items = [], columns, error }) {
-    const colSpan = items?.length;
+    const colSpan = columns.length;
 
     return (
         <TableContainer>
