@@ -20,9 +20,10 @@ import {
     Switch,
     useToast
 } from '@chakra-ui/react';
-import { createCategory, editCategory } from '@/apis/category';
+import { createCategory, editCategory, useCategories } from '@/apis/category';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { ModelCategory } from '@/models/category';
+import { useStore } from '@/store';
 
 interface CategoryForm {
     children: any;
@@ -32,7 +33,9 @@ interface CategoryForm {
     mutate?: () => void;
 }
 
-export default function Form({ children, title, mode = 'add', item = null, mutate }: CategoryForm) {
+export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
+    const { skip } = useStore((state) => state.category.paginate);
+    const { mutate } = useCategories({ skip });
     const { isOpen, onOpen, onClose } = useDisclosure({ id: 'category_' + mode });
     const toast = useToast();
     const nameRef = useRef();
@@ -77,7 +80,7 @@ export default function Form({ children, title, mode = 'add', item = null, mutat
             if (response?.status === 202) {
                 resetMode();
 
-                const description = mode === 'add' ? `The category ${values.name} is created` : `The category ${values.name} is edited`;
+                const description = mode === 'add' ? `The category '${values.name}' is created` : `The category '${values.name}' is edited`;
                 toast({ ...SUCCESS_TOAST_PARAMS, description });
 
                 mutate();
