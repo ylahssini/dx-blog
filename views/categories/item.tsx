@@ -4,7 +4,7 @@ import { ModelCategory } from '@/models/category';
 import { MdOutlineCheckCircleOutline, MdHighlightOff, MdOutlineEdit } from 'react-icons/md';
 import Form from './form';
 
-export default function Item({ data }: { data: ModelCategory }) {
+export default function Item({ data, mutate }: { data: ModelCategory; mutate: () => void }) {
     return (
         <Tr>
             <Td w="30%">{data.name}</Td>
@@ -15,7 +15,7 @@ export default function Item({ data }: { data: ModelCategory }) {
             </Td>
             <Td w="13%">{dayjs(data.created_at).format('DD/MM/YYYY')}</Td>
             <Td w="15%" textAlign="right">
-                <Form title={`Edit category: ${data.name}`} mode="edit" item={data}>
+                <Form title={`Edit category: ${data.name}`} mode="edit" item={data} mutate={mutate}>
                     {({ onOpen }) => (
                         <Tooltip label="Edit category" placement="top" hasArrow p="5px 10px" borderRadius={4}>
                             <Button role="group" onClick={onOpen}>

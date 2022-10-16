@@ -20,7 +20,7 @@ import {
     Switch,
     useToast
 } from '@chakra-ui/react';
-import { createCategory, editCategory, useCategories } from '@/apis/category';
+import { createCategory, editCategory } from '@/apis/category';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { ModelCategory } from '@/models/category';
 
@@ -29,11 +29,11 @@ interface CategoryForm {
     title: string;
     mode?: 'add' | 'edit';
     item?: ModelCategory | null;
+    mutate?: () => void;
 }
 
-export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
-    const { mutate } = useCategories();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+export default function Form({ children, title, mode = 'add', item = null, mutate }: CategoryForm) {
+    const { isOpen, onOpen, onClose } = useDisclosure({ id: 'category_' + mode });
     const toast = useToast();
     const nameRef = useRef();
     const [posting, setPosting] = useState(false);
@@ -54,6 +54,14 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
         formState: { errors },
     } = useForm({ defaultValues });
 
+    function resetMode() {
+        if (mode === 'edit') {
+            reset({}, { keepValues: true, keepDefaultValues: false });
+        } else {
+            reset();
+        }
+    }
+
     async function handleAdd(values) {
         try {
             setPosting(true);
@@ -67,7 +75,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
             }
 
             if (response?.status === 202) {
-                reset();
+                resetMode();
 
                 const description = mode === 'add' ? `The category ${values.name} is created` : `The category ${values.name} is edited`;
                 toast({ ...SUCCESS_TOAST_PARAMS, description });
@@ -89,7 +97,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
     function handleClose() {
         setPosting(false);
         onClose();
-        reset();
+        resetMode();
     }
 
     return (

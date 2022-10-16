@@ -10,6 +10,6 @@ export function editCategory(values: Record<string, string | boolean>) {
 }
 
 export function useCategories({ limit = 3, skip = 0 }: { limit?: number; skip?: number } = {}) {
-    const { data, error, mutate } = useSWR(() => `api/category/list?skip=${skip}&limit=${limit}`);
+    const { data, error, mutate } = useSWR(`api/category/list?skip=${skip}&limit=${limit}`);
     return { data, error, mutate };
 }
