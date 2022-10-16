@@ -5,9 +5,11 @@ import { fetcher } from '@/lib/client';
 import '@/assets/styles/global.css';
 import '@/assets/styles/animations.css';
 import '@/assets/styles/paginate.css';
+import store, { globalState, ServerContext } from '@/store';
 
 function MiniCRMApp({ Component, pageProps }) {
     const getLayout = Component.getLayout || ((page) => page);
+    store.serverInitialize(globalState);
 
     return (
         <>
@@ -21,9 +23,11 @@ function MiniCRMApp({ Component, pageProps }) {
             </Head>
 
             <SWRConfig value={{ fetcher }}>
-                <ChakraProvider>
-                    {getLayout(<Component {...pageProps} />)}
-                </ChakraProvider>
+                <ServerContext.Provider value={globalState}>
+                    <ChakraProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                    </ChakraProvider>
+                </ServerContext.Provider>
             </SWRConfig>
         </>
     );

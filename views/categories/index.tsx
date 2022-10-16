@@ -3,10 +3,11 @@ import { MdOutlineControlPoint } from 'react-icons/md';
 import ListingTable from '@/components/table';
 import { useCategories } from '@/apis/category';
 import { type ModelCategory } from '@/models/category';
-import Form from './form';
-import Item from './item';
 import Paginate from '@/components/paginate';
 import store, { useStore } from '@/store';
+import Form from './form';
+import Item from './item';
+import Filters from './filters';
 
 const columns = [
     { label: 'Name', w: '30%' },
@@ -36,11 +37,13 @@ export default function CategoriesView() {
 
     return (
         <Box p="2rem">
+            <Filters />
+
             <Flex as="header" pb="2rem" justifyContent="space-between" alignItems="center">
                 <strong>{data?.list.count || 0} results found</strong>
                 <Form title="Add a new category">
                     {({ onOpen }) => (
-                        <Button colorScheme="blue" size="sm" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
+                        <Button colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
                             Add a new category
                         </Button>
                     )}

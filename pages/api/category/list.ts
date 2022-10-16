@@ -2,6 +2,8 @@ import dbConnect from '@/lib/connect';
 import Category from '@/models/category';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+const defaultLimit = process.env.NEXT_PUBLIC_LIMIT as unknown as number;
+
 function CategoryList(request: NextApiRequest, response: NextApiResponse) {
     if (request.method === 'GET') {
         return new Promise(async (resolve, reject) => {
@@ -12,7 +14,8 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                     try {
                         const { skip, limit } = request.query;
 
-                        const items = await Category.find({}, {}, { skip: skip || 0, limit: limit || 3 }).exec();
+                        // @ts-ignore
+                        const items = await Category.find({}, {}, { skip: skip || 0, limit: limit || defaultLimit }).exec();
                         const count = await Category.find({}).count();
 
                         response.status(200).json({
