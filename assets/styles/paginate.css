@@ -15,34 +15,8 @@
     z-index: 2;
 }
 
-.paginate li a {
-    background-color: #fff;
-    padding: 0.1rem 1rem;
-    border: var(--primary) 1px solid;
-    line-height: 27px;
-    cursor: pointer;
-    font-size: .85rem;
-    transition: all .25s cubic-bezier(0.215, 0.610, 0.355, 1);
-}
-
-.paginate li a:hover {
-    background-color: var(--primary);
-    border-color: var(--primary);
-    color: white;
-}
-
-.paginate li a:after {
-    display: none;
-}
-
-.paginate li.next a {
-    border-radius: 0 var(--radius) var(--radius) 0;
-    border-left: 0;
-}
-
-.paginate li.previous a {
-    border-radius: var(--radius) 0 0 var(--radius);
-    border-right: 0;
+.paginate li.previous + li > a {
+    border-left: 1px solid var(--primary);
 }
 
 .paginate li.next,
@@ -50,6 +24,38 @@
     font-size: .85rem;
     position: relative;
     z-index: 1;
+}
+
+.paginate li > a {
+    background-color: #fff;
+    padding: 0.1rem 1rem;
+    border: var(--primary) 1px solid;
+    border-left: 0;
+    line-height: 27px;
+    cursor: pointer;
+    font-size: .85rem;
+    transition: all .25s cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+.paginate li > a:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.paginate li.next > a {
+    border-radius: 0 var(--radius) var(--radius) 0;
+    border-left: 0;
+}
+
+.paginate li.previous > a {
+    border-radius: var(--radius) 0 0 var(--radius);
+    border-right: 0;
+    border-left: 1px solid var(--primary);
+}
+
+.paginate li a:after {
+    display: none;
 }
 
 .paginate li.next > a,
@@ -60,20 +66,20 @@
     gap: 5px;
 }
 
-.paginate li.active a, .paginate li.selected a {
+.paginate li.active > a, .paginate li.selected > a {
     background-color: var(--primary);
     border-color: var(--primary);
     color: white;
     min-width: 32px;
 }
 
-.paginate li.disabled a,
-.paginate li.disabled a:hover {
+.paginate li.disabled > a,
+.paginate li.disabled > a:hover {
     color: #999;
     border-color: #ccc;
     background-color: #fff;
 }
 
-.paginate li.disabled a {
+.paginate li.disabled > a {
     cursor: not-allowed;
 }
