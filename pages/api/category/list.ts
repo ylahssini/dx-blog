@@ -12,11 +12,31 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
 
                 mongoose.connection.db.listCollections({ name: 'categories' }).next(async () => {
                     try {
-                        const { skip, limit } = request.query;
+                        const { skip, limit, filters } = request.query;
+
+                        const query: Record<string, string | RegExp | boolean> = {};
+                        if (filters) {
+                            const parseFilter = JSON.parse(filters as string);
+                            console.log(parseFilter);
+
+                            if (typeof parseFilter.name === 'string') {
+                                query.name = new RegExp(parseFilter.name, 'gi');
+                            }
+
+                            if (typeof parseFilter.description === 'string') {
+                                query.description = new RegExp(parseFilter.description, 'gi');
+                            }
+
+                            if (['true', 'false'].includes(parseFilter.status)) {
+                                query.status = parseFilter.status === 'true';
+                            }
+                        }
+
+                        console.log({query});
 
                         // @ts-ignore
-                        const items = await Category.find({}, null, { skip: skip || 0, limit: limit || defaultLimit }).exec();
-                        const count = await Category.find({}).count();
+                        const items = await Category.find(query, null, { skip: skip || 0, limit: limit || defaultLimit }).exec();
+                        const count = await Category.find(query).count();
 
                         response.status(200).json({
                             success: true,

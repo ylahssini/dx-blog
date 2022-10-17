@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import useSWR from 'swr';
 import { UserSession } from '@/pages/api/auth/is-connected';
@@ -18,3 +18,17 @@ export const useIsConnected = ({ to = '/', redirectIfFound = false }: { to?: str
 
     return { user, mutate };
 };
+
+export function useDebounce<T>(value: T, delay?: number): T {
+    const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+}

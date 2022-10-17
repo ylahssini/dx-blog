@@ -17,3 +17,15 @@ export function stringToColor(string: string) {
 
     return color;
 }
+
+export function queryString(params: Record<string, string>): string {
+    const query = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+        if (value && value !== '{}') {
+            query.set(key, value);
+        }
+    });
+
+    return query.toString();
+}

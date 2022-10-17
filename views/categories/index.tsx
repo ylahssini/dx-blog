@@ -18,8 +18,8 @@ const columns = [
 ];
 
 export default function CategoriesView() {
-    const { skip, limit } = useStore((state) => state.category.paginate);
-    const { data, error } = useCategories({ skip });
+    const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
+    const { data, error } = useCategories({ skip, limit, filters });
 
     function handlePage(event) {
         const state = store.getState();
@@ -30,8 +30,8 @@ export default function CategoriesView() {
                 paginate: {
                     ...state.category.paginate,
                     skip: (event.selected * state.category.paginate.limit) % (data?.list.count || 1),
-                }
-            }
+                },
+            },
         });
     }
 
@@ -54,7 +54,7 @@ export default function CategoriesView() {
                 {({ items }) => items.map((item: ModelCategory) => <Item key={item._id} data={item} />)}
             </ListingTable>
 
-            <Paginate count={data?.list.count} limit={limit} handlePage={handlePage} />
+            <Paginate key={data?.list.count} count={data?.list.count} limit={limit} handlePage={handlePage} />
         </Box>
     );
 }

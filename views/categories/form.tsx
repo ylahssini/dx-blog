@@ -34,8 +34,8 @@ interface CategoryForm {
 }
 
 export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
-    const { skip } = useStore((state) => state.category.paginate);
-    const { mutate } = useCategories({ skip });
+    const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
+    const { mutate } = useCategories({ skip, limit, filters });
     const { isOpen, onOpen, onClose } = useDisclosure({ id: 'category_' + mode });
     const toast = useToast();
     const nameRef = useRef();

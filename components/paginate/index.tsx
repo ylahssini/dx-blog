@@ -2,7 +2,7 @@ import { Icon } from '@chakra-ui/react';
 import { MdArrowForward, MdArrowBack } from 'react-icons/md';
 import ReactPaginate from 'react-paginate';
 
-export default function Paginate({ handlePage, count = 1, limit = 20 }) {
+export default function Paginate({ handlePage, count = 1, limit = process.env.NEXT_PUBLIC_LIMIT as unknown as number }) {
     return (
         <ReactPaginate
             breakLabel="..."

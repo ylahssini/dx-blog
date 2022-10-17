@@ -10,3 +10,9 @@ export interface RequestCast {
         };
     }
 }
+
+export interface RequestPayload {
+    limit?: number;
+    skip?: number;
+    filters?: Record<string, string | unknown>[];
+}
