@@ -17,7 +17,6 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                         const query: Record<string, string | RegExp | boolean> = {};
                         if (filters) {
                             const parseFilter = JSON.parse(filters as string);
-                            console.log(parseFilter);
 
                             if (typeof parseFilter.name === 'string') {
                                 query.name = new RegExp(parseFilter.name, 'gi');
@@ -32,16 +31,11 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                             }
                         }
 
-                        console.log({query});
-
                         // @ts-ignore
                         const items = await Category.find(query, null, { skip: skip || 0, limit: limit || defaultLimit }).exec();
                         const count = await Category.find(query).count();
 
-                        response.status(200).json({
-                            success: true,
-                            list: { count, items },
-                        });
+                        response.status(200).json({ success: true, list: { count, items } });
 
                         resolve(null);
                     } catch (error) {
