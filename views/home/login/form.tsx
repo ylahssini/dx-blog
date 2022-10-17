@@ -38,7 +38,7 @@ export default function Form() {
 
             const result = await login(values);
 
-            if (result.status === 200) {
+            if (result?.status === 200) {
                 const cookie = new Cookies();
                 cookie.set('token', result.data.token, { path: '/', sameSite: true });
 
@@ -46,7 +46,7 @@ export default function Form() {
             }
         } catch (error) {
             console.log(error);
-            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message });
+            toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });
             setPosting(false);
         }
     }

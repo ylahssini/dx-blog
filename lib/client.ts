@@ -21,7 +21,10 @@ client.interceptors.response.use((response) => response, (error) => {
     if (error?.response?.status === 401) {
         cookie.remove('token');
         Router.push('/');
+        return Promise.reject();
     }
+
+    return Promise.reject(error);
 });
 
 export const fetcher = (url: string) => client.get(url).then(response => response.data);

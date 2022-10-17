@@ -21,8 +21,9 @@ async function login(request: NextApiRequest, response: NextApiResponse) {
 
                         if (!isMatched) {
                             const message = 'The email or password are not correct';
-                            response.status(500).json({ success: false, message, error });
-                            return reject({ error: message });
+                            response.status(406).json({ success: false, message, error });
+                            reject();
+                            return;
                         }
 
                         const userData = pick(user, ['first_name', 'last_name', 'email', 'role', 'status']);
@@ -32,13 +33,14 @@ async function login(request: NextApiRequest, response: NextApiResponse) {
 
                         response.status(200).json({ success: true, token });
 
-                        return resolve(null);
+                        resolve(null);
+                        return;
                     });
                 });
             } catch (error) {
                 response.status(500).json({ success: false, message: 'Error occured in logging in', error });
                 reject();
-                return false;
+                return;
             }
         });
     }
