@@ -15,7 +15,7 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                         const { skip, limit } = request.query;
 
                         // @ts-ignore
-                        const items = await Category.find({}, {}, { skip: skip || 0, limit: limit || defaultLimit }).exec();
+                        const items = await Category.find({}, null, { skip: skip || 0, limit: limit || defaultLimit }).exec();
                         const count = await Category.find({}).count();
 
                         response.status(200).json({
