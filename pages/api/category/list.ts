@@ -30,9 +30,13 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                                 query.status = parseFilter.status === 'true';
                             }
                         }
+                        
+                        let options = {};
+                        if (skip) options.skip = skip;
+                        if (limit) options.limit = limit || defaultLimit;
 
                         // @ts-ignore
-                        const items = await Category.find(query, null, { skip: skip || 0, limit: limit || defaultLimit }).exec();
+                        const items = await Category.find(query, null, options).exec();
                         const count = await Category.find(query).count();
 
                         response.status(200).json({ success: true, list: { count, items } });
