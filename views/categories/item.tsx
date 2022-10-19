@@ -6,7 +6,7 @@ import Form from './form';
 
 export default function Item({ data }: { data: ModelCategory }) {
     return (
-        <Tr>
+        <Tr className="category_item">
             <Td w="30%">{data.name}</Td>
             <Td w="35%">{data.description || <Text color="gray.400">~</Text>}</Td>
             <Td w="7%">

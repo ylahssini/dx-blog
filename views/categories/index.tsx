@@ -50,7 +50,7 @@ export default function CategoriesView() {
                 </Form>
             </Flex>
 
-            <ListingTable items={data?.list.items} loading={!!data} error={error} columns={columns}>
+            <ListingTable id="category_list" items={data?.list.items} loading={!!data} error={error} columns={columns}>
                 {({ items }) => items.map((item: ModelCategory) => <Item key={item._id} data={item} />)}
             </ListingTable>
 

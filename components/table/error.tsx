@@ -3,7 +3,7 @@ import { MdOutlineErrorOutline } from 'react-icons/md';
 
 export default function Error({ colSpan, error }: { colSpan: number; error: string }) {
     return (
-        <Tbody className="empty_table">
+        <Tbody className="error_table">
             <Tr>
                 <Td colSpan={colSpan}>
                     <Center flexDir="column" p="2rem">

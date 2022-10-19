@@ -5,7 +5,7 @@ import Empty from './empty';
 import Error from './error';
 import Loading from './loading';
 
-export default function ListingTable({ children, loading, items = [], columns, error }) {
+export default function ListingTable({ id, children, loading, items = [], columns, error }) {
     const colSpan = columns.length;
 
     return (
@@ -19,7 +19,7 @@ export default function ListingTable({ children, loading, items = [], columns, e
                             <Then><Error colSpan={colSpan} /></Then>
                             <Else>
                                 <If condition={(items || []).length !== 0}>
-                                    <Then><Tbody>{children({ items })}</Tbody></Then>
+                                    <Then><Tbody className={id}>{children({ items })}</Tbody></Then>
                                     <Else><Empty colSpan={colSpan} /></Else>
                                 </If>
                             </Else>

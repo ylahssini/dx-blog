@@ -2,7 +2,7 @@ import dbConnect from '@/lib/connect';
 import Category from '@/models/category';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const defaultLimit = process.env.NEXT_PUBLIC_LIMIT as unknown as number;
+const defaultLimit = parseFloat(process.env.NEXT_PUBLIC_LIMIT) as unknown as number;
 
 function CategoryList(request: NextApiRequest, response: NextApiResponse) {
     if (request.method === 'GET') {
@@ -31,11 +31,10 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                             }
                         }
                         
-                        let options = {};
-                        if (skip) options.skip = skip;
-                        if (limit) options.limit = limit || defaultLimit;
+                        const options: Record<string, number> = {};
+                        if (skip) options.skip = parseInt(skip as string, 10);
+                        if (limit) options.limit = parseInt(limit as string, 10) || defaultLimit;
 
-                        // @ts-ignore
                         const items = await Category.find(query, null, options).exec();
                         const count = await Category.find(query).count();
 

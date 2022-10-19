@@ -1,25 +1,6 @@
 import { ReactNode, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-    useDisclosure,
-    Button,
-    Drawer,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    DrawerHeader,
-    DrawerBody,
-    Stack,
-    FormLabel,
-    Input,
-    Textarea,
-    DrawerFooter,
-    Box,
-    FormControl,
-    FormErrorMessage,
-    Switch,
-    useToast
-} from '@chakra-ui/react';
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, Textarea, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
 import { createCategory, editCategory, useCategories } from '@/apis/category';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { ModelCategory } from '@/models/category';
@@ -36,7 +17,7 @@ interface CategoryForm {
 export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
     const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
     const { mutate } = useCategories({ skip, limit, filters });
-    const { isOpen, onOpen, onClose } = useDisclosure({ id: 'category_' + mode });
+    const { isOpen, onOpen, onClose } = useDisclosure({ id: mode + '_category_form' });
     const toast = useToast();
     const nameRef = useRef();
     const [posting, setPosting] = useState(false);
@@ -50,12 +31,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
         };
     }
 
-    const {
-        handleSubmit,
-        register,
-        reset,
-        formState: { errors },
-    } = useForm({ defaultValues });
+    const { handleSubmit, register, reset, formState: { errors } } = useForm({ defaultValues });
 
     function resetMode() {
         if (mode === 'edit') {
@@ -147,10 +123,19 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
                     </DrawerBody>
 
                     <DrawerFooter borderTopWidth="1px">
-                        <Button variant="outline" mr={3} onClick={handleClose}>
+                        <Button id="cancel_button" variant="outline" mr={3} onClick={handleClose}>
                             Cancel
                         </Button>
-                        <Button colorScheme="blue" form="category_form" variant="solid" isLoading={posting} disabled={posting} loadingText="Sending data..." type="submit">
+                        <Button
+                            id="save_button"
+                            colorScheme="blue"
+                            form="category_form"
+                            variant="solid"
+                            isLoading={posting}
+                            disabled={posting}
+                            loadingText="Sending data..."
+                            type="submit"
+                        >
                             Save
                         </Button>
                     </DrawerFooter>
