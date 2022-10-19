@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { UserSession } from '@/pages/api/auth/is-connected';
 
 export const useIsConnected = ({ to = '/', redirectIfFound = false }: { to?: string; redirectIfFound?: boolean } = {}) => {
     const { data: user, mutate } = useSWR<UserSession>('api/auth/is-connected');
+    const { push } = useRouter();
 
     useEffect(() => {
         if (!user) {
@@ -12,7 +13,7 @@ export const useIsConnected = ({ to = '/', redirectIfFound = false }: { to?: str
         }
 
         if ((to && !redirectIfFound && !user?.isLogged) || (redirectIfFound && user?.isLogged)) {
-            Router.push(to);
+            push(to);
         }
     }, [user]);
 

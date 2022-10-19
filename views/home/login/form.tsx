@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Cookies from 'universal-cookie';
 import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +30,7 @@ const fields = [
 export default function Form() {
     const [posting, setPosting] = useState(false);
     const { handleSubmit, register, formState: { errors } } = useForm();
+    const { push } = useRouter();
     const toast = useToast();
 
     async function handleLogin(values) {
@@ -38,11 +39,11 @@ export default function Form() {
 
             const result = await login(values);
 
-            if (result?.status === 200) {
+            if (result.status === 200) {
                 const cookie = new Cookies();
                 cookie.set('token', result.data.token, { path: '/', sameSite: true });
 
-                Router.push('/_/dashboard/');
+                push('/_/dashboard/');
             }
         } catch (error) {
             console.log(error);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import client, { fetcher } from '@/lib/client';
 
@@ -22,6 +22,7 @@ export function useFirstInstallTime() {
 
 export default function useAuth({ redirectTo = '', redirectIfFound = false } = {}) {
     const { data, mutate } = useSWR('api/auth/login', fetcher);
+    const { push } = useRouter();
 
     useEffect(() => {
         if (!redirectTo || !data) return;
@@ -30,7 +31,7 @@ export default function useAuth({ redirectTo = '', redirectIfFound = false } = {
             (redirectTo && !redirectIfFound && !data?.isLoggedIn) ||
             (redirectIfFound && data?.isLoggedIn)
         ) {
-            Router.push(redirectTo);
+            push(redirectTo);
         }
     }, [data, redirectIfFound, redirectTo]);
 
