@@ -18,6 +18,11 @@ docker compose build
 Then, we create containers of this image in background:
 ```Copy
 docker compose up -d
+
+```
+To see the Mini-CRM in development mode, you need to open your browser and enter the url:
+```Copy
+http://localhost:9000/
 ```
 
 ### Production mode
@@ -33,8 +38,8 @@ Then, execute this command to create the production container in background:
 docker compose -f docker-compose.override.yml up -d
 ```
 
-### Mini-CRM in live
-To see the Mini-CRM online, you need to open your browser and enter the url:
+```
+To see the Mini-CRM in production mode, you need to open your browser and enter the url:
 ```Copy
-http://localhost:9000/
+http://localhost:9090/
 ```
