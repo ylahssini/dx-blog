@@ -42,9 +42,10 @@ export default function Form() {
             if (result.status === 200) {
                 const cookie = new Cookies();
                 cookie.set('token', result.data.token, { path: '/', sameSite: true });
-
-                push('/_/dashboard/');
+                push('/_/dashboard');
             }
+
+            setPosting(false);
         } catch (error) {
             console.log(error);
             toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });

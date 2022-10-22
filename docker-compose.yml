@@ -8,9 +8,9 @@ services:
       - "9000:3000"
     volumes:
       - ./:/usr/src/app/
-    env_file: ./.env
-    environment:
-      - NEXT_PUBLIC_HOST=http://localhost:9000/
+    env_file:
+      - "./.env.local"
+      - "./.env.development"
     depends_on:
       - mongo
     tty: true
@@ -20,7 +20,7 @@ services:
     image: mongo
     restart: always
     env_file:
-      - "./.env"
+      - "./.env.local"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin_password

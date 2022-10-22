@@ -19,7 +19,7 @@ export default function ListingTable({ id, children, loading, items = [], column
                             <Then><Error colSpan={colSpan} /></Then>
                             <Else>
                                 <If condition={(items || []).length !== 0}>
-                                    <Then><Tbody className={id}>{children({ items })}</Tbody></Then>
+                                    <Then><Tbody id={id}>{children({ items })}</Tbody></Then>
                                     <Else><Empty colSpan={colSpan} /></Else>
                                 </If>
                             </Else>

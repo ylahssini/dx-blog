@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import client, { fetcher } from '@/lib/client';
+import client from '@/lib/client';
 
 export function createAdminUser(values: Record<string, any>) {
     return client.post('api/auth/installation', values);
@@ -21,7 +21,7 @@ export function useFirstInstallTime() {
 }
 
 export default function useAuth({ redirectTo = '', redirectIfFound = false } = {}) {
-    const { data, mutate } = useSWR('api/auth/login', fetcher);
+    const { data, mutate } = useSWR('api/auth/login');
     const { push } = useRouter();
 
     useEffect(() => {
