@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { host } from './mocks/constants.mock';
-import { connectedUser } from './mocks/auth.mock';
+import { host, connectedUser, headers } from './mocks/constants.mock';
 
-const url = host + 'dashboard';
+const url = host + '_/dashboard';
 
 test.describe('Dashboard page', () => {
     test.beforeEach(async ({ page }) => {
@@ -13,6 +12,7 @@ test.describe('Dashboard page', () => {
                 body: JSON.stringify(connectedUser),
             });
         });
+        await page.setExtraHTTPHeaders(headers);
         await page.goto(url);
     });
 
