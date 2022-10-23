@@ -4,6 +4,10 @@ import { verify } from './lib/token';
 
 export default async function middleware(request: NextRequest) {
     function redirectController() {
+        if (request.url.includes('/auth/not-authorized')) {
+            return NextResponse.redirect(new URL('/', request.url));
+        }
+
         if (request.url.includes('api/')) {
             return NextResponse.redirect(new URL('/api/auth/not-authorized', request.url));
         }
