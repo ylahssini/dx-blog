@@ -12,11 +12,11 @@ export default function ListingTable({ id, children, loading, items = [], column
         <TableContainer id={`${id}_container`}>
             <Table size="md">
                 <Thead><Columns data={columns} /></Thead>
-                <If condition={!loading}>
-                    <Then><Loading colSpan={colSpan} /></Then>
+                <If condition={error}>
+                    <Then><Error colSpan={colSpan} /></Then>
                     <Else>
-                        <If condition={error}>
-                            <Then><Error colSpan={colSpan} /></Then>
+                        <If condition={!loading}>
+                            <Then><Loading colSpan={colSpan} /></Then>
                             <Else>
                                 <If condition={(items || []).length !== 0}>
                                     <Then><Tbody id={id}>{children({ items })}</Tbody></Then>

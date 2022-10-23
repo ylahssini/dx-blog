@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box, Input, Select, Text } from '@chakra-ui/react';
-import { useDebounce } from '@/utils/hooks';
+import debounce from 'lodash.debounce';
 
 export interface FilterItem {
     key: string;
@@ -14,21 +14,34 @@ interface Props {
     custom?: Record<string, unknown>;
     item: FilterItem;
     handleChange: (id: string) => (e: unknown) => void;
+    reset: boolean;
 }
 
-export default function Filter({ custom, item, handleChange }: Props) {
+export default function Filter({ custom, item, handleChange, reset = false }: Props) {
     const [value, setValue] = useState('');
-    const debouncedValue = useDebounce<string>(value, 500);
+    const debounced = useRef<(arg: string) => void>();
+
+    function handleLocalChange(e) {
+        e.persist();
+
+        if (!debounced.current) {
+            debounced.current = debounce((v) => {
+                handleChange(item.key)(v);
+            }, 500);
+        }
+
+        setValue(e.target.value);
+
+        if (debounced?.current) {
+            debounced.current?.(e.target.value);
+        }
+    }
 
     useEffect(() => {
-        if (debouncedValue !== '') {
-            handleChange(item.key)(debouncedValue);
+        if (reset) {
+            setValue('');
         }
-    }, [debouncedValue]);
-
-    const handleLocalChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-    };
+    }, [reset]);
 
     if (item.type === 'select') {
         return (
@@ -46,7 +59,7 @@ export default function Filter({ custom, item, handleChange }: Props) {
     return (
         <Box {...custom}>
             <Text as="label" fontSize="xs">{item.label}</Text>
-            <Input placeholder="Type" onChange={handleLocalChange} value={item.value} />
+            <Input placeholder="Type" onChange={handleLocalChange} value={value} />
         </Box>
     );
 }

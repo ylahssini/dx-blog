@@ -1,11 +1,13 @@
+import { useMemo, useState } from 'react';
 import { Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { MdOutlineFilterAlt } from 'react-icons/md';
 import Filter, { type FilterItem } from '@/components/filter';
 import store, { useStore } from '@/store';
 import { useCategories } from '@/apis/category';
-import { useMemo } from 'react';
+import { sleep } from '@/utils/functions';
 
 export default function Filters() {
+    const [reset, setReset] = useState(false);
     const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
     const { data } = useCategories({ skip, limit, filters });
 
@@ -32,7 +34,7 @@ export default function Filters() {
         };
     }
 
-    function handleReset() {
+    async function handleReset() {
         const state = store.getState();
         store.setState({
             ...state,
@@ -41,6 +43,10 @@ export default function Filters() {
                 filters: state.category.filters.map((filter) => ({ ...filter, value: '' })),
             },
         });
+
+        setReset(true);
+        await sleep(100);
+        setReset(false);
     }
 
     const isSomeFilterIsFilled = useMemo(() => filters.some((filter) => filter.value !== ''), [filters]);
@@ -70,6 +76,7 @@ export default function Filters() {
                         item={filter}
                         handleChange={handleChange}
                         custom={{ className: 'filter_item', w: `calc(${100 / filters.length}% - 1rem)` }}
+                        reset={reset}
                     />
                 ))}
             </Flex>
