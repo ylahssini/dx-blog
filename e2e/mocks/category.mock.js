@@ -36,6 +36,25 @@ export const category_listing = {
     },
 };
 
+export const category_listing_filtered = {
+    success: true,
+    list: {
+        count: 1,
+        items: [
+            {
+                _id: '634c4e6801fb7a54f3b252c0',
+                name: 'Car accessories',
+                description: 'All car accessories you find it here',
+                status: false,
+                created_by: '62e482c443d1c5168c3a89a0',
+                created_at: '2022-10-16T18:33:12.309Z',
+                updated_at: '2022-10-16T19:36:08.491Z',
+            },
+        ],
+    },
+};
+
+
 export const empty_category_listing = {
     ...category_listing,
     list: {
@@ -43,4 +62,10 @@ export const empty_category_listing = {
         count: 0,
         items: [],
     },
+};
+
+export const category_fields = {
+    name: 'Home accessories',
+    description: 'All home accessories you will find here',
+    status: true,
 };
