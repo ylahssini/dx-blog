@@ -40,10 +40,10 @@ export default function CategoriesView() {
             <Filters />
 
             <Flex as="header" pb="2rem" justifyContent="space-between" alignItems="center">
-                <strong>{data?.list.count || 0} results found</strong>
+                <strong id="results">{data?.list.count || 0} results found</strong>
                 <Form title="Add a new category">
                     {({ onOpen }) => (
-                        <Button colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
+                        <Button id="add_category_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
                             Add a new category
                         </Button>
                     )}

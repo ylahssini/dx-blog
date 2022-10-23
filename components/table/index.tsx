@@ -9,7 +9,7 @@ export default function ListingTable({ id, children, loading, items = [], column
     const colSpan = columns.length;
 
     return (
-        <TableContainer>
+        <TableContainer id={`${id}_container`}>
             <Table size="md">
                 <Thead><Columns data={columns} /></Thead>
                 <If condition={!loading}>
