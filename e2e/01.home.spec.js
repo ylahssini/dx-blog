@@ -31,6 +31,18 @@ test.describe('Home page', () => {
             await page.goto(host);
         });
 
+        test('if the loading is showing', async ({ page }) => {
+            await page.route('**/is-first-install-time', (route) => {
+                if (route.request().method === 'GET') {
+                    route.fallback();
+                    return;
+                }
+            });
+            await page.goto(host);
+            await expect(page.locator('#installation_form')).not.toBeVisible();
+            await expect(page.locator('#loading')).toBeVisible();
+        });
+
         test('if the installation form is displayed', async ({ page }) => {
             await expect(page.locator('#installation_form')).toBeVisible();
         });
@@ -175,6 +187,18 @@ test.describe('Home page', () => {
                 });
             });
             await page.goto(host);
+        });
+
+        test('if the loading is showing', async ({ page }) => {
+            await page.route('**/is-first-install-time', (route) => {
+                if (route.request().method === 'GET') {
+                    route.fallback();
+                    return;
+                }
+            });
+            await page.goto(host);
+            await expect(page.locator('#login_form')).not.toBeVisible();
+            await expect(page.locator('#loading')).toBeVisible();
         });
 
         test('if the login form is displayed', async ({ page}) => {
