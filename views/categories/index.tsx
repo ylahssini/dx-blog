@@ -1,13 +1,16 @@
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { Box, Flex, Button } from '@chakra-ui/react';
 import { MdOutlineControlPoint } from 'react-icons/md';
 import ListingTable from '@/components/table';
 import { useCategories } from '@/apis/category';
 import { type ModelCategory } from '@/models/category';
-import Paginate from '@/components/paginate';
 import store, { useStore } from '@/store';
-import Form from './form';
-import Item from './item';
-import Filters from './filters';
+
+const Paginate = dynamic(() => import('@/components/paginate'), { suspense: true });
+const Form = dynamic(() => import('./form'), { suspense: true });
+const Item = dynamic(() => import('./item'), { suspense: true });
+const Filters = dynamic(() => import('./filters'), { suspense: true });
 
 const columns = [
     { label: 'Name', w: '30%' },
@@ -37,24 +40,31 @@ export default function CategoriesView() {
 
     return (
         <Box p="2rem">
-            <Filters />
+            <Suspense><Filters /></Suspense>
 
             <Flex as="header" pb="2rem" justifyContent="space-between" alignItems="center">
                 <strong id="results">{data?.list.count || 0} results found</strong>
-                <Form title="Add a new category">
-                    {({ onOpen }) => (
-                        <Button id="add_category_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
-                            Add a new category
-                        </Button>
-                    )}
-                </Form>
+
+                <Suspense>
+                    <Form title="Add a new category">
+                        {({ onOpen }) => (
+                            <Button id="add_category_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
+                                Add a new category
+                            </Button>
+                        )}
+                    </Form>
+                </Suspense>
             </Flex>
 
-            <ListingTable id="category_list" items={data?.list.items} loading={!!data} error={error} columns={columns}>
-                {({ items }) => items.map((item: ModelCategory) => <Item key={item._id} data={item} />)}
-            </ListingTable>
+            <Suspense>
+                <ListingTable id="category_list" items={data?.list.items} loading={!!data} error={error} columns={columns}>
+                    {({ items }) => items.map((item: ModelCategory) => <Item key={item._id} data={item} />)}
+                </ListingTable>
+            </Suspense>
 
-            <Paginate key={data?.list.count} count={data?.list.count} limit={limit} handlePage={handlePage} />
+            <Suspense>
+                <Paginate key={data?.list.count} count={data?.list.count} limit={limit} handlePage={handlePage} />
+            </Suspense>
         </Box>
     );
 }

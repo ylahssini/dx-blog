@@ -6,6 +6,7 @@ import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
 import fields from './fields';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 
+
 export default function Form() {
     const [show, setShow] = useState(false);
     const [posting, setPosting] = useState(false);

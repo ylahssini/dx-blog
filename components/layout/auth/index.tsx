@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { Container, Flex, Box } from '@chakra-ui/react';
-import Logo from '@/components/logo';
-import Abstract from './abstract';
 import { useIsConnected } from '@/utils/hooks';
+
+const Logo = dynamic(() => import('@/components/logo'), { suspense: true });
+const Abstract = dynamic(() => import('./abstract'), { suspense: true });
 
 export default function AuthLayout({ children }) {
     useIsConnected({ to: '/_/dashboard', redirectIfFound: true });

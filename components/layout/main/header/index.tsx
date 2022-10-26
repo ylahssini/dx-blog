@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { Box, Flex, Input, InputGroup, InputRightElement, Button, Text } from '@chakra-ui/react';
 import { MdSearch } from 'react-icons/md';
-import Avatar from '@/components/avatar';
 import { useIsConnected } from '@/utils/hooks';
+
+const Avatar = dynamic(() => import('@/components/avatar'), { suspense: true });
 
 export default function Header({ title }) {
     const { user } = useIsConnected();

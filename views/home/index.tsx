@@ -1,7 +1,11 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Spinner, Text } from '@chakra-ui/react';
-import Login from './login';
-import Installation from './installation';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import { useFirstInstallTime } from '@/apis/auth';
+import Loading from './loading';
+
+const Login = dynamic(() => import('./login'), { suspense: true });
+const Installation = dynamic(() => import('./installation'), { suspense: true });
 
 export default function HomeView() {
     const { data, error } = useFirstInstallTime();
@@ -17,13 +21,12 @@ export default function HomeView() {
     }
 
     if (!data) {
-        return (
-            <Box id="loading" display="flex" alignItems="center" justifyContent="center" gap="1rem" h="20rem">
-                <Spinner size="md" />
-                <Text as="span">Loading...</Text>
-            </Box>
-        );
+        return <Loading />;
     }
 
-    return !data.exist ? <Installation /> : <Login />;
+    return (
+        <Suspense fallback={<Loading text="Loading component..." />}>
+            {!data.exist ? <Installation /> : <Login />}
+        </Suspense>
+    );
 }
