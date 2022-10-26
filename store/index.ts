@@ -51,10 +51,14 @@ const store = createStore(globalState);
 
 export const ServerContext = createContext(globalState);
 
-export const useStore = (selector = (state) => state) => useSyncExternalStore(
-    store.subscribe,
-    () => selector(store.getState()),
-    () => selector(useContext(ServerContext)),
-);
+export const useStore = (selector = (state) => state) => {
+    const serverState = useContext(ServerContext);
+
+    return useSyncExternalStore(
+        store.subscribe,
+        () => selector(store.getState()),
+        () => selector(serverState),
+    );
+};
 
 export default store;
