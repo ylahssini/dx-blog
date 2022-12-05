@@ -6,7 +6,7 @@ export default function Categories() {
     return (
         <>
             <Head>
-                <title>Categories | Mini-CRM</title>
+                <title>Categories | DX-Blog</title>
             </Head>
             <CategoriesView />
         </>

@@ -21,6 +21,6 @@ test.describe('Dashboard page', () => {
     });
 
     test('if the title is correct in the dashboard page', async ({ page }) => {
-        await expect(page).toHaveTitle('Dashboard | Mini-CRM');
+        await expect(page).toHaveTitle('Dashboard | DX-Blog');
     });
 });

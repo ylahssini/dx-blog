@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '@/lib/connect';
 import { withIronSessionApiRoute } from 'iron-session/next';
+import dbConnect from '@/lib/connect';
 import Category from '@/models/category';
 import { sessionOptions } from '@/lib/session';
 import { verify } from '@/lib/token';

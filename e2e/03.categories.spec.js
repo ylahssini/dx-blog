@@ -19,7 +19,7 @@ test.describe('Category page', () => {
     });
 
     test('if the title is correct in the category page', async ({ page }) => {
-        await expect(page).toHaveTitle(/Categories | Mini-CRM/);
+        await expect(page).toHaveTitle(/Categories | DX-Blog/);
     });
 
     test.describe('Category listing', () => {

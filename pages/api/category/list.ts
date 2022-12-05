@@ -1,6 +1,6 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 import Category from '@/models/category';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 const defaultLimit = parseFloat(process.env.NEXT_PUBLIC_LIMIT) as unknown as number;
 

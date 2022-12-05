@@ -16,7 +16,7 @@ test.describe('Home page', () => {
 
     test('Test if the title is correct in the home page', async ({ page }) => {
         await page.goto(host);
-        await expect(page).toHaveTitle(/Welcome to Mini-CRM/);
+        await expect(page).toHaveTitle(/Welcome to DX-Blog/);
     });
     
     test.describe('Installation form', () => {

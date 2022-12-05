@@ -45,6 +45,23 @@ export const globalState = {
             }
         ],
     },
+    product: {
+        paginate: { skip: 0, limit: 3 },
+        filters: [
+            { key: 'name', label: 'Name', value: '', type: 'text' },
+            { key: 'description', label: 'Description', value: '', type: 'text' },
+            {
+                key: 'status',
+                label: 'Status',
+                value: '',
+                type: 'select',
+                options: [
+                    { label: 'Enabled', value: 'true' },
+                    { label: 'Disabled', value: 'false' },
+                ]
+            }
+        ],
+    },
 };
 
 const store = createStore(globalState);

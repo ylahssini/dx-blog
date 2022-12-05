@@ -7,7 +7,7 @@ function Home() {
     return (
         <Box as="section" pt="2rem">
             <Head>
-                <title>Welcome to Mini-CRM</title>
+                <title>Welcome to DX-Blog</title>
             </Head>
 
             <HomeView />

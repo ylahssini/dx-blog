@@ -6,7 +6,7 @@ function Dashboard() {
     return (
         <>
             <Head>
-                <title>Dashboard | Mini-CRM</title>
+                <title>Dashboard | DX-Blog</title>
             </Head>
             <DashboardView />
         </>

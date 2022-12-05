@@ -11,7 +11,7 @@ export default function Logo({ color = 'var(--dark)' }: { color?: string }) {
                 height={24}
                 alt="MiniCRM"
             />
-            <Text as="figcaption" fontWeight={700} color={color}>Mini-CRM</Text>
+            <Text as="figcaption" fontWeight={700} color={color}>DX-Blog</Text>
         </Box>
     );
 }

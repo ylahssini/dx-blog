@@ -23,7 +23,7 @@ export default function Error404() {
     return (
         <div>
             <Head>
-                <title>Error 404 | Mini-CRM</title>
+                <title>Error 404 | DX-Blog</title>
             </Head>
             <Lottie options={options} height={600} width={600} />
             <Heading id="error_404" as="h1" fontWeight={200} textAlign="center">Error 404</Heading>
