@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  minicrm:
+  dxblog:
     build: ./.
-    container_name: miniCrmContainer
+    container_name: dxBlogContainer
     ports:
       - "9000:3000"
     volumes:

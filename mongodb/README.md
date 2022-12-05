@@ -1,6 +1,6 @@
 # MongoDB commands
 
-- Authentification MiniCRM database command \
+- Authentification DX-Blog database command \
 ```Copy
-mongosh minicrm-db --port 27017 --authenticationDatabase "minicrm-db" -u "admin" -p
+mongosh dxblog-db --port 27017 --authenticationDatabase "dxblog-db" -u "admin" -p
 ```

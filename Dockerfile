@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN echo "🚀 You are building the Mini CRM image" && npm install -g pnpm
+RUN echo "🚀 You are building the DX Blog image" && npm install -g pnpm
 RUN pnpm install
 RUN pnpm run build
 

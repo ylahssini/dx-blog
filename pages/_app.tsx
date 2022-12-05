@@ -7,7 +7,7 @@ import '@/assets/styles/animations.css';
 import '@/assets/styles/paginate.css';
 import store, { globalState, ServerContext } from '@/store';
 
-function MiniCRMApp({ Component, pageProps }) {
+function DXBlogApp({ Component, pageProps }) {
     const getLayout = Component.getLayout || ((page) => page);
     store.serverInitialize(globalState);
 
@@ -33,4 +33,4 @@ function MiniCRMApp({ Component, pageProps }) {
     );
 }
 
-export default MiniCRMApp;
+export default DXBlogApp;
