@@ -7,7 +7,6 @@ specifiers:
   '@chakra-ui/system': ^2.3.0
   '@emotion/react': ^11.10.4
   '@emotion/styled': ^11.10.4
-  '@playwright/test': ^1.27.1
   '@types/bcryptjs': ^2.4.2
   '@types/node': ^18.11.3
   '@types/react': ^18.0.21
@@ -71,7 +70,6 @@ dependencies:
 devDependencies:
   '@babel/core': 7.19.6
   '@chakra-ui/system': 2.3.0_hfzxdiydbrbhhfpkwuv3jhvwmq
-  '@playwright/test': 1.27.1
   '@types/bcryptjs': 2.4.2
   '@types/node': 18.11.3
   '@types/react': 18.0.21
@@ -1726,15 +1724,6 @@ packages:
       tslib: 2.4.0
       webcrypto-core: 1.7.5
     dev: false
-
-  /@playwright/test/1.27.1:
-    resolution: {integrity: sha512-mrL2q0an/7tVqniQQF6RBL2saskjljXzqNcCOVMUjRIgE6Y38nCNaP+Dc2FBW06bcpD3tqIws/HT9qiMHbNU0A==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dependencies:
-      '@types/node': 18.11.3
-      playwright-core: 1.27.1
-    dev: true
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
@@ -3817,12 +3806,6 @@ packages:
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-    dev: true
-
-  /playwright-core/1.27.1:
-    resolution: {integrity: sha512-9EmeXDncC2Pmp/z+teoVYlvmPWUC6ejSSYZUln7YaP89Z6lpAaiaAnqroUt/BoLo8tn7WYShcfaCh+xofZa44Q==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: true
 
   /popmotion/11.0.5:

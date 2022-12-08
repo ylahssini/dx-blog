@@ -6,7 +6,7 @@ const Logo = dynamic(() => import('@/components/logo'), { suspense: true });
 const Abstract = dynamic(() => import('./abstract'), { suspense: true });
 
 export default function AuthLayout({ children }) {
-    useIsConnected({ to: '/_/dashboard', redirectIfFound: true });
+    useIsConnected({ to: '/_/', redirectIfFound: true });
 
     return (
         <Container w="100%" maxW="100%" h="100vh" p={0}>

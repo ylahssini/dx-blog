@@ -3,19 +3,18 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { UserSession } from '@/pages/api/auth/is-connected';
 
-export const useIsConnected = ({ to = '/', redirectIfFound = false }: { to?: string; redirectIfFound?: boolean } = {}) => {
+export const useIsConnected = ({ to = '/_/', redirectIfFound = false }: { to?: string; redirectIfFound?: boolean } = {}) => {
     const { data: user, mutate } = useSWR<UserSession>('api/auth/is-connected');
     const { push } = useRouter();
 
-    useEffect(() => {
-        if (!user) {
-            return;
-        }
+    if (!user) {
+        return { user: null, mutate };
+    }
 
-        if ((to && !redirectIfFound && !user?.isLogged) || (redirectIfFound && user?.isLogged)) {
-            push(to);
-        }
-    }, [user]);
+    if ((to && !redirectIfFound && !user?.isLogged) || (redirectIfFound && user?.isLogged)) {
+        push(to);
+        return { user: null, mutate };
+    }
 
     return { user, mutate };
 };

@@ -42,7 +42,7 @@ export default function Form() {
             if (result.status === 200) {
                 const cookie = new Cookies();
                 cookie.set('token', result.data.token, { path: '/', sameSite: true });
-                push('/_/dashboard');
+                push('/_/');
             }
 
             setPosting(false);

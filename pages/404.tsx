@@ -8,6 +8,8 @@ import LightLayout from '@/components/layout/light';
 
 const cookie = new Cookies();
 
+// TODO: Check how to manage 404 between the admin and the website
+
 export default function Error404() {
     const options = {
         loop: true,
@@ -18,7 +20,7 @@ export default function Error404() {
         }
     };
 
-    const goto = cookie.get('token') ? '/_/dashboard' : '/';
+    const goto = cookie.get('token') ? '/_/' : '/';
 
     return (
         <div>
@@ -29,7 +31,7 @@ export default function Error404() {
             <Heading id="error_404" as="h1" fontWeight={200} textAlign="center">Error 404</Heading>
             <Text as="p" pb="1rem" textAlign="center">The page you are looking for cannot be found</Text>
             <Link href={goto}>
-                <Button textDecoration="none" colorScheme="blue" display="block" mx="auto" title={goto}>Go to dashboard</Button>
+                <Button textDecoration="none" colorScheme="blue" display="block" mx="auto" title={goto}>Go to home page</Button>
             </Link>
         </div>
     );

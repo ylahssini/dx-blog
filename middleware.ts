@@ -8,6 +8,10 @@ export default async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/api/auth/not-authorized', request.url));
         }
 
+        if (!request.url.endsWith('/_')) {
+            return NextResponse.redirect(new URL('/_', request.url));
+        }
+
         return NextResponse.next();
     }
 
@@ -25,6 +29,10 @@ export default async function middleware(request: NextRequest) {
         const isAuthorized = await verify(authorization.replace('Bearer ', ''));
 
         if (isAuthorized) {
+            return NextResponse.next();
+        }
+
+        if (request.url.endsWith('/_')) {
             return NextResponse.next();
         }
 
