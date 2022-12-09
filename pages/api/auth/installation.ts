@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 import User from '@/models/user';
+import Setting from '@/models/setting';
 
 export default function Installation(request: NextApiRequest, response: NextApiResponse) {
     if (request.method === 'POST') {
@@ -27,6 +28,13 @@ export default function Installation(request: NextApiRequest, response: NextApiR
                             status: true,
                         });
                         await user.save();
+                        
+                        const setting = new Setting({
+                            title: body.title,
+                            logo: '',
+                            locales: body.locales,
+                        });
+                        await setting.save();
 
                         response.status(202).json({ success: true });
                         resolve(null);
