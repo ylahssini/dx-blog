@@ -1,17 +1,31 @@
 import { ReactNode, createRef, useState } from 'react';
 import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, useToast, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import Select, { components, ControlProps } from 'react-select';
 import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
-import fields from './fields';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
+import Locales from '@/assets/data/locales-codes.json';
+import fields from './fields';
 
+const locales = Object.entries(Locales).map(([value, label]) => ({ label: `${label} (${value})`, value }));
+
+const Control = ({ children, ...props }: ControlProps<{ label: string; value: string; }, false>) => {
+    const { icon } = props.selectProps as unknown as { icon: React.ReactElement };
+  
+    return (
+        <components.Control {...props}>
+            <aside className="entry-select-icon">{icon}</aside>
+            {children}
+        </components.Control>
+    );
+};
 
 export default function Form() {
     const [show, setShow] = useState(false);
     const [posting, setPosting] = useState(false);
     const { mutate } = useFirstInstallTime();
-    const { handleSubmit, register, formState: { errors }, watch, reset } = useForm();
+    const { handleSubmit, register, formState: { errors }, watch, reset, control } = useForm();
     const toast = useToast();
 
     function handleShow() {
@@ -22,7 +36,10 @@ export default function Form() {
         try {
             setPosting(true);
 
-            const result = await createAdminUser(values);
+            const result = await createAdminUser({
+                ...values,
+                locales: values.locales.map((locale) => locale.value),
+            });
 
             if (result.status === 202) {
                 reset();
@@ -59,15 +76,39 @@ export default function Form() {
                 return (
                     <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]}>
                         <InputGroup>
-                            <InputLeftElement color={errors[field.key] ? 'red' : 'black'}>{field.icon}</InputLeftElement>
-                            <Input
-                                ref={refs[field.key]}
-                                type={field.type === 'password' && show ? 'text' : field.type}
-                                placeholder={field.placeholder}
-                                id={`installation_${field.key}`}
-                                autoComplete="off"
-                                {...register(field.key, { ...field.validation, validate })}
-                            />
+                            {field.type !== 'select' && <InputLeftElement color={errors[field.key] ? 'red' : 'black'}>{field.icon}</InputLeftElement>}
+                            {
+                                field.type === 'select' ? (
+                                    <Controller
+                                        ref={refs[field.key]}
+                                        render={({ field: f }: any) => (
+                                            <Select
+                                                placeholder={field.placeholder}
+                                                classNamePrefix="entry-select"
+                                                className="entry-select-container"
+                                                isMulti
+                                                options={locales}
+                                                id={`installation_${field.key}`}
+                                                components={{ Control }}
+                                                icon={field.icon}
+                                                {...f}
+                                            />
+                                        )}
+                                        control={control}
+                                        {...register(field.key, { ...field.validation, validate })}
+                                    />
+                                ) : (
+                                    <Input
+                                        ref={refs[field.key]}
+                                        type={field.type === 'password' && show ? 'text' : field.type}
+                                        placeholder={field.placeholder}
+                                        id={`installation_${field.key}`}
+                                        autoComplete="off"
+                                        {...register(field.key, { ...field.validation, validate })}
+                                    />
+                                )
+                            }
+                            
                             {field.key === 'password' ? (
                                 <InputRightElement width="3rem">
                                     <Button h="1.75rem" size="sm" onClick={handleShow}>

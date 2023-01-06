@@ -1,4 +1,4 @@
-import { TbAt, TbUserCircle, TbLock } from 'react-icons/tb';
+import { TbAt, TbUserCircle, TbLock, TbMessage, TbLanguageHiragana } from 'react-icons/tb';
 
 export default [
     {
@@ -31,6 +31,7 @@ export default [
         icon: <TbLock />,
         type: 'password',
         placeholder: 'Password',
+        required: true,
         validation: {
             required: 'Please provide your password',
             pattern: { value: /(?=(?:.*\d){1,})/g, message: 'Please add at least one number in your password' }
@@ -41,6 +42,21 @@ export default [
         icon: <TbLock />,
         type: 'password',
         placeholder: 'Confirm password',
+        required: true,
         validation: { required: 'Please confirm your password' },
+    },
+    {
+        key: 'title',
+        icon: <TbMessage />,
+        type: 'text',
+        placeholder: 'Title of blog',
+        required: true,
+        validation: { required: 'Please provide the title of blog' },
+    },
+    {
+        key: 'locales',
+        icon: <TbLanguageHiragana />,
+        type: 'select',
+        placeholder: 'Languages',
     },
 ];

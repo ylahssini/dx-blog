@@ -86,3 +86,29 @@ a:hover {
     color: var(--primary);
 }
 /* C S S   R E S E T */
+
+.entry-select-container {
+    width: 100%;
+}
+
+.entry-select-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+}
+
+div.entry-select__value-container {
+    padding-left: 0;
+}
+
+div.entry-select__control {
+    border-color: var(--chakra-colors-gray-200);
+    border-radius: 6px;
+}
+
+div.entry-select__placeholder {
+    color: var(--chakra-colors-gray-400);
+}

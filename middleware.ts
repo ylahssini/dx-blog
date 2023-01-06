@@ -38,7 +38,7 @@ export default async function middleware(request: NextRequest) {
 
         return redirectController();
     } catch (error) {
-        console.log(error);
+        console.log(error.code);
         return redirectController();
     }
 }
