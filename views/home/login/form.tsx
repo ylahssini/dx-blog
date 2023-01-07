@@ -5,7 +5,7 @@ import { Box, Button, FormControl, FormErrorMessage, Input, InputGroup, InputLef
 import { useForm } from 'react-hook-form';
 import { TbAt, TbLock } from 'react-icons/tb';
 import { login } from '@/apis/auth';
-import { ERROR_TOAST_PARAMS } from '@/utils/constants';
+import { COOKIE_OPTIONS, ERROR_TOAST_PARAMS } from '@/utils/constants';
 
 const fields = [
     {
@@ -41,8 +41,8 @@ export default function Form() {
 
             if (result.status === 200) {
                 const cookie = new Cookies();
-                cookie.set('token', result.data.token, { path: '/', sameSite: true });
-                push('/_/');
+                cookie.set('token', result.data.token, COOKIE_OPTIONS);
+                push('/_/welcome');
             }
 
             setPosting(false);

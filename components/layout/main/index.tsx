@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const Header = dynamic(() => import('./header'), { suspense: true });
-const Side = dynamic(() => import('./side'), { suspense: true });
+const Header = dynamic(() => import('./header'), { ssr: true });
+const Side = dynamic(() => import('./side'), { ssr: true });
 
 function MainLayout({ title, children }) {
     const { asPath } = useRouter();

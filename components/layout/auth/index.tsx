@@ -1,13 +1,10 @@
 import dynamic from 'next/dynamic';
 import { Container, Flex, Box } from '@chakra-ui/react';
-import { useIsConnected } from '@/utils/hooks';
 
-const Logo = dynamic(() => import('@/components/logo'), { suspense: true });
-const Abstract = dynamic(() => import('./abstract'), { suspense: true });
+const Logo = dynamic(() => import('@/components/logo'), { ssr: true });
+const Abstract = dynamic(() => import('./abstract'), { ssr: true });
 
 export default function AuthLayout({ children }) {
-    useIsConnected({ to: '/_/', redirectIfFound: true });
-
     return (
         <Container w="100%" maxW="100%" h="100vh" p={0}>
             <Flex justifyContent="center" h="100%">

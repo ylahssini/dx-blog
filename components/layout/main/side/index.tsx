@@ -9,8 +9,9 @@ import { MdOutlineDashboard, MdOutlineShoppingCart, MdOutlinePeople, MdOutlineSt
 import { logout } from '@/apis/auth';
 import { useIsConnected } from '@/utils/hooks';
 import styles from './styles.module.css';
+import { COOKIE_OPTIONS } from '@/utils/constants';
 
-const Logo = dynamic(() => import('@/components/logo'), { suspense: true });
+const Logo = dynamic(() => import('@/components/logo'), { ssr: true });
 
 const menu = [
     { href: '/_/dashboard', text: 'Dashboard', icon: <MdOutlineDashboard /> },
@@ -36,13 +37,13 @@ export default function Side() {
     async function handleClick() {
         try {
             const cookie = new Cookies();
-            cookie.remove('token');
+            cookie.remove('token', COOKIE_OPTIONS);
 
             setLoggingOut(true);
             await logout();
 
             mutate();
-            push('/');
+            push('/_');
         } catch (error) {
             setLoggingOut(false);
             toast({ title: 'Error', description: error.response.data.message, duration: 5000, status: 'error', isClosable: true });

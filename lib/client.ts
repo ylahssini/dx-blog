@@ -1,6 +1,7 @@
+import Router from 'next/router';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import Router from 'next/router';
+import { COOKIE_OPTIONS } from '@/utils/constants';
 
 const cookie = new Cookies();
 
@@ -19,7 +20,7 @@ client.interceptors.request.use((config) => {
 
 client.interceptors.response.use((response) => response, (error) => {
     if (error?.response?.status === 401) {
-        cookie.remove('token');
+        cookie.remove('token', COOKIE_OPTIONS);
         Router.push('/');
         return Promise.reject();
     }

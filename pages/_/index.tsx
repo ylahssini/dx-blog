@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import AuthLayout from '@/components/layout/auth';
 import HomeView from '@/views/home';
 
-function Home() {
+export default function Home() {
     return (
         <Box as="section" pt="2rem">
             <Head>
@@ -16,5 +16,3 @@ function Home() {
 }
 
 Home.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
-
-export default Home;

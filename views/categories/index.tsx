@@ -7,10 +7,10 @@ import { useCategories } from '@/apis/category';
 import { type ModelCategory } from '@/models/category';
 import store, { useStore } from '@/store';
 
-const Paginate = dynamic(() => import('@/components/paginate'), { suspense: true });
-const Form = dynamic(() => import('./form'), { suspense: true });
-const Item = dynamic(() => import('./item'), { suspense: true });
-const Filters = dynamic(() => import('./filters'), { suspense: true });
+const Paginate = dynamic(() => import('@/components/paginate'), { ssr: true });
+const Form = dynamic(() => import('./form'), { ssr: true });
+const Item = dynamic(() => import('./item'), { ssr: true });
+const Filters = dynamic(() => import('./filters'), { ssr: true });
 
 const columns = [
     { label: 'Name', w: '30%' },

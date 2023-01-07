@@ -18,21 +18,23 @@ export default async function middleware(request: NextRequest) {
     try {
         const authorization = request.headers.get('authorization') || request.cookies.get('token');
 
+        console.log('authorization', authorization);
         if (!authorization) {
             return redirectController();
         }
 
-        if (request.url.includes('/_/') && authorization.endsWith('F0rC3_Th3_E2E_T35t')) {
+        if (request.url.includes('/_') && authorization.endsWith('F0rC3_Th3_E2E_T35t')) {
             return NextResponse.next();
         }
 
         const isAuthorized = await verify(authorization.replace('Bearer ', ''));
 
         if (isAuthorized) {
-            return NextResponse.next();
-        }
+            console.log('isAuthorized', isAuthorized);
+            if (request.url.endsWith('/_')) {
+                return NextResponse.redirect(new URL('/_/welcome', request.url));
+            }
 
-        if (request.url.endsWith('/_')) {
             return NextResponse.next();
         }
 

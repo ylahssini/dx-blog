@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { Container, Flex, Box } from '@chakra-ui/react';
 
-const Logo = dynamic(() => import('@/components/logo'), { suspense: true });
+const Logo = dynamic(() => import('@/components/logo'), { ssr: true });
 
 export default function LightLayout({ children }) {
     return (

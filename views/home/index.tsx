@@ -4,8 +4,8 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle } from '@chakra-ui/react
 import { useFirstInstallTime } from '@/apis/auth';
 import Loading from './loading';
 
-const Login = dynamic(() => import('./login'), { suspense: true });
-const Installation = dynamic(() => import('./installation'), { suspense: true });
+const Login = dynamic(() => import('./login'), { ssr: true });
+const Installation = dynamic(() => import('./installation'), { ssr: true });
 
 export default function HomeView() {
     const { data, error } = useFirstInstallTime();

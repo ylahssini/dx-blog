@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { UserSession } from '@/pages/api/auth/is-connected';
 
-export const useIsConnected = ({ to = '/_/', redirectIfFound = false }: { to?: string; redirectIfFound?: boolean } = {}) => {
+export const useIsConnected = () => {
     const { data: user, mutate } = useSWR<UserSession>('api/auth/is-connected');
-    const { push } = useRouter();
 
     if (!user) {
         return { user: null, mutate };
     }
 
-    if ((to && !redirectIfFound && !user?.isLogged) || (redirectIfFound && user?.isLogged)) {
-        push(to);
+    if (!user?.isLogged) {
         return { user: null, mutate };
     }
 

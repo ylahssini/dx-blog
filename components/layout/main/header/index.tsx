@@ -3,7 +3,7 @@ import { Box, Flex, Input, InputGroup, InputRightElement, Button, Text } from '@
 import { MdSearch } from 'react-icons/md';
 import { useIsConnected } from '@/utils/hooks';
 
-const Avatar = dynamic(() => import('@/components/avatar'), { suspense: true });
+const Avatar = dynamic(() => import('@/components/avatar'), { ssr: true });
 
 export default function Header({ title }) {
     const { user } = useIsConnected();
