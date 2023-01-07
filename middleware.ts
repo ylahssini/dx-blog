@@ -18,7 +18,6 @@ export default async function middleware(request: NextRequest) {
     try {
         const authorization = request.headers.get('authorization') || request.cookies.get('token');
 
-        console.log('authorization', authorization);
         if (!authorization) {
             return redirectController();
         }
@@ -30,7 +29,6 @@ export default async function middleware(request: NextRequest) {
         const isAuthorized = await verify(authorization.replace('Bearer ', ''));
 
         if (isAuthorized) {
-            console.log('isAuthorized', isAuthorized);
             if (request.url.endsWith('/_')) {
                 return NextResponse.redirect(new URL('/_/welcome', request.url));
             }
