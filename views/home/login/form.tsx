@@ -43,9 +43,9 @@ export default function Form() {
                 const cookie = new Cookies();
                 cookie.set('token', result.data.token, COOKIE_OPTIONS);
                 push('/_/welcome');
+            } else {
+                throw new Error('Something wrong');
             }
-
-            setPosting(false);
         } catch (error) {
             console.log(error);
             toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });
