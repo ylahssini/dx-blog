@@ -45,19 +45,19 @@ export const globalState = {
             }
         ],
     },
-    product: {
+    post: {
         paginate: { skip: 0, limit: 3 },
         filters: [
-            { key: 'name', label: 'Name', value: '', type: 'text' },
-            { key: 'description', label: 'Description', value: '', type: 'text' },
+            { key: 'title', label: 'Title', value: '', type: 'text' },
             {
                 key: 'status',
                 label: 'Status',
                 value: '',
                 type: 'select',
                 options: [
-                    { label: 'Enabled', value: 'true' },
-                    { label: 'Disabled', value: 'false' },
+                    { label: 'Published', value: 'PUBLISHED' },
+                    { label: 'Disabled', value: 'DISABLED' },
+                    { label: 'Draft', value: 'DRAFT' },
                 ]
             }
         ],

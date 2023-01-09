@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import Cookies from 'universal-cookie';
-import { MdOutlineDashboard, MdOutlineStorefront, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
+import { MdOutlineFrontHand, MdOutlineArticle, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
 import { logout } from '@/apis/auth';
 import { useIsConnected } from '@/utils/hooks';
 import styles from './styles.module.css';
@@ -14,9 +14,9 @@ import { COOKIE_OPTIONS } from '@/utils/constants';
 const Logo = dynamic(() => import('@/components/logo'), { ssr: true });
 
 const menu = [
-    { href: '/_/welcome', text: 'Welcome', icon: <MdOutlineDashboard /> },
+    { href: '/_/welcome', text: 'Welcome', icon: <MdOutlineFrontHand /> },
     { href: '/_/categories', text: 'Categories', icon: <MdOutlineCategory /> },
-    { href: '/_/posts', text: 'Posts', icon: <MdOutlineStorefront /> },
+    { href: '/_/posts', text: 'Posts', icon: <MdOutlineArticle /> },
 ];
 
 const framerUl = {

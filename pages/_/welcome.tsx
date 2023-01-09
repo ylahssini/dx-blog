@@ -9,9 +9,11 @@ export default function Welcome() {
                 <title>DX-Blog - Home</title>
             </Head>
 
-            Test
+            <Box p="2rem">
+                Welcome content
+            </Box>
         </Box>
     );
 }
 
-Welcome.getLayout = (page) => <MainLayout title="Settings">{page}</MainLayout>;
+Welcome.getLayout = (page) => <MainLayout title="Welcome">{page}</MainLayout>;
