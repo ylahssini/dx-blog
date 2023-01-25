@@ -2,24 +2,14 @@ import { ReactNode, createRef, useState } from 'react';
 import { Button, Box, Input, InputGroup, InputLeftElement, InputRightElement, useToast, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { TbEye, TbEyeOff } from 'react-icons/tb';
 import { useForm, Controller } from 'react-hook-form';
-import Select, { components, ControlProps } from 'react-select';
+import Select from 'react-select';
+import ControlSelect from '@/components/entry/control-select';
 import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import Locales from '@/assets/data/locales-codes.json';
 import fields from './fields';
 
 const locales = Object.entries(Locales).map(([value, label]) => ({ label: `${label} (${value})`, value }));
-
-const Control = ({ children, ...props }: ControlProps<{ label: string; value: string; }, false>) => {
-    const { icon } = props.selectProps as unknown as { icon: React.ReactElement };
-  
-    return (
-        <components.Control {...props}>
-            <aside className="entry-select-icon">{icon}</aside>
-            {children}
-        </components.Control>
-    );
-};
 
 export default function Form() {
     const [show, setShow] = useState(false);
@@ -89,7 +79,7 @@ export default function Form() {
                                                 isMulti
                                                 options={locales}
                                                 id={`installation_${field.key}`}
-                                                components={{ Control }}
+                                                components={{ Control: ControlSelect }}
                                                 icon={field.icon}
                                                 {...f}
                                             />
@@ -104,6 +94,7 @@ export default function Form() {
                                         placeholder={field.placeholder}
                                         id={`installation_${field.key}`}
                                         autoComplete="off"
+                                        bg="white"
                                         {...register(field.key, { ...field.validation, validate })}
                                     />
                                 )
