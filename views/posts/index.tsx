@@ -1,13 +1,14 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { Box, Flex, Button } from '@chakra-ui/react';
+import { MdOutlineControlPoint } from 'react-icons/md';
 import ListingTable from '@/components/table';
 import { usePosts } from '@/apis/post';
 import store, { useStore } from '@/store';
 import { ModelPost } from '@/models/post';
 
 const Paginate = dynamic(() => import('@/components/paginate'), { ssr: true });
-// const Form = dynamic(() => import('./form'), { ssr: true });
+const Form = dynamic(() => import('./form'), { ssr: true });
 const Item = dynamic(() => import('./item'), { ssr: true });
 // const Filters = dynamic(() => import('./filters'), { ssr: true });
 
@@ -44,7 +45,7 @@ export default function PostsView() {
             <Flex as="header" pb="2rem" justifyContent="space-between" alignItems="center">
                 <strong id="results">{data?.list.count || 0} results found</strong>
 
-                {/* <Suspense>
+                <Suspense>
                     <Form title="Add a new post">
                         {({ onOpen }) => (
                             <Button id="add_post_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
@@ -52,7 +53,7 @@ export default function PostsView() {
                             </Button>
                         )}
                     </Form>
-                </Suspense> */}
+                </Suspense>
             </Flex>
 
             <Suspense>

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import MainLayout from '@/components/layout/main';
-import PostsView from '@/views/categories';
+import PostsView from '@/views/posts';
 
 export default function Posts() {
     return (

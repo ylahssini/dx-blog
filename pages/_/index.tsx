@@ -9,7 +9,6 @@ export default function Home() {
             <Head>
                 <title>Welcome to DX-Blog</title>
             </Head>
-
             <HomeView />
         </Box>
     );

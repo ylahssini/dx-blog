@@ -1,32 +1,62 @@
-import { ReactNode, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, Textarea, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
-import { createCategory, editCategory, useCategories } from '@/apis/category';
+import { ReactNode, useState, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import Select from 'react-select';
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
-import { ModelCategory } from '@/models/category';
+import { usePosts } from '@/apis/post';
+import { useSettings } from '@/apis/setting';
+import { ModelPost } from '@/models/post';
 import { useStore } from '@/store';
+import Editor from '@/components/entry/editor';
+import ControlSelect from '@/components/entry/control-select';
 
-interface CategoryForm {
+interface PostForm {
     children: any;
     title: string;
     mode?: 'add' | 'edit';
-    item?: ModelCategory | null;
+    item?: ModelPost | null;
     mutate?: () => void;
 }
 
-export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
-    const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
-    const { mutate } = useCategories({ skip, limit, filters });
-    const { isOpen, onOpen, onClose } = useDisclosure({ id: mode + '_category_form' });
-    const toast = useToast();
-    const nameRef = useRef();
-    const [posting, setPosting] = useState(false);
+const POST_STATUS_OPTIONS = [
+    { label: 'Draft', value: 'DRAFT' },
+    { label: 'Disabled', value: 'DISABLED' },
+    { label: 'Published', value: 'PUBLISHED' },
+];
 
-    let defaultValues = { name: '', description: '', status: true };
+export default function Form({ children, title, mode = 'add', item = null }: PostForm) {
+    // const { paginate: { skip, limit }, filters } = useStore((state) => state.post);
+    // const { mutate } = usePosts({ skip, limit, filters });
+    const { settings } = useSettings();
+    const { control } = useForm();
+    const { isOpen, onOpen, onClose } = useDisclosure({ id: mode + '_post_form' });
+    // const toast = useToast();
+    const [posting, setPosting] = useState(false);
+    const titleRef = useRef();
+
+    let defaultValues = {
+        title: '',
+        content: '',
+        locale: '',
+        path: '',
+        meta_title: '',
+        meta_description: '',
+        meta_keywords: '',
+        extended_metas: [],
+        equivalent_to_locale_post: '',
+        status: 'DRAFT',
+    };
     if (mode === 'edit') {
         defaultValues = {
-            name: item.name,
-            description: item.description,
+            title: item.title,
+            content: item.content,
+            locale: item.locale,
+            path: item.path,
+            meta_title: item.meta.title,
+            meta_description: item.meta.description,
+            meta_keywords: item.meta.keywords,
+            extended_metas: item.extended_metas,
+            equivalent_to_locale_post: item.equivalent_to_locale_post,
             status: item.status,
         };
     }
@@ -42,7 +72,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
     }
 
     async function handleAdd(values) {
-        try {
+        /* try {
             setPosting(true);
 
             let response = null;
@@ -50,7 +80,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
             if (mode === 'add') {
                 response = await createCategory(values);
             } else if (mode === 'edit') {
-                response = await editCategory({ ...values, category_id: item._id });
+                response = await editCategory({ ...values, post_id: item._id });
             }
 
             if (response?.status === 202) {
@@ -70,7 +100,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
             console.log(error);
             toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });
             setPosting(false);
-        }
+        } */
     }
 
     function handleClose() {
@@ -83,40 +113,53 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
         <aside>
             {children({ onOpen })}
 
-            <Drawer isOpen={isOpen} placement="right" initialFocusRef={nameRef} onClose={onClose} size="md">
+            <Drawer isOpen={isOpen} placement="right" initialFocusRef={titleRef} onClose={onClose} size="lg">
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader borderBottomWidth="1px">{title}</DrawerHeader>
 
                     <DrawerBody pt="1rem">
-                        <Box id="category_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
+                        <Box id="post_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
                             <Stack spacing="24px">
-                                <FormControl isInvalid={!!errors.name} isRequired>
-                                    <FormLabel htmlFor="category_name">Name</FormLabel>
-                                    <Input
-                                        ref={nameRef}
-                                        id="category_name"
-                                        name="name"
-                                        autoComplete="off"
-                                        {...register('name', { required: 'Please provide the name of category' })}
-                                    />
-                                    <FormErrorMessage fontSize="xs">{(errors.name ? errors.name.message : null) as unknown as ReactNode}</FormErrorMessage>
+                                <FormControl isInvalid={!!errors.title} isRequired>
+                                    <FormLabel htmlFor="post_title">Title</FormLabel>
+                                    <Input ref={titleRef} id="post_title" name="title" autoComplete="off" {...register('title', { required: 'Please provide the title of post' })} />
+                                    <FormErrorMessage fontSize="xs">{(errors.title ? errors.title.message : null) as unknown as ReactNode}</FormErrorMessage>
                                 </FormControl>
 
                                 <FormControl>
-                                    <FormLabel htmlFor="category_description">Description</FormLabel>
-                                    <Textarea
-                                        name="category_description"
-                                        id="category_description"
-                                        resize="vertical"
-                                        {...register('description')}
+                                    <FormLabel htmlFor="post_content">Content</FormLabel>
+                                    <Controller
+                                        render={({ field: f }: any) => <Editor name="post_content" id="post_content" {...f} />}
+                                        control={control}
+                                        {...register('content')}
                                     />
                                 </FormControl>
 
+                                <FormControl isInvalid={!!errors.path} isRequired>
+                                    <FormLabel htmlFor="post_path">Path</FormLabel>
+                                    <Input id="post_path" name="title" autoComplete="off" {...register('path', { required: 'Please provide the path of post' })} />
+                                    <FormErrorMessage fontSize="xs">{(errors.path ? errors.path.message : null) as unknown as ReactNode}</FormErrorMessage>
+                                </FormControl>
+
                                 <FormControl display="flex" alignItems="center">
-                                    <FormLabel htmlFor="category_status" mb="0">Status</FormLabel>
-                                    <Switch id="category_status" {...register('status')} />
+                                    <FormLabel htmlFor="post_status" mb="0">Status</FormLabel>
+                                    <Controller
+                                        render={({ field: f }: any) => (
+                                            <Select
+                                                placeholder="Select"
+                                                classNamePrefix="entry-select"
+                                                className="entry-select-container"
+                                                options={POST_STATUS_OPTIONS}
+                                                id="status"
+                                                components={{ Control: ControlSelect }}
+                                                {...f}
+                                            />
+                                        )}
+                                        control={control}
+                                        {...register('status')}
+                                    />
                                 </FormControl>
                             </Stack>
                         </Box>
@@ -129,7 +172,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
                         <Button
                             id="save_button"
                             colorScheme="blue"
-                            form="category_form"
+                            form="post_form"
                             variant="solid"
                             isLoading={posting}
                             disabled={posting}

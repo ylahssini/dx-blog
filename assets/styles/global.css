@@ -88,6 +88,7 @@ a:hover {
 /* C S S   R E S E T */
 
 .entry-select-container {
+    padding-left: .5rem;
     width: 100%;
 }
 
@@ -98,10 +99,6 @@ a:hover {
     justify-content: center;
     height: 40px;
     width: 40px;
-}
-
-div.entry-select__value-container {
-    padding-left: 0;
 }
 
 div.entry-select__control {

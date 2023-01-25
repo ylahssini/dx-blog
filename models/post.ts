@@ -23,6 +23,7 @@ const PostSchema = new mongoose.Schema({
         },
         keywords: String,
     },
+    extended_metas: [{ key: String, value: String }],
     locale: String,
     path: {
         type: String,
@@ -65,6 +66,7 @@ export interface ModelPost extends Document {
         description: string;
         keywords: string;
     };
+    extended_metas: { key: string; value: string }[];
     locale: string;
     path: string;
     category_id: string;
@@ -76,7 +78,7 @@ export interface ModelPost extends Document {
 
 const Post = (
     mongoose.models.Post as Model<ModelPost>
-    || mongoose.model<ModelPost>('Category', PostSchema)
+    || mongoose.model<ModelPost>('Post', PostSchema)
 );
 
 export default Post;
