@@ -2,13 +2,15 @@ import { Tr, Td, Text, Box, Button, Tooltip, Icon } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { ModelPost } from '@/models/post';
 import { MdOutlineCheckCircleOutline, MdHighlightOff, MdOutlineEdit } from 'react-icons/md';
-import Form from './form';
+import Locales from '@/assets/data/locales-codes.json';
+// import Form from './form';
 
 export default function Item({ data }: { data: ModelPost }) {
     return (
-        <Tr className="category_item">
-            <Td w="30%">{data.title}</Td>
-            <Td w="7%">
+        <Tr className="post_item">
+            <Td w="50%">{data.title}</Td>
+            <Td w="10%">{Locales[data.locale]}</Td>
+            <Td w="12%">
                 <Box display="inline-block" mr="5px" verticalAlign="middle">{data.status ? <MdOutlineCheckCircleOutline color="var(--success)" /> : <MdHighlightOff color="var(--danger)" />}</Box>
                 {data.status ? <Text color="var(--success)" as="span">Enabled</Text> : <Text color="var(--danger)" as="span">Disabled</Text>}
             </Td>

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast, Popover, PopoverContent, PopoverAnchor, PopoverBody } from '@chakra-ui/react';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
-import { usePosts } from '@/apis/post';
+import { addPost, usePosts } from '@/apis/post';
 import { useSettings } from '@/apis/setting';
 import { ModelPost } from '@/models/post';
 import { useStore } from '@/store';
@@ -28,11 +28,11 @@ const POST_STATUS_OPTIONS = [
 ];
 
 export default function Form({ children, title, mode = 'add', item = null }: PostForm) {
-    // const { paginate: { skip, limit }, filters } = useStore((state) => state.post);
-    // const { mutate } = usePosts({ skip, limit, filters });
+    const { paginate: { skip, limit }, filters } = useStore((state) => state.post);
+    const { mutate } = usePosts({ skip, limit, filters });
     const { data: settings } = useSettings();
     const { isOpen, onOpen, onClose } = useDisclosure({ id: `${mode}_post_form` });
-    // const toast = useToast();
+    const toast = useToast();
     const [posting, setPosting] = useState(false);
     const titleRef = useRef();
 
@@ -84,26 +84,34 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
 
     async function handleLoad(value) {
         const result = await getCategories({ filter: JSON.stringify({ name: value }) });
-        return result.data.list.items.map((item) => ({ value: item.id, label: item.name }));
+        return result.data.list.items.map((item) => ({ value: item._id, label: item.name }));
     }
 
     async function handleAdd(values) {
-        console.log('values', values);
-        /* try {
+        try {
             setPosting(true);
 
             let response = null;
 
             if (mode === 'add') {
-                response = await createCategory(values);
+                response = await addPost({
+                    title: values.title,
+                    content: values.content,
+                    locale: values.locale.value,
+                    path: values.path,
+                    category: values.category.value,
+                    status: values.status,
+                    meta_title: values.title,
+                    meta_description: values.title,
+                });
             } else if (mode === 'edit') {
-                response = await editCategory({ ...values, post_id: item._id });
+                // response = await editCategory({ ...values, post_id: item._id });
             }
 
             if (response?.status === 202) {
                 handleReset();
 
-                const description = mode === 'add' ? `The category '${values.name}' is created` : `The category '${values.name}' is edited`;
+                const description = mode === 'add' ? `The post '${values.title}' is created` : `The post '${values.title}' is edited`;
                 toast({ ...SUCCESS_TOAST_PARAMS, description });
 
                 mutate();
@@ -117,7 +125,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
             console.log(error);
             toast({ ...ERROR_TOAST_PARAMS, description: error.response?.data.message || 'Internal server error' });
             setPosting(false);
-        } */
+        }
     }
 
     function handleClose() {
