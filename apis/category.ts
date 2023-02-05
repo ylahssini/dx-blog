@@ -25,3 +25,8 @@ export function useCategories({ limit = process.env.NEXT_PUBLIC_LIMIT as unknown
 
     return { data, error, mutate } as RequestCast;
 }
+
+export function getCategories(params: Record<string, string>) {
+    const query = queryString(params);
+    return client.get(`api/category/list?${query}`);
+}

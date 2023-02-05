@@ -1,7 +1,8 @@
-import { ReactNode, useState, useRef } from 'react';
+import { ReactNode, useState, useRef, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
+import AsyncSelect from 'react-select/async';
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast, Popover, PopoverContent, PopoverAnchor, PopoverBody } from '@chakra-ui/react';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { usePosts } from '@/apis/post';
 import { useSettings } from '@/apis/setting';
@@ -9,6 +10,8 @@ import { ModelPost } from '@/models/post';
 import { useStore } from '@/store';
 import Editor from '@/components/entry/editor';
 import ControlSelect from '@/components/entry/control-select';
+import Locales from '@/assets/data/locales-codes.json';
+import { getCategories } from '@/apis/category';
 
 interface PostForm {
     children: any;
@@ -27,9 +30,8 @@ const POST_STATUS_OPTIONS = [
 export default function Form({ children, title, mode = 'add', item = null }: PostForm) {
     // const { paginate: { skip, limit }, filters } = useStore((state) => state.post);
     // const { mutate } = usePosts({ skip, limit, filters });
-    const { settings } = useSettings();
-    const { control } = useForm();
-    const { isOpen, onOpen, onClose } = useDisclosure({ id: mode + '_post_form' });
+    const { data: settings } = useSettings();
+    const { isOpen, onOpen, onClose } = useDisclosure({ id: `${mode}_post_form` });
     // const toast = useToast();
     const [posting, setPosting] = useState(false);
     const titleRef = useRef();
@@ -44,7 +46,8 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
         meta_keywords: '',
         extended_metas: [],
         equivalent_to_locale_post: '',
-        status: 'DRAFT',
+        category: '',
+        status: '',
     };
     if (mode === 'edit') {
         defaultValues = {
@@ -57,13 +60,21 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
             meta_keywords: item.meta.keywords,
             extended_metas: item.extended_metas,
             equivalent_to_locale_post: item.equivalent_to_locale_post,
+            category: item.category_id,
             status: item.status,
         };
     }
 
-    const { handleSubmit, register, reset, formState: { errors } } = useForm({ defaultValues });
+    const { handleSubmit, register, reset, control, formState: { errors } } = useForm({ defaultValues });
 
-    function resetMode() {
+    const selectProps = {
+        placeholder: 'Select',
+        classNamePrefix: 'entry-select',
+        className: '',
+        components: { Control: ControlSelect },
+    };
+
+    function handleReset() {
         if (mode === 'edit') {
             reset({}, { keepValues: true, keepDefaultValues: false });
         } else {
@@ -71,7 +82,13 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
         }
     }
 
+    async function handleLoad(value) {
+        const result = await getCategories({ filter: JSON.stringify({ name: value }) });
+        return result.data.list.items.map((item) => ({ value: item.id, label: item.name }));
+    }
+
     async function handleAdd(values) {
+        console.log('values', values);
         /* try {
             setPosting(true);
 
@@ -84,7 +101,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
             }
 
             if (response?.status === 202) {
-                resetMode();
+                handleReset();
 
                 const description = mode === 'add' ? `The category '${values.name}' is created` : `The category '${values.name}' is edited`;
                 toast({ ...SUCCESS_TOAST_PARAMS, description });
@@ -106,8 +123,12 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
     function handleClose() {
         setPosting(false);
         onClose();
-        resetMode();
+        handleReset();
     }
+
+    const locales = useMemo(() => {
+        return (settings?.locales || []).map((locale) => ({ value: locale, label: Locales[locale] }));
+    }, [settings?.locales]);
 
     return (
         <aside>
@@ -137,28 +158,44 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
                                     />
                                 </FormControl>
 
+                                {
+                                    locales.length > 0 && (
+                                        <FormControl isInvalid={!!errors.locale} isRequired>
+                                            <FormLabel htmlFor="post_locale">Locale</FormLabel>
+                                            <Controller
+                                                render={({ field: f }: any) => <Select options={locales} id="locale" {...selectProps} {...f} value={locales.find(c => c.value === f.value)} />}
+                                                control={control}
+                                                onChange={(val: { value: string }) => console.log(val)}
+                                                {...register('locale', { required: 'Please select the language' })}
+                                            />
+                                            
+                                            <FormErrorMessage fontSize="xs">{(errors.locale ? errors.locale.message : null) as unknown as ReactNode}</FormErrorMessage>
+                                        </FormControl>
+                                    )
+                                }
+
                                 <FormControl isInvalid={!!errors.path} isRequired>
                                     <FormLabel htmlFor="post_path">Path</FormLabel>
-                                    <Input id="post_path" name="title" autoComplete="off" {...register('path', { required: 'Please provide the path of post' })} />
+                                    <Input id="post_path" name="path" autoComplete="off" {...register('path', { required: 'Please provide the path of post' })} />
                                     <FormErrorMessage fontSize="xs">{(errors.path ? errors.path.message : null) as unknown as ReactNode}</FormErrorMessage>
                                 </FormControl>
 
-                                <FormControl display="flex" alignItems="center">
-                                    <FormLabel htmlFor="post_status" mb="0">Status</FormLabel>
+                                <FormControl isInvalid={!!errors.status} isRequired>
+                                    <FormLabel htmlFor="post_status">Status</FormLabel>
                                     <Controller
-                                        render={({ field: f }: any) => (
-                                            <Select
-                                                placeholder="Select"
-                                                classNamePrefix="entry-select"
-                                                className="entry-select-container"
-                                                options={POST_STATUS_OPTIONS}
-                                                id="status"
-                                                components={{ Control: ControlSelect }}
-                                                {...f}
-                                            />
-                                        )}
+                                        render={({ field: f }: any) => <Select options={POST_STATUS_OPTIONS} id="status" {...selectProps} {...f} value={POST_STATUS_OPTIONS.find(c => c.value === f.value)} onChange={(val: { value: string }) => f.onChange(val.value)} />}
                                         control={control}
-                                        {...register('status')}
+                                        {...register('status', { required: 'Please select a status' })}
+                                    />
+                                    <FormErrorMessage fontSize="xs">{(errors.status ? errors.status.message : null) as unknown as ReactNode}</FormErrorMessage>
+                                </FormControl>
+
+                                <FormControl>
+                                    <FormLabel htmlFor="post_category">Category</FormLabel>
+                                    <Controller
+                                        render={({ field: f }: any) => <AsyncSelect cacheOptions loadOptions={handleLoad} id="category" {...selectProps} className="" {...f} />}
+                                        control={control}
+                                        name="category"
                                     />
                                 </FormControl>
                             </Stack>

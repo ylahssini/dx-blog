@@ -12,7 +12,7 @@ function Settings(request: NextApiRequest, response: NextApiResponse) {
                     try {
                         const [settings] = await Setting.find().exec();
 
-                        response.status(200).json({ success: true, settings });
+                        response.status(200).json(settings);
 
                         resolve(null);
                     } catch (error) {
