@@ -201,9 +201,9 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
                                 <FormControl>
                                     <FormLabel htmlFor="post_category">Category</FormLabel>
                                     <Controller
-                                        render={({ field: f }: any) => <AsyncSelect cacheOptions loadOptions={handleLoad} id="category" {...selectProps} className="" {...f} />}
+                                        render={({ field: f }: any) => <AsyncSelect cacheOptions loadOptions={handleLoad} id="category" {...selectProps} {...f} />}
                                         control={control}
-                                        name="category"
+                                        {...register('category')}
                                     />
                                 </FormControl>
                             </Stack>
@@ -211,9 +211,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Pos
                     </DrawerBody>
 
                     <DrawerFooter borderTopWidth="1px">
-                        <Button id="cancel_button" variant="outline" mr={3} onClick={handleClose}>
-                            Cancel
-                        </Button>
+                        <Button id="cancel_button" variant="outline" mr={3} onClick={handleClose}>Cancel</Button>
                         <Button
                             id="save_button"
                             colorScheme="blue"
