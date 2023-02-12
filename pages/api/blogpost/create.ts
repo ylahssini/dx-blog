@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
 import { withIronSessionApiRoute } from 'iron-session/next';
-import Post from '@/models/post';
+import Post from '@/models/blogpost';
 import { sessionOptions } from '@/lib/session';
 import { verify } from '@/lib/token';
 
@@ -11,7 +11,7 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
             try {
                 const mongoose = await dbConnect();
 
-                mongoose.connection.db.listCollections({ name: 'posts' }).next(async () => {
+                mongoose.connection.db.listCollections({ name: 'blog_posts' }).next(async () => {
                     const { body } = request;
 
                     try {
@@ -23,6 +23,7 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                             locale: body.locale,
                             path: body.path,
                             status: body.status,
+                            category_id: body.category || null,
                             meta: {
                                 title: body.meta_title,
                                 description: body.meta_description,

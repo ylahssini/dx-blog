@@ -1,6 +1,8 @@
 import mongoose, { Model } from 'mongoose';
+import type { ModelCategory } from './category';
+import './category'; // ! Don't remove this import
 
-const PostSchema = new mongoose.Schema({
+const BlogPostSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'You must provide the title of the post'],
@@ -37,7 +39,7 @@ const PostSchema = new mongoose.Schema({
     },
     equivalent_to_locale_post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
+        ref: 'BlogPost',
     },
     status: {
         type: String,
@@ -54,10 +56,20 @@ const PostSchema = new mongoose.Schema({
         createdAt: 'created_at',
         updatedAt: 'updated_at',
     },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     autoIndex: true,
+    collection: 'blog_posts',
 });
 
-export interface ModelPost extends Document {
+BlogPostSchema.virtual('category', {
+    ref: 'Category',
+    localField: 'category_id',
+    foreignField: '_id',
+    justOne: true,
+});
+
+export interface ModelBlogPost extends Document {
     _id: string;
     title: string;
     content: string;
@@ -71,14 +83,15 @@ export interface ModelPost extends Document {
     path: string;
     category_id: string;
     equivalent_to_locale_post: string;
-    status: 'DRAFT' | 'DISABLED' | 'PUBLISHED',
+    status: 'DRAFT' | 'DISABLED' | 'PUBLISHED';
     created_at: Date | number;
     updated_at: Date | number;
+    category: ModelCategory;
 }
 
-const Post = (
-    mongoose.models.Post as Model<ModelPost>
-    || mongoose.model<ModelPost>('Post', PostSchema)
+const BlogPost = (
+    mongoose.models.BlogPost as Model<ModelBlogPost>
+    || mongoose.model<ModelBlogPost>('BlogPost', BlogPostSchema, 'blog_posts')
 );
 
-export default Post;
+export default BlogPost;

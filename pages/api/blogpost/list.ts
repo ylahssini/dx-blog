@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/connect';
-import Post from '@/models/post';
+import Post from '@/models/blogpost';
 
 const defaultLimit = parseFloat(process.env.NEXT_PUBLIC_LIMIT) as unknown as number;
 
@@ -10,9 +10,9 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
             try {
                 const mongoose = await dbConnect();
 
-                mongoose.connection.db.listCollections({ name: 'posts' }).next(async () => {
+                mongoose.connection.db.listCollections({ name: 'blog_posts' }).next(async () => {
                     try {
-                        const { skip, limit, filters } = request.query;
+                        const { skip, limit, populate, filters } = request.query;
 
                         const query: Record<string, string | RegExp | boolean> = {};
                         if (filters) {
@@ -31,7 +31,10 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
                         if (skip) options.skip = parseInt(skip as string, 10);
                         if (limit) options.limit = parseInt(limit as string, 10) || defaultLimit;
 
-                        const items = await Post.find(query, null, options).exec();
+                        let postQuery = Post.find(query, null, options);
+                        if (populate === 'category') postQuery = postQuery.populate('category');
+
+                        const items = await postQuery.exec();
                         const count = await Post.find(query).count();
 
                         response.status(200).json({ success: true, list: { count, items } });
