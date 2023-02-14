@@ -5,8 +5,8 @@ import BlogPost from '@/models/blogpost';
 import { sessionOptions } from '@/lib/session';
 import { verify } from '@/lib/token';
 
-function CreatePost(request: NextApiRequest, response: NextApiResponse) {
-    if (request.method === 'POST') {
+function EditPost(request: NextApiRequest, response: NextApiResponse) {
+    if (request.method === 'PUT') {
         return new Promise(async (resolve, reject) => {
             try {
                 const mongoose = await dbConnect();
@@ -17,7 +17,7 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                     try {
                         const user = await verify(request.session.user.token, true) as { id: string };
 
-                        const post = new BlogPost({
+                        await BlogPost.updateOne({ _id: new mongoose.Types.ObjectId(body.blogpost_id) }, {
                             title: body.title,
                             content: body.content,
                             locale: body.locale,
@@ -31,12 +31,12 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                             },
                             created_by: new mongoose.Types.ObjectId(user.id),
                         });
-                        await post.save();
 
                         response.status(202).json({ success: true });
+
                         resolve(null);
                     } catch (error) {
-                        response.status(500).json({ success: false, message: 'We fail to create a post: ' + body.title, error });
+                        response.status(500).json({ success: false, message: 'We fail to edit a post: ' + body.title, error });
                         reject(error);
                     }
                 });
@@ -50,4 +50,4 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
     response.status(405).json({ success: false, message: 'Method not allowed' });
 }
 
-export default withIronSessionApiRoute(CreatePost, sessionOptions);
+export default withIronSessionApiRoute(EditPost, sessionOptions);

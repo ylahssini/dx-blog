@@ -61,6 +61,7 @@ export const globalState = {
                 ]
             }
         ],
+        populate: 'category',
     },
 };
 

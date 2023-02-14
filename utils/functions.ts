@@ -29,3 +29,7 @@ export function queryString(params: Record<string, string>): string {
 
     return query.toString();
 }
+
+export function mergingReducer(prev, next) {
+    return { ...prev, ...next };
+}

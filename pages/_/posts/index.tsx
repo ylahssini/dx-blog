@@ -1,14 +1,14 @@
 import Head from 'next/head';
 import MainLayout from '@/components/layout/main';
-import PostsView from '@/views/posts';
+import BlogPostsView from '@/views/blogposts/list';
 
 export default function Posts() {
     return (
         <>
             <Head>
-                <title>Posts | DX-Blog</title>
+                <title>Blog posts | DX-Blog</title>
             </Head>
-            <PostsView />
+            <BlogPostsView />
         </>
     );
 }

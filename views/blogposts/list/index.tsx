@@ -3,26 +3,27 @@ import { Suspense } from 'react';
 import { Box, Flex, Button } from '@chakra-ui/react';
 import { MdOutlineControlPoint } from 'react-icons/md';
 import ListingTable from '@/components/table';
-import { usePosts } from '@/apis/post';
+import { useBlogPosts } from '@/apis/blogpost';
 import store, { useStore } from '@/store';
-import { ModelPost } from '@/models/post';
+import type { ModelBlogPost } from '@/models/blogpost';
+import Link from 'next/link';
 
 const Paginate = dynamic(() => import('@/components/paginate'), { ssr: true });
-const Form = dynamic(() => import('./form'), { ssr: true });
 const Item = dynamic(() => import('./item'), { ssr: true });
 // const Filters = dynamic(() => import('./filters'), { ssr: true });
 
 const columns = [
-    { label: 'Title', w: '50%' },
+    { label: 'Title', w: '35%' },
     { label: 'Locale', w: '10%' },
+    { label: 'Category', w: '15%' },
     { label: 'Status', w: '12%' },
     { label: 'Created at', w: '13%' },
     { label: 'Actions', w: '15%', textAlign: 'right' },
 ];
 
-export default function PostsView() {
-    const { paginate: { skip, limit }, filters } = useStore((state) => state.post);
-    const { data, error } = usePosts({ skip, limit, filters });
+export default function BlogPostsView() {
+    const { paginate: { skip, limit }, populate, filters } = useStore((state) => state.post);
+    const { data, error } = useBlogPosts({ skip, limit, filters, populate });
 
     function handlePage(event) {
         const state = store.getState();
@@ -46,19 +47,19 @@ export default function PostsView() {
                 <strong id="results">{data?.list.count || 0} results found</strong>
 
                 <Suspense>
-                    <Form title="Add a new post">
-                        {({ onOpen }) => (
-                            <Button id="add_post_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />} onClick={onOpen}>
+                    <Link href="/_/posts/add" passHref>
+                        <a className="__noline">
+                            <Button id="add_post_button" colorScheme="blue" leftIcon={<MdOutlineControlPoint size={18} />}>
                                 Add a new post
                             </Button>
-                        )}
-                    </Form>
+                        </a>
+                    </Link>
                 </Suspense>
             </Flex>
 
             <Suspense>
                 <ListingTable id="post_list" items={data?.list.items} loading={!!data} error={error} columns={columns}>
-                    {({ items }) => items.map((item: ModelPost) => <Item key={item._id} data={item} />)}
+                    {({ items }) => items.map((item: ModelBlogPost) => <Item key={item._id} data={item} />)}
                 </ListingTable>
             </Suspense>
 

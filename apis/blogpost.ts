@@ -8,7 +8,7 @@ export function addBlogPost(values: Record<string, string | boolean>) {
     return client.post('api/blogpost/create', values);
 }
 
-export function editPost(values: Record<string, string | boolean>) {
+export function editBlogPost(values: Record<string, string | boolean>) {
     return client.put('api/blogpost/edit', values);
 }
 
