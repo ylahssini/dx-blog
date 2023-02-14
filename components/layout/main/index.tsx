@@ -15,7 +15,7 @@ function MainLayout({ title, children }) {
                 <GridItem area="side" bgColor="var(--primary)" p="3rem 2rem" h="100vh">
                     <Side />
                 </GridItem>
-                <GridItem area="content" h="100%">
+                <GridItem area="content" h="100vh" overflow="scroll">
                     <AnimatePresence mode="wait">
                         <motion.div
                             className="item"
