@@ -123,9 +123,7 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
                     </DrawerBody>
 
                     <DrawerFooter borderTopWidth="1px">
-                        <Button id="cancel_button" variant="outline" mr={3} onClick={handleClose}>
-                            Cancel
-                        </Button>
+                        <Button id="cancel_button" variant="outline" mr={3} onClick={handleClose}>Cancel</Button>
                         <Button
                             id="save_button"
                             colorScheme="blue"
