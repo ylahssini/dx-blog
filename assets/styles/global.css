@@ -85,6 +85,10 @@ a:focus::after {
 a:hover {
     color: var(--primary);
 }
+
+a.__noline:after {
+    display: none;
+}
 /* C S S   R E S E T */
 
 .entry-select-container {
