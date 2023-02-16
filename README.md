@@ -1,5 +1,5 @@
 # DX-Blog
-DX-Blog is small Wordpress like that i want badly to create it by myself. I want to experience the backend technologies like MongoDB, Nodejs and Docker. The project use Playwright which is reliable end-to-end testing to test the DX-Blog.
+DX-Blog is minimal Wordpress like that i want badly to create it by myself. I want to experience the backend technologies like MongoDB, Nodejs and Docker. The project use Playwright which is reliable end-to-end testing to test the DX-Blog.
 
 ## Requirements
 To launch the DX-Blog, we recommend to install Docker because it include all technologies that DX-Blog needs without install it individually.
