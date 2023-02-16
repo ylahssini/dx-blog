@@ -28,7 +28,7 @@ function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
                         response.status(202).json({ success: true });
                         resolve(null);
                     } catch (error) {
-                        response.status(500).json({ success: false, message: 'We fail to add the category: ' + body.name, error });
+                        response.status(500).json({ success: false, message: `We fail to add the category: ${body.name}`, error });
                         reject(error);
                     }
                 });
