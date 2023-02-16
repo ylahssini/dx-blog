@@ -62,7 +62,6 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
 
     useEffect(() => {
         async function loadCategory(id) {
-            console.log('🐮');
             const result = await getCategories({ filter: JSON.stringify({ id }) });
             updateStore({ categoryLoaded: result.data.list.items.map((item) => ({ value: item._id, label: item.name })) }) ;
         }
@@ -100,19 +99,21 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
 
             let response = null;
 
+            const body = {
+                title: values.title,
+                content: values.content,
+                locale: values.locale.value,
+                path: values.path,
+                category: values.category?.value,
+                status: values.status,
+                meta_title: values.title,
+                meta_description: values.title,
+            };
+
             if (mode === 'add') {
-                response = await addBlogPost({
-                    title: values.title,
-                    content: values.content,
-                    locale: values.locale.value,
-                    path: values.path,
-                    category: values.category.value,
-                    status: values.status,
-                    meta_title: values.title,
-                    meta_description: values.title,
-                });
+                response = await addBlogPost(body);
             } else if (mode === 'edit') {
-                response = await editBlogPost({ ...values, blogpost_id: item._id });
+                response = await editBlogPost({ ...body, blogpost_id: item._id });
             }
 
             if (response?.status === 202) {

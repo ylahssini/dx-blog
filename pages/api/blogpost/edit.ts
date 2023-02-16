@@ -36,7 +36,13 @@ function EditPost(request: NextApiRequest, response: NextApiResponse) {
 
                         resolve(null);
                     } catch (error) {
-                        response.status(500).json({ success: false, message: 'We fail to edit a post: ' + body.title, error });
+                        let message = `We fail to edit a post: ${body.title}`;
+
+                        if (error?.code === 11000) {
+                            message = `The path is already existed: "${body.path}"`;
+                        }
+
+                        response.status(500).json({ success: false, message, error });
                         reject(error);
                     }
                 });

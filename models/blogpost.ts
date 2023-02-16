@@ -29,9 +29,8 @@ const BlogPostSchema = new mongoose.Schema({
     locale: String,
     path: {
         type: String,
-        required: [true, 'You must provide the slug of the post'],
+        required: [true, 'You must provide the path of the post'],
         default: '',
-        index: 'slug',
     },
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -58,9 +57,10 @@ const BlogPostSchema = new mongoose.Schema({
     },
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    autoIndex: true,
     collection: 'blog_posts',
 });
+
+BlogPostSchema.index({ locale: -1, path: 1 }, { unique: true }); // ! set index before virtual 🤔
 
 BlogPostSchema.virtual('category', {
     ref: 'Category',
