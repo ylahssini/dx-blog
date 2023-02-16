@@ -22,7 +22,7 @@
     transition: all .25s ease-in-out;
 }
 
-.menu_item > a:hover, .menu_item > button:hover {
+.menu_item > a:hover, .menu_item > button:hover, .__active > a {
     border-radius: 6px;
     background-color: #FFF;
     color: var(--primary);
