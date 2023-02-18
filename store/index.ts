@@ -10,7 +10,7 @@ interface Paginate {
     limit: number;
 }
 
-interface Filter {
+export interface FilterItem {
     key: string;
     label: string;
     value: string;
@@ -21,11 +21,11 @@ interface Filter {
 interface State {
     category: {
         paginate: Paginate;
-        filters: Filter[];
+        filters: FilterItem[];
     };
     post: {
         paginate: Paginate;
-        filters: Filter[];
+        filters: FilterItem[];
         populate: 'category';
     },
 }
@@ -86,7 +86,7 @@ export const globalState = {
         paginate: { skip: 0, limit: 3 },
         filters: [
             { key: 'title', label: 'Title', value: '', type: 'text' },
-            { key: 'category', label: 'Category', value: '', type: 'asyncSelect' },
+            { key: 'category_id', label: 'Category', value: '', type: 'asyncSelect' },
             {
                 key: 'status',
                 label: 'Status',
