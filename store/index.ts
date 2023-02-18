@@ -1,6 +1,43 @@
 import { createContext, useContext, useSyncExternalStore } from 'react';
 
-function createStore(initState) {
+interface Option {
+    label: string;
+    value: string;
+}
+
+interface Paginate {
+    skip: number;
+    limit: number;
+}
+
+interface Filter {
+    key: string;
+    label: string;
+    value: string;
+    type: 'text' | 'select' | 'asyncSelect';
+    options?: Option[];
+}
+
+interface State {
+    category: {
+        paginate: Paginate;
+        filters: Filter[];
+    };
+    post: {
+        paginate: Paginate;
+        filters: Filter[];
+        populate: 'category';
+    },
+}
+
+interface Store {
+    getState: () => State;
+    setState: (state) => void;
+    subscribe: (onStoreChange: () => void) => () => void;
+    serverInitialize: (initState) => void;
+}
+
+function createStore(initState): Store {
     let currentState = initState;
     let isInitialized = false;
     const listeners = new Set();
@@ -49,6 +86,7 @@ export const globalState = {
         paginate: { skip: 0, limit: 3 },
         filters: [
             { key: 'title', label: 'Title', value: '', type: 'text' },
+            { key: 'category', label: 'Category', value: '', type: 'asyncSelect' },
             {
                 key: 'status',
                 label: 'Status',
