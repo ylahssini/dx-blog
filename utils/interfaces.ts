@@ -15,5 +15,5 @@ export interface RequestPayload {
     limit?: number;
     skip?: number;
     populate?: string;
-    filters?: Record<string, string | unknown>[];
+    filters?: Record<string, string | string[]>[];
 }

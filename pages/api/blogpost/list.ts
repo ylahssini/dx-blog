@@ -14,7 +14,7 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
                     try {
                         const { skip, limit, populate, filters } = request.query;
 
-                        const query: Record<string, string | RegExp | boolean> = {};
+                        const query: Record<string, string | RegExp | boolean | Record<string, any>> = {};
                         if (filters) {
                             const parseFilter = JSON.parse(filters as string);
 
@@ -24,6 +24,10 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
 
                             if (typeof parseFilter.category_id === 'string') {
                                 query.category_id = parseFilter.category_id;
+                            }
+
+                            if (Array.isArray(parseFilter.locale)) {
+                                query.locale = { $in: parseFilter.locale };
                             }
 
                             if (['DRAFT', 'DISABLED', 'PUBLISHED'].includes(parseFilter.status)) {

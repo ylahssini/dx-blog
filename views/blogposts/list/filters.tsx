@@ -2,29 +2,52 @@ import { useMemo, useState } from 'react';
 import { Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { MdOutlineFilterAlt } from 'react-icons/md';
 import Filter from '@/components/filter';
-import store, { useStore, type FilterItem } from '@/store';
+import store, { type Option, useStore, type FilterItem } from '@/store';
 import { useBlogPosts } from '@/apis/blogpost';
 import { getCategories } from '@/apis/category';
 import { sleep } from '@/utils/functions';
+import Locales from '@/assets/data/locales-codes.json';
 
 export default function Filters() {
     const [reset, setReset] = useState(false);
     const { paginate: { skip, limit }, filters, populate } = useStore((state) => state.post);
     const { data } = useBlogPosts({ skip, limit, filters, populate });
 
-    async function handleExternalApi(value: string) {
-        try {
-            const result = await getCategories({ filter: JSON.stringify({ name: value }) });
-            return (result.data.list?.items || []).map((item) => ({ value: item.id, label: item.name }));
-        } catch (error) {
-            console.log(error);
-            return [];
-        }
+    function handleExternalApi(key: string) {
+        return async (value: string) => {
+            const mapInside = {
+                category_id: async () => {
+                    try {
+                        const result = await getCategories({ filter: JSON.stringify({ name: value }) });
+                        return (result.data.list?.items || []).map((item) => ({ value: item.id, label: item.name }));
+                    } catch (error) {
+                        console.log(error);
+                        return [];
+                    }
+                },
+                locale: () => {
+                    const filterLocales = () => {
+                        return Object.entries(Locales)
+                            .filter(([, label]) => label.toLowerCase().includes(value.toLowerCase().trim()))
+                            .map(([code, label]) => ({
+                                label,
+                                value: code,
+                            }));
+                    };
+
+                    return new Promise<Option[]>(async (resolve) => {
+                        await sleep(300);
+                        resolve(filterLocales());
+                    });
+                }
+            };
+
+            return await mapInside[key]();
+        };
     }
 
     function handleChange(key) {
         return (value) => {
-            console.log(key, value);
             const state = store.getState();
             store.setState({
                 ...state,
@@ -61,7 +84,7 @@ export default function Filters() {
         setReset(false);
     }
 
-    const isSomeFilterIsFilled = useMemo(() => filters.some((filter) => filter.value !== ''), [filters]);
+    const isSomeFilterIsFilled = useMemo(() => filters.some((filter) => filter.value.length > 0), [filters]);
 
     return (
         <Box as="section" pb="2rem">
@@ -87,7 +110,7 @@ export default function Filters() {
                         key={filter.key}
                         item={filter}
                         handleChange={handleChange}
-                        loadExternalOptions={filter.type === 'asyncSelect' ? handleExternalApi : undefined}
+                        loadExternalOptions={['category_id', 'locale'].includes(filter.key) ? handleExternalApi(filter.key) : undefined}
                         custom={{ className: 'filter_item', w: `calc(${100 / filters.length}% - 1rem)` }}
                         reset={reset}
                     />

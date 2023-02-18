@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Input, Select, Text } from '@chakra-ui/react';
 import AsyncSelect from 'react-select/async';
 import debounce from 'lodash.debounce';
-import { type FilterItem } from '@/store';
+import { type FilterItem, type Option } from '@/store';
 
 interface Props {
     custom?: Record<string, unknown>;
@@ -12,8 +12,20 @@ interface Props {
     reset: boolean;
 }
 
+type ValueState = string | undefined | Option | Option[];
+
 export default function Filter({ custom, item, handleChange, loadExternalOptions, reset = false }: Props) {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState<ValueState>(() => {
+        if (item.type === 'multiSelect') {
+            return [];
+        }
+
+        if (item.type === 'asyncSelect') {
+            return undefined;
+        }
+
+        return '';
+    });
     const debounced = useRef<(arg: string) => void>();
 
     function handleLocalChange(e) {
@@ -32,9 +44,14 @@ export default function Filter({ custom, item, handleChange, loadExternalOptions
         }
     }
 
-    function handleSelect(el) {
-        setValue(el);
-        handleChange(item.key)(el.value);
+    function handleSelect(element) {
+        setValue(element);
+        handleChange(item.key)(element.value);
+    }
+
+    function handleMulti(mulitple: Option[]) {
+        setValue(mulitple);
+        handleChange(item.key)(mulitple.map((element) => element.value));
     }
 
     async function loadOptions(value: string): Promise<any> {
@@ -69,7 +86,7 @@ export default function Filter({ custom, item, handleChange, loadExternalOptions
         return (
             <Box {...custom}>
                 <Text as="label" fontSize="xs">{item.label}</Text>
-                <Input placeholder="Type" onChange={handleLocalChange} value={value} />
+                <Input placeholder="Type" onChange={handleLocalChange} value={value as string} />
             </Box>
         );
     }
@@ -79,10 +96,26 @@ export default function Filter({ custom, item, handleChange, loadExternalOptions
             <Box {...custom}>
                 <Text as="label" fontSize="xs">{item.label}</Text>
                 <AsyncSelect
-                    id={item.key}
+                    inputId={item.key}
                     cacheOptions
                     loadOptions={loadOptions}
                     onChange={handleSelect}
+                    value={value}
+                />
+            </Box>
+        );
+    }
+
+    if (item.type === 'multiSelect') {
+        return (
+            <Box {...custom}>
+                <Text as="label" fontSize="xs">{item.label}</Text>
+                <AsyncSelect
+                    inputId={item.key}
+                    isMulti
+                    cacheOptions
+                    loadOptions={loadOptions}
+                    onChange={handleMulti}
                     value={value}
                 />
             </Box>

@@ -13,7 +13,10 @@ export function editBlogPost(values: Record<string, string | boolean>) {
 }
 
 export function useBlogPosts({ limit = process.env.NEXT_PUBLIC_LIMIT as unknown as number, skip = 0, populate, filters }: RequestPayload = {}) {
-    const queryFilters = useMemo(() => (filters || []).filter((filter) => filter.value !== '').reduce((acc, curr) => ({ ...acc, [curr.key as string]: curr.value }), {}), [filters]);
+    const queryFilters = useMemo(() => (filters || [])
+        .filter((filter) => filter.value.length !== 0)
+        .reduce((acc, curr) => ({ ...acc, [curr.key as string]: curr.value })
+    , {}), [filters]);
 
     const query = queryString({
         limit: limit.toString(),

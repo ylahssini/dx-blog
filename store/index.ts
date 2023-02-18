@@ -1,6 +1,6 @@
 import { createContext, useContext, useSyncExternalStore } from 'react';
 
-interface Option {
+export interface Option {
     label: string;
     value: string;
 }
@@ -14,7 +14,7 @@ export interface FilterItem {
     key: string;
     label: string;
     value: string;
-    type: 'text' | 'select' | 'asyncSelect';
+    type: 'text' | 'select' | 'asyncSelect' | 'multiSelect';
     options?: Option[];
 }
 
@@ -87,6 +87,7 @@ export const globalState = {
         filters: [
             { key: 'title', label: 'Title', value: '', type: 'text' },
             { key: 'category_id', label: 'Category', value: '', type: 'asyncSelect' },
+            { key: 'locale', label: 'Language', value: [], type: 'multiSelect' },
             {
                 key: 'status',
                 label: 'Status',
