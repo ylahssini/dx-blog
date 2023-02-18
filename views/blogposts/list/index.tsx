@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 const Paginate = dynamic(() => import('@/components/paginate'), { ssr: true });
 const Item = dynamic(() => import('./item'), { ssr: true });
-// const Filters = dynamic(() => import('./filters'), { ssr: true });
+const Filters = dynamic(() => import('./filters'), { ssr: true });
 
 const columns = [
     { label: 'Title', w: '35%' },
@@ -41,7 +41,7 @@ export default function BlogPostsView() {
 
     return (
         <Box p="2rem">
-            {/* <Suspense><Filters /></Suspense> */}
+            <Suspense><Filters /></Suspense>
 
             <Flex as="header" pb="2rem" justifyContent="space-between" alignItems="center">
                 <strong id="results">{data?.list.count || 0} results found</strong>

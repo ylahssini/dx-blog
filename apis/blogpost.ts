@@ -26,3 +26,7 @@ export function useBlogPosts({ limit = process.env.NEXT_PUBLIC_LIMIT as unknown 
 
     return { data, error, mutate } as RequestCast;
 }
+
+export function getBlogPosts(params: Record<string, unknown>) {
+    return client.get('api/blogpost/list', params);
+}

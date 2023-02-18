@@ -22,6 +22,10 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
                                 query.title = new RegExp(parseFilter.title, 'gi');
                             }
 
+                            if (typeof parseFilter.category_id === 'string') {
+                                query.category_id = parseFilter.category_id;
+                            }
+
                             if (['DRAFT', 'DISABLED', 'PUBLISHED'].includes(parseFilter.status)) {
                                 query.status = parseFilter.status;
                             }
