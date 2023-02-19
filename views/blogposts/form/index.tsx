@@ -1,32 +1,31 @@
-import { useToast, Box, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button } from '@chakra-ui/react';
-import { useEffect, ReactNode, useMemo, useReducer, useRef } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import Select from 'react-select';
-import AsyncSelect from 'react-select/async';
+import { useReducer } from 'react';
+import { useRouter } from 'next/router';
+import { useToast, Box, Stack, Button } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { useBlogPosts, addBlogPost, editBlogPost } from '@/apis/blogpost';
-import { getCategories } from '@/apis/category';
-import { useSettings } from '@/apis/setting';
 import ControlSelect from '@/components/entry/control-select';
-import Editor from '@/components/entry/editor';
 import { useStore } from '@/store';
-import Locales from '@/assets/data/locales-codes.json';
 import { SUCCESS_TOAST_PARAMS, ERROR_TOAST_PARAMS } from '@/utils/constants';
 import { mergingReducer } from '@/utils/functions';
-import { useRouter } from 'next/router';
+import Status from './fields/status';
+import Category from './fields/category';
+import Locale from './fields/locale';
+import Path from './fields/path';
+import Content from './fields/content';
+import Title from './fields/title';
 
-const POST_STATUS_OPTIONS = [
-    { label: 'Draft', value: 'DRAFT' },
-    { label: 'Disabled', value: 'DISABLED' },
-    { label: 'Published', value: 'PUBLISHED' },
-];
+export const selectProps = {
+    placeholder: 'Select',
+    classNamePrefix: 'entry-select',
+    className: '',
+    components: { Control: ControlSelect },
+};
 
 const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
     const { paginate: { skip, limit }, populate, filters } = useStore((state) => state.post);
     const { data, mutate } = useBlogPosts({ skip, limit, filters, populate });
-    const { data: settings } = useSettings();
     const { query, push } = useRouter();
-    const [store, updateStore] = useReducer(mergingReducer, { posting: false, categoryLoaded: null });
-    const titleRef = useRef();
+    const [store, updateStore] = useReducer(mergingReducer, { posting: false });
     const toast = useToast();
 
     const item = (data?.list.items || []).find((i) => i._id === query.id && mode === 'edit');
@@ -60,30 +59,7 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
         };
     }
 
-    useEffect(() => {
-        async function loadCategory(id) {
-            const result = await getCategories({ filter: JSON.stringify({ id }) });
-            updateStore({ categoryLoaded: result.data.list.items.map((item) => ({ value: item._id, label: item.name })) }) ;
-        }
-    
-        if (!store.categoryLoaded && item?.category_id) {
-            loadCategory(item.category_id);
-        }
-    }, [item, store.categoryLoaded]);
-
     const { handleSubmit, register, reset, control, formState: { errors } } = useForm({ defaultValues });
-
-    const selectProps = {
-        placeholder: 'Select',
-        classNamePrefix: 'entry-select',
-        className: '',
-        components: { Control: ControlSelect },
-    };
-
-    async function handleLoad(value) {
-        const result = await getCategories({ filter: JSON.stringify({ name: value }) });
-        return result.data.list.items.map((item) => ({ value: item._id, label: item.name }));
-    }
 
     function handleReset() {
         if (mode === 'edit') {
@@ -142,88 +118,16 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
         push('/_/posts');
     }
 
-    const locales = useMemo(() => {
-        return (settings?.locales || []).map((locale) => ({ value: locale, label: Locales[locale] }));
-    }, [settings?.locales]);
-
     return (
         <Box p="2rem">
             <Box id="post_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
                 <Stack spacing="24px">
-                    <FormControl isInvalid={!!errors.title} isRequired>
-                        <FormLabel htmlFor="post_title">Title</FormLabel>
-                        <Input ref={titleRef} id="post_title" name="title" autoComplete="off" {...register('title', { required: 'Please provide the title of post' })} />
-                        <FormErrorMessage fontSize="xs">{(errors.title ? errors.title.message : null) as unknown as ReactNode}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl>
-                        <FormLabel htmlFor="post_content">Content</FormLabel>
-                        <Controller
-                            render={({ field: f }: any) => <Editor name="post_content" id="post_content" {...f} />}
-                            control={control}
-                            {...register('content')}
-                        />
-                    </FormControl>
-
-                    {
-                        locales.length > 0 && (
-                            <FormControl isInvalid={!!errors.locale} isRequired>
-                                <FormLabel htmlFor="post_locale">Locale</FormLabel>
-                                <Controller
-                                    render={({ field: f }: any) => <Select options={locales} id="locale" {...selectProps} {...f} value={locales.find(c => c.value === f.value)} />}
-                                    control={control}
-                                    onChange={(val: { value: string }) => console.log(val)}
-                                    {...register('locale', { required: 'Please select the language' })}
-                                />
-                                <FormErrorMessage fontSize="xs">{(errors.locale ? errors.locale.message : null) as unknown as ReactNode}</FormErrorMessage>
-                            </FormControl>
-                        )
-                    }
-
-                    <FormControl isInvalid={!!errors.path} isRequired>
-                        <FormLabel htmlFor="post_path">Path</FormLabel>
-                        <Input id="post_path" name="path" autoComplete="off" {...register('path', { required: 'Please provide the path of post' })} />
-                        <FormErrorMessage fontSize="xs">{(errors.path ? errors.path.message : null) as unknown as ReactNode}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl isInvalid={!!errors.status} isRequired>
-                        <FormLabel htmlFor="post_status">Status</FormLabel>
-                        <Controller
-                            render={({ field: f }: any) => (
-                                <Select
-                                    options={POST_STATUS_OPTIONS}
-                                    id="status"
-                                    {...selectProps}
-                                    {...f}
-                                    value={POST_STATUS_OPTIONS.find(c => c.value === f.value)}
-                                    onChange={(val: { value: string }) => f.onChange(val.value)}
-                                />
-                            )}
-                            control={control}
-                            {...register('status', { required: 'Please select a status' })}
-                        />
-                        <FormErrorMessage fontSize="xs">{(errors.status ? errors.status.message : null) as unknown as ReactNode}</FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl>
-                        <FormLabel htmlFor="post_category">Category</FormLabel>
-                        <Controller
-                            render={({ field: f }: any) => (
-                                <AsyncSelect
-                                    cacheOptions
-                                    loadOptions={handleLoad}
-                                    defaultOptions={store.categoryLoaded || []}
-                                    id="category"
-                                    {...selectProps}
-                                    className=""
-                                    {...f}
-                                    value={(store.categoryLoaded || []).find(c => c.value === f.value)}
-                                />
-                            )}
-                            control={control}
-                            {...register('category')}
-                        />
-                    </FormControl>
+                    <Title register={register('title', { required: 'Please provide the title of post' })} errors={errors} />
+                    <Content register={register('content')} control={control} />
+                    <Locale register={register('locale', { required: 'Please select the language' })} errors={errors} control={control} />
+                    <Path register={register('path', { required: 'Please provide the path of post' })} errors={errors} />
+                    <Status register={register('status', { required: 'Please select a status' })} errors={errors} control={control} />
+                    <Category register={register('category')} item={item} control={control} />
                 </Stack>
             </Box>
 
