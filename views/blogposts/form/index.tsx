@@ -80,6 +80,7 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
                 content: values.content,
                 locale: values.locale.value,
                 path: values.path,
+                equivalent_to_locale_post: values.equivalent_to_locale_post,
                 category: values.category?.value,
                 status: values.status,
                 meta_title: values.title,
@@ -126,8 +127,8 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
                     <Content register={register('content')} control={control} />
                     <Locale register={register('locale', { required: 'Please select the language' })} errors={errors} control={control} />
                     <Path register={register('path', { required: 'Please provide the path of post' })} errors={errors} />
-                    <Status register={register('status', { required: 'Please select a status' })} errors={errors} control={control} />
-                    <Category register={register('category')} item={item} control={control} />
+$                    <Status register={register('status', { required: 'Please select a status' })} errors={errors} control={control} />
+                    <Category register={register('category')} blogpost={item} control={control} />
                 </Stack>
             </Box>
 

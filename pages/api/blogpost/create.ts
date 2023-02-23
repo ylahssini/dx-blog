@@ -24,6 +24,7 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                             path: body.path,
                             status: body.status,
                             category_id: body.category || null,
+                            equivalent_to_locale_post: body.equivalent_to_locale_post || null,
                             meta: {
                                 title: body.meta_title,
                                 description: body.meta_description,

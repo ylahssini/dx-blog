@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Suspense } from 'react';
 import { Box, Flex, Button } from '@chakra-ui/react';
 import { MdOutlineControlPoint } from 'react-icons/md';
@@ -6,7 +7,6 @@ import ListingTable from '@/components/table';
 import { useBlogPosts } from '@/apis/blogpost';
 import store, { useStore } from '@/store';
 import type { ModelBlogPost } from '@/models/blogpost';
-import Link from 'next/link';
 
 const Paginate = dynamic(() => import('@/components/paginate'), { ssr: true });
 const Item = dynamic(() => import('./item'), { ssr: true });
@@ -14,7 +14,7 @@ const Filters = dynamic(() => import('./filters'), { ssr: true });
 
 const columns = [
     { label: 'Title', w: '35%' },
-    { label: 'Locale', w: '10%' },
+    { label: 'Language', w: '10%' },
     { label: 'Category', w: '15%' },
     { label: 'Status', w: '12%' },
     { label: 'Created at', w: '13%' },

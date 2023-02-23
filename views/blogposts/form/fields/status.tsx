@@ -12,7 +12,7 @@ const POST_STATUS_OPTIONS = [
 
 const Status = ({ errors, control, register }) => {
     return (
-        <FormControl isInvalid={!!errors.status} isRequired>
+        <FormControl isInvalid={!!errors?.status} isRequired>
             <FormLabel htmlFor="post_status">Status</FormLabel>
             <Controller
                 render={({ field: f }: any) => (

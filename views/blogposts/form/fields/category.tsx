@@ -5,7 +5,7 @@ import AsyncSelect from 'react-select/async';
 import { getCategories } from '@/apis/category';
 import { selectProps } from '..';
 
-const Category = ({ register, item, control }) => {
+const Category = ({ register, blogpost, control }) => {
     const [categories, setCategories] = useState(null);
 
     async function handleLoad(value) {
@@ -19,10 +19,10 @@ const Category = ({ register, item, control }) => {
             setCategories(result.data.list.items.map((item) => ({ value: item._id, label: item.name }))) ;
         }
     
-        if (!categories && item?.category_id) {
-            loadCategory(item.category_id);
+        if (!categories && blogpost?.category_id) {
+            loadCategory(blogpost.category_id);
         }
-    }, [item, categories]);
+    }, [blogpost, categories]);
 
     return (
         <FormControl>
