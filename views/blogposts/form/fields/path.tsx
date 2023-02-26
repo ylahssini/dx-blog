@@ -9,7 +9,7 @@ const Path = ({ register, errors }) => {
     const locales = settings?.locales || [];
 
     return (
-        <Card shadow="none" borderWidth={1} borderColor="gray.100">
+        <Card variant="outline">
             <CardHeader borderBottomWidth={1} borderColor="gray.100">
                 <Heading size="sm">Path</Heading>
             </CardHeader>

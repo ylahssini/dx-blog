@@ -17,7 +17,7 @@ const Title = ({ register, errors }) => {
                 <FormErrorMessage fontSize="xs">{(errors.original_title ? errors.original_title.message : null) as unknown as ReactNode}</FormErrorMessage>
             </FormControl>
 
-            <Card shadow="none" borderWidth={1} borderColor="gray.100">
+            <Card variant="outline">
                 <CardHeader borderBottomWidth={1} borderColor="gray.100">
                     <Heading size="sm">Title</Heading>
                 </CardHeader>
