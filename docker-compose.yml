@@ -7,7 +7,7 @@ services:
     ports:
       - "9000:3000"
     volumes:
-      - ./:/usr/src/app/
+      - ./dxblog-admin:/usr/src/app/
     env_file:
       - "./.env.local"
       - "./.env.development"
@@ -25,5 +25,5 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin_password
     volumes:
-      - ./mongodb:/data/db
-      - ./scripts:/docker-entrypoint-initdb.d
+      - ./dxblog-admin/mongodb:/data/db
+      - ./dxblog-admin/scripts:/docker-entrypoint-initdb.d
