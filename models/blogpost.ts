@@ -12,25 +12,30 @@ const BlogPostSchema = new mongoose.Schema({
         type: [
             {
                 locale: String,
-                title: String,
-                path: String,
+                title: {
+                    type: String,
+                    required: [true, 'You must provide the title of the post']
+                },
+                path: {
+                    type: String,
+                    required: [true, 'You must provide the path of the post']
+                },
                 body: String,
+                metas: {
+                    title: {
+                        type: String,
+                        required: [true, 'You must provide the meta title of the post']
+                    },
+                    description: {
+                        type: String,
+                        required: [true, 'You must provide the meta description of the post']
+                    },
+                    keywords: String,
+                },
             },
         ],
-        required: [true, 'You must provide the title of the post'],
+        required: [true, 'Something missing in your post data'],
     },
-    /* meta: {
-        title: {
-            type: String,
-            required: [true, 'You must provide the meta title of the post'],
-        },
-        description: {
-            type: String,
-            required: [true, 'You must provide the meta description of the post'],
-        },
-        keywords: String,
-    },
-    extended_metas: [{ key: String, value: String }], */
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
@@ -72,12 +77,12 @@ export interface ModelBlogPost extends Document {
         title: string;
         content: string;
         path: string;
+        metas: {
+            title: string;
+            description: string;
+            keywords: string;
+        };
     }[];
-    meta: {
-        title: string;
-        description: string;
-        keywords: string;
-    };
     extended_metas: { key: string; value: string }[];
     category_id: string;
     status: 'DRAFT' | 'DISABLED' | 'PUBLISHED';
