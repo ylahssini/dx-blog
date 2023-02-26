@@ -85,9 +85,8 @@ export const globalState = {
     post: {
         paginate: { skip: 0, limit: 3 },
         filters: [
-            { key: 'title', label: 'Title', value: '', type: 'text' },
+            { key: 'original_title', label: 'Title', value: '', type: 'text' },
             { key: 'category_id', label: 'Category', value: '', type: 'asyncSelect' },
-            { key: 'locale', label: 'Language', value: [], type: 'multiSelect' },
             {
                 key: 'status',
                 label: 'Status',

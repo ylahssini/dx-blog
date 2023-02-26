@@ -18,16 +18,12 @@ function PostList(request: NextApiRequest, response: NextApiResponse) {
                         if (filters) {
                             const parseFilter = JSON.parse(filters as string);
 
-                            if (typeof parseFilter.title === 'string') {
-                                query.title = new RegExp(parseFilter.title, 'gi');
+                            if (typeof parseFilter.original_title === 'string') {
+                                query.original_title = new RegExp(parseFilter.original_title, 'gi');
                             }
 
                             if (typeof parseFilter.category_id === 'string') {
                                 query.category_id = parseFilter.category_id;
-                            }
-
-                            if (Array.isArray(parseFilter.locale)) {
-                                query.locale = { $in: parseFilter.locale };
                             }
 
                             if (['DRAFT', 'DISABLED', 'PUBLISHED'].includes(parseFilter.status)) {

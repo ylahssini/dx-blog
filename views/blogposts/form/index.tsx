@@ -1,15 +1,15 @@
-import { useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 import { useRouter } from 'next/router';
 import { useToast, Box, Stack, Button } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useBlogPosts, addBlogPost, editBlogPost } from '@/apis/blogpost';
+import { useSettings } from '@/apis/setting';
 import ControlSelect from '@/components/entry/control-select';
 import { useStore } from '@/store';
 import { SUCCESS_TOAST_PARAMS, ERROR_TOAST_PARAMS } from '@/utils/constants';
 import { mergingReducer } from '@/utils/functions';
 import Status from './fields/status';
 import Category from './fields/category';
-import Locale from './fields/locale';
 import Path from './fields/path';
 import Content from './fields/content';
 import Title from './fields/title';
@@ -23,6 +23,7 @@ export const selectProps = {
 
 const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
     const { paginate: { skip, limit }, populate, filters } = useStore((state) => state.post);
+    const { data: settings } = useSettings();
     const { data, mutate } = useBlogPosts({ skip, limit, filters, populate });
     const { query, push } = useRouter();
     const [store, updateStore] = useReducer(mergingReducer, { posting: false });
@@ -30,34 +31,39 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
 
     const item = (data?.list.items || []).find((i) => i._id === query.id && mode === 'edit');
 
-    let defaultValues = {
-        title: '',
-        content: '',
-        locale: '',
-        path: '',
-        meta_title: '',
-        meta_description: '',
-        meta_keywords: '',
-        extended_metas: [],
-        equivalent_to_locale_post: '',
-        category: '',
-        status: '',
-    };
-    if (mode === 'edit' && item) {
-        defaultValues = {
-            title: item.title,
-            content: item.content,
-            locale: item.locale,
-            path: item.path,
-            meta_title: item.meta.title,
-            meta_description: item.meta.description,
-            meta_keywords: item.meta.keywords,
-            extended_metas: item.extended_metas,
-            equivalent_to_locale_post: item.equivalent_to_locale_post,
-            category: item.category_id,
-            status: item.status,
+    const defaultValues = useMemo(() => {
+        const locales = settings?.locales || [];
+
+        if (mode === 'edit' && item) {
+            return {
+                original_title: item.original_title,
+                ...locales.reduce((acc, locale) => ({ ...acc, [`title_${locale}`]: item.content.find(item => item.locale === locale).title }), {}),
+                ...locales.reduce((acc, locale) => ({ ...acc, [`content_${locale}`]: item.content.find(item => item.locale === locale).body }), {}),
+                ...locales.reduce((acc, locale) => ({ ...acc, [`path_${locale}`]: item.content.find(item => item.locale === locale).path }), {}),
+                meta_title: item.meta?.title,
+                meta_description: item.meta?.description,
+                meta_keywords: item.meta?.keywords,
+                extended_metas: item.extended_metas,
+                category: item.category_id,
+                status: item.status,
+            };
+        }
+
+        return {
+            original_title: '',
+            ...locales.reduce((acc, locale) => ({ ...acc, [`title_${locale}`]: '' }), {}),
+            ...locales.reduce((acc, locale) => ({ ...acc, [`content_${locale}`]: '' }), {}),
+            ...locales.reduce((acc, locale) => ({ ...acc, [`path_${locale}`]: '' }), {}),
+            meta_title: '',
+            meta_description: '',
+            meta_keywords: '',
+            extended_metas: [],
+            category: '',
+            status: '',
         };
-    }
+    }, [item, mode, settings?.locales]);
+
+    const locales = settings?.locales || [];
 
     const { handleSubmit, register, reset, control, formState: { errors } } = useForm({ defaultValues });
 
@@ -76,15 +82,17 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
             let response = null;
 
             const body = {
-                title: values.title,
-                content: values.content,
-                locale: values.locale.value,
-                path: values.path,
-                equivalent_to_locale_post: values.equivalent_to_locale_post,
+                original_title: values.original_title,
+                content: locales.map((locale) => ({
+                    locale,
+                    title: values[`title_${locale}`],
+                    path: values[`path_${locale}`],
+                    body: values[`content_${locale}`],
+                })),
+                meta_title: values.original_title,
+                meta_description: values.original_title,
                 category: values.category?.value,
                 status: values.status,
-                meta_title: values.title,
-                meta_description: values.title,
             };
 
             if (mode === 'add') {
@@ -123,11 +131,10 @@ const BlogPostForm = ({ mode }: { mode: 'add' | 'edit' }) => {
         <Box p="2rem">
             <Box id="post_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
                 <Stack spacing="24px">
-                    <Title register={register('title', { required: 'Please provide the title of post' })} errors={errors} />
-                    <Content register={register('content')} control={control} />
-                    <Locale register={register('locale', { required: 'Please select the language' })} errors={errors} control={control} />
-                    <Path register={register('path', { required: 'Please provide the path of post' })} errors={errors} />
-$                    <Status register={register('status', { required: 'Please select a status' })} errors={errors} control={control} />
+                    <Title register={register} errors={errors} />
+                    <Content register={register} control={control} />
+                    <Path register={register} errors={errors} />
+                    <Status register={register('status', { required: 'Please select a status' })} errors={errors} control={control} />
                     <Category register={register('category')} blogpost={item} control={control} />
                 </Stack>
             </Box>

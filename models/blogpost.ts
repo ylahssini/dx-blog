@@ -3,18 +3,23 @@ import type { ModelCategory } from './category';
 import './category'; // ! Don't remove this import
 
 const BlogPostSchema = new mongoose.Schema({
-    title: {
+    original_title: {
         type: String,
-        required: [true, 'You must provide the title of the post'],
-        index: 'text',
+        required: [true, 'You must provide the original title of the post'],
+        index: true,
     },
     content: {
-        type: String,
-        required: [true, 'You must provide the content of the post'],
-        default: '',
-        index: 'content',
+        type: [
+            {
+                locale: String,
+                title: String,
+                path: String,
+                body: String,
+            },
+        ],
+        required: [true, 'You must provide the title of the post'],
     },
-    meta: {
+    /* meta: {
         title: {
             type: String,
             required: [true, 'You must provide the meta title of the post'],
@@ -25,20 +30,10 @@ const BlogPostSchema = new mongoose.Schema({
         },
         keywords: String,
     },
-    extended_metas: [{ key: String, value: String }],
-    locale: String,
-    path: {
-        type: String,
-        required: [true, 'You must provide the path of the post'],
-        default: '',
-    },
+    extended_metas: [{ key: String, value: String }], */
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-    },
-    equivalent_to_locale_post: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'BlogPost',
     },
     status: {
         type: String,
@@ -60,7 +55,7 @@ const BlogPostSchema = new mongoose.Schema({
     collection: 'blog_posts',
 });
 
-BlogPostSchema.index({ locale: -1, path: 1 }, { unique: true }); // ! set index before virtual 🤔
+BlogPostSchema.index({ 'content.locale': 1, 'content.path': 1 }, { unique: true }); // ! set index before virtual 🤔
 
 BlogPostSchema.virtual('category', {
     ref: 'Category',
@@ -71,18 +66,20 @@ BlogPostSchema.virtual('category', {
 
 export interface ModelBlogPost extends Document {
     _id: string;
-    title: string;
-    content: string;
+    original_title: string;
+    content: {
+        locale: string;
+        title: string;
+        content: string;
+        path: string;
+    }[];
     meta: {
         title: string;
         description: string;
         keywords: string;
     };
     extended_metas: { key: string; value: string }[];
-    locale: string;
-    path: string;
     category_id: string;
-    equivalent_to_locale_post: string;
     status: 'DRAFT' | 'DISABLED' | 'PUBLISHED';
     created_at: Date | number;
     updated_at: Date | number;

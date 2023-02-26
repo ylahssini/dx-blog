@@ -1,13 +1,35 @@
 import { ReactNode } from 'react';
-import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, FormControl, FormErrorMessage, FormLabel, Heading, Input } from '@chakra-ui/react';
+import { useSettings } from '@/apis/setting';
+import Locales from '@/assets/data/locales-codes.json';
 
 const Path = ({ register, errors }) => {
+    const { data: settings } = useSettings();
+
+    const locales = settings?.locales || [];
+
     return (
-        <FormControl isInvalid={!!errors?.path} isRequired>
-            <FormLabel htmlFor="post_path">Path</FormLabel>
-            <Input id="post_path" name="path" autoComplete="off" {...register} />
-            <FormErrorMessage fontSize="xs">{(errors.path ? errors.path.message : null) as unknown as ReactNode}</FormErrorMessage>
-        </FormControl>
+        <Card shadow="none" borderWidth={1} borderColor="gray.100">
+            <CardHeader borderBottomWidth={1} borderColor="gray.100">
+                <Heading size="sm">Path</Heading>
+            </CardHeader>
+            <CardBody>
+            {
+                locales.map((locale) => {
+                    const language = Locales[locale];
+                    const field = `path_${locale}`;
+
+                    return (
+                        <FormControl key={locale} isInvalid={!!errors?.[field]} isRequired mb={5} _last={{ mb: 0 }}>
+                            <FormLabel htmlFor={field}>{language}</FormLabel>
+                            <Input id={field} name={field} autoComplete="off" {...register(field, { required: `Please provide the ${language.toLowerCase()} version of path` })} />
+                            <FormErrorMessage fontSize="xs">{(errors[field] ? errors[field].message : null) as unknown as ReactNode}</FormErrorMessage>
+                        </FormControl>
+                    );
+                })
+            }
+            </CardBody>
+        </Card>
     );
 };
 

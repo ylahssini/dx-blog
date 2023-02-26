@@ -2,11 +2,10 @@ import { useMemo, useState } from 'react';
 import { Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { MdOutlineFilterAlt } from 'react-icons/md';
 import Filter from '@/components/filter';
-import store, { type Option, useStore, type FilterItem } from '@/store';
+import store, { useStore, type FilterItem } from '@/store';
 import { useBlogPosts } from '@/apis/blogpost';
 import { getCategories } from '@/apis/category';
 import { sleep } from '@/utils/functions';
-import Locales from '@/assets/data/locales-codes.json';
 
 export default function Filters() {
     const [reset, setReset] = useState(false);
@@ -25,21 +24,6 @@ export default function Filters() {
                         return [];
                     }
                 },
-                locale: () => {
-                    const filterLocales = () => {
-                        return Object.entries(Locales)
-                            .filter(([, label]) => label.toLowerCase().includes(value.toLowerCase().trim()))
-                            .map(([code, label]) => ({
-                                label,
-                                value: code,
-                            }));
-                    };
-
-                    return new Promise<Option[]>(async (resolve) => {
-                        await sleep(300);
-                        resolve(filterLocales());
-                    });
-                }
             };
 
             return await mapInside[key]();

@@ -18,13 +18,10 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                         const user = await verify(request.session.user.token, true) as { id: string };
 
                         const post = new BlogPost({
-                            title: body.title,
+                            original_title: body.original_title,
                             content: body.content,
-                            locale: body.locale,
-                            path: body.path,
                             status: body.status,
                             category_id: body.category || null,
-                            equivalent_to_locale_post: body.equivalent_to_locale_post || null,
                             meta: {
                                 title: body.meta_title,
                                 description: body.meta_description,

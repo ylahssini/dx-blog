@@ -70,7 +70,7 @@ export default function Editor(props) {
 
     return (
         <Box borderWidth={1} borderColor="gray.200" borderRadius={4}>
-            <Stack borderBottomWidth={1} borderColor="gray.200" spacing={1} direction="row" align="center" position="sticky" top={0} p="0.25rem">
+            <Stack bgColor="white" borderBottomWidth={1} borderColor="gray.200" spacing={1} direction="row" align="center" position="sticky" top={0} p="0.25rem" zIndex={2}>
                 <Button variant="outline" onClick={handleHTML('strong')}><MdFormatBold size={24} /></Button>
                 <Button variant="outline" onClick={handleHTML('em')}><MdFormatItalic size={24} /></Button>
                 <Button variant="outline" onClick={handleHTML('img')}><MdImage size={24} /></Button>

@@ -4,11 +4,11 @@ import client from '@/lib/client';
 import { queryString } from '@/utils/functions';
 import type { RequestPayload, RequestCast } from '@/utils/interfaces';
 
-export function addBlogPost(values: Record<string, string | boolean>) {
+export function addBlogPost(values: Record<string, any>) {
     return client.post('api/blogpost/create', values);
 }
 
-export function editBlogPost(values: Record<string, string | boolean>) {
+export function editBlogPost(values: Record<string, any>) {
     return client.put('api/blogpost/edit', values);
 }
 
