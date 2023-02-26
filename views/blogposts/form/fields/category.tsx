@@ -9,13 +9,13 @@ const Category = ({ register, blogpost, control }) => {
     const [categories, setCategories] = useState(null);
 
     async function handleLoad(value) {
-        const result = await getCategories({ filter: JSON.stringify({ name: value }) });
+        const result = await getCategories({ filters: JSON.stringify({ name: value }) });
         return result.data.list.items.map((item) => ({ value: item._id, label: item.name }));
     }
 
     useEffect(() => {
         async function loadCategory(id) {
-            const result = await getCategories({ filter: JSON.stringify({ id }) });
+            const result = await getCategories({ filters: JSON.stringify({ id }) });
             setCategories(result.data.list.items.map((item) => ({ value: item._id, label: item.name }))) ;
         }
     

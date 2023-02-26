@@ -22,11 +22,6 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                             content: body.content,
                             status: body.status,
                             category_id: body.category || null,
-                            meta: {
-                                title: body.meta_title,
-                                description: body.meta_description,
-                                keywords: '',
-                            },
                             created_by: new mongoose.Types.ObjectId(user.id),
                         });
                         await post.save();
@@ -34,10 +29,10 @@ function CreatePost(request: NextApiRequest, response: NextApiResponse) {
                         response.status(202).json({ success: true });
                         resolve(null);
                     } catch (error) {
-                        let message = `We fail to create a post: ${body.title}`;
+                        let message = `We fail to create a post: ${body.original_title}`;
 
                         if (error?.code === 11000) {
-                            message = `The path is already existed: "${body.path}"`;
+                            message = 'The path is already existed';
                         }
 
                         response.status(500).json({ success: false, message, error });

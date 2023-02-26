@@ -34,7 +34,7 @@ function EditPost(request: NextApiRequest, response: NextApiResponse) {
 
                         resolve(null);
                     } catch (error) {
-                        let message = `We fail to edit a post: ${body.title}`;
+                        let message = `We fail to edit a post: ${body.original_title}`;
 
                         if (error?.code === 11000) {
                             message = `The path is already existed: "${body.path}"`;
