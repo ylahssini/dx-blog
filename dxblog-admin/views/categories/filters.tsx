@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Box, Button, Divider, Flex, Heading } from '@chakra-ui/react';
 import { MdOutlineFilterAlt } from 'react-icons/md';
-import Filter, { type FilterItem } from '@/components/filter';
-import store, { useStore } from '@/store';
+import Filter from '@/components/filter';
+import store, { type FilterItem, useStore } from '@/store';
 import { useCategories } from '@/apis/category';
 import { sleep } from '@/utils/functions';
 

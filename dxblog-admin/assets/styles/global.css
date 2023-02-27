@@ -92,7 +92,8 @@ a.__noline:after {
 /* C S S   R E S E T */
 
 .entry-select-container {
-    padding-left: .5rem;
+    position: relative;
+    z-index: 9;
     width: 100%;
 }
 

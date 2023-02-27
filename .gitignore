@@ -1,12 +1,29 @@
-node_modules
-.next
-.pnpm-store
-mongodb/*
-mongodb-test/*
-!mongodb/README.md
-!mongodb-test/.gitkeep
-.DS_store
-/test-results/
-/playwright-report/
-/playwright/.cache/
-/tests-examples/
+dxblog-admin/node_modules
+dxblog-admin/.next
+dxblog-admin/.pnpm-store
+dxblog-admin/mongodb/*
+dxblog-admin/mongodb-test/*
+!dxblog-admin/mongodb/README.md
+!dxblog-admin/mongodb-test/.gitkeep
+dxblog-admin/test-results/
+dxblog-admin/playwright-report/
+dxblog-admin/playwright/.cache/
+dxblog-admin/tests-examples/
+
+# build output
+dxblog-site/dist/
+# generated types
+dxblog-site/.astro/
+
+# dependencies
+dxblog-site/node_modules
+
+# logs
+dxblog-site/.pnpm-store
+dxblog-site/npm-debug.log*
+dxblog-site/yarn-debug.log*
+dxblog-site/yarn-error.log*
+dxblog-site/pnpm-debug.log*
+
+# macOS-specific files
+.DS_Store

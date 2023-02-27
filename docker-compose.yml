@@ -1,18 +1,36 @@
 version: '3.8'
 
 services:
-  dxblog:
-    build: ./.
-    container_name: dxBlogContainer
+  dxblogadmin:
+    build: ./dxblog-admin/.
+    container_name: dxBlogAdminContainer
     ports:
       - "9000:3000"
     volumes:
-      - ./:/usr/src/app/
+      - ./dxblog-admin:/usr/src/app/
     env_file:
       - "./.env.local"
       - "./.env.development"
     depends_on:
       - mongo
+    tty: true
+
+  dxblogsite:
+    build: ./dxblog-site/.
+    container_name: dxBlogSiteContainer
+    command: >
+            sh -c
+            "
+            pnpm install
+            && pnpm run dev --host 0.0.0.0 &
+            tail -f /dev/null
+            "
+    ports:
+      - "8000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./dxblog-site:/usr/src/site/
     tty: true
 
   mongo:
@@ -25,5 +43,5 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin_password
     volumes:
-      - ./mongodb:/data/db
-      - ./scripts:/docker-entrypoint-initdb.d
+      - ./dxblog-admin/mongodb:/data/db
+      - ./dxblog-admin/scripts:/docker-entrypoint-initdb.d

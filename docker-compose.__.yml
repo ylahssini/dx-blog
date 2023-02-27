@@ -7,7 +7,7 @@ services:
     image: dxblog_prod
     command: pnpm run start
     volumes:
-      - ./e2e:/usr/src/app/e2e
+      - ./dxblog-admin/e2e:/usr/src/app/e2e
     ports:
       - "9090:3000"
     env_file:
@@ -27,12 +27,12 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin_password
     volumes:
-      - ./mongodb:/data/db
-      - ./scripts:/docker-entrypoint-initdb.d
+      - ./dxblog-admin/mongodb:/data/db
+      - ./dxblog-admin/scripts:/docker-entrypoint-initdb.d
 
   playwright:
     image: nginx
     ports:
       - 8080:80
     volumes:
-      - ./playwright-report:/usr/share/nginx/html
+      - ./dxblog-admin/playwright-report:/usr/share/nginx/html

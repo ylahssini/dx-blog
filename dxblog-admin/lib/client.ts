@@ -12,7 +12,7 @@ const client = axios.create({
 
 client.interceptors.request.use((config) => {
     if (cookie.get('token')) {
-        config.headers.Authorization = 'Bearer ' + cookie.get('token');
+        config.headers.Authorization = `Bearer ${cookie.get('token')}`;
     }
 
     return config;

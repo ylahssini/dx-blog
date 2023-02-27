@@ -64,7 +64,7 @@ export default function Form() {
                 }
 
                 return (
-                    <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]}>
+                    <FormControl key={field.key} pb="1rem" isInvalid={!!errors[field.key]} position="relative" zIndex={2}>
                         <InputGroup>
                             {field.type !== 'select' && <InputLeftElement color={errors[field.key] ? 'red' : 'black'}>{field.icon}</InputLeftElement>}
                             {
@@ -113,7 +113,18 @@ export default function Form() {
                 );
             })}
 
-            <Button id="signup" colorScheme="blue" w="100%" variant="solid" isLoading={posting} disabled={posting} loadingText="Creating the account..." type="submit">
+            <Button
+                id="signup"
+                colorScheme="blue"
+                w="100%"
+                variant="solid"
+                isLoading={posting}
+                disabled={posting}
+                loadingText="Creating the account..."
+                type="submit"
+                position="relative"
+                zIndex={1}
+            >
                 Sign up
             </Button>
         </Box>
