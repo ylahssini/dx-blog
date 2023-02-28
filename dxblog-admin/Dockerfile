@@ -5,7 +5,7 @@ LABEL maintener="Youssef Lahssini"
 
 WORKDIR /usr/src/app
 
-COPY ./dxblog-admin .
+COPY . .
 
 RUN echo "🚀 You are building the DX Blog image" && npm install -g pnpm
 RUN pnpm install
