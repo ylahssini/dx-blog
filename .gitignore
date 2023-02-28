@@ -5,8 +5,25 @@ dxblog-admin/mongodb/*
 dxblog-admin/mongodb-test/*
 !dxblog-admin/mongodb/README.md
 !dxblog-admin/mongodb-test/.gitkeep
-.DS_store
-/dxblog-admin/test-results/
-/dxblog-admin/playwright-report/
-/dxblog-admin/playwright/.cache/
-/dxblog-admin/tests-examples/
+dxblog-admin/test-results/
+dxblog-admin/playwright-report/
+dxblog-admin/playwright/.cache/
+dxblog-admin/tests-examples/
+
+# build output
+dxblog-site/dist/
+# generated types
+dxblog-site/.astro/
+
+# dependencies
+dxblog-site/node_modules
+
+# logs
+dxblog-site/.pnpm-store
+dxblog-site/npm-debug.log*
+dxblog-site/yarn-debug.log*
+dxblog-site/yarn-error.log*
+dxblog-site/pnpm-debug.log*
+
+# macOS-specific files
+.DS_Store
