@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import { useFirstInstallTime } from '@/apis/auth';
-import Loading from './loading';
+import Loading from '@/components/loading';
 
 const Login = dynamic(() => import('./login'), { ssr: true });
 const Installation = dynamic(() => import('./installation'), { ssr: true });
