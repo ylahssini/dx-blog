@@ -96,20 +96,30 @@ input[type=file]::file-selector-button {
 
 .input-file {
     color: transparent;
+    display: inline-block;
+    padding: 0 0 1.5rem;
 }
 
-.input-file:before {
-    content: "Upload a logo";
+.input-file > input[type="file"] {
+    display: none;
+}
+
+.input-file > span + strong {
+    margin-top: 1rem;
+}
+
+.input-file > strong {
     display: inline-block;
     background-color: var(--primary);
     border-radius: 6px;
     padding: .5rem 1rem;
     cursor: pointer;
     color: #FFF;
+    font-weight: 400;
     transition: background-color .2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 
-.input-file:hover:before {
+.input-file:hover > strong {
     background-color: var(--secondary);
 }
 /* C S S   R E S E T */
