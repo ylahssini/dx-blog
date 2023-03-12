@@ -33,6 +33,8 @@ export default function Installation(request: NextApiRequest, response: NextApiR
                             title: body.title,
                             logo: '',
                             locales: body.locales,
+                            under_construction: true,
+                            under_maintenance: false,
                         });
                         await setting.save();
 
