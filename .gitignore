@@ -9,6 +9,10 @@ dxblog-admin/test-results/
 dxblog-admin/playwright-report/
 dxblog-admin/playwright/.cache/
 dxblog-admin/tests-examples/
+dxblog-admin/public/uploads/*.png
+dxblog-admin/public/uploads/*.jpeg
+dxblog-admin/public/uploads/*.gif
+dxblog-admin/public/uploads/*.webp
 
 # build output
 dxblog-site/dist/
