@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import useSWR from 'swr';
+import client from '@/lib/client';
 
 export interface RequestCast {
     mutate: any;
@@ -17,4 +18,8 @@ export interface RequestCast {
 export function useSettings() {
     const { data, error, mutate } = useSWR('api/setting');
     return { data, error, mutate } as RequestCast;
+}
+
+export function editSettings(values: FormData) {
+    return client.post('api/setting/edit', values);
 }

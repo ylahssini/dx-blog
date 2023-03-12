@@ -8,8 +8,8 @@ import Cookies from 'universal-cookie';
 import { MdOutlineFrontHand, MdOutlineArticle, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
 import { logout } from '@/apis/auth';
 import { useIsConnected } from '@/utils/hooks';
-import styles from './styles.module.css';
 import { COOKIE_OPTIONS } from '@/utils/constants';
+import styles from './styles.module.css';
 
 const Logo = dynamic(() => import('@/components/logo'), { ssr: true });
 
@@ -67,7 +67,7 @@ export default function Side() {
             <Box p="2rem 0 0">
                 <Text as="h4" casing="uppercase" color="white" fontSize="0.8rem" pb="1rem">Hello, {user?.data?.first_name || <Spinner color="white" size='xs' />}</Text>
                 <motion.ul initial={framerUl.hidden} animate={framerUl.show}>
-                    <motion.li className={styles.menu_item} initial={framerLi.hidden} animate={framerLi.show}><Link href="/settings"><a><MdOutlineSettings /> Settings</a></Link></motion.li>
+                    <motion.li className={`${styles.menu_item} ${pathname.includes('settings') ? styles.__active : ''}`} initial={framerLi.hidden} animate={framerLi.show}><Link href="/_/settings"><a><MdOutlineSettings /> Settings</a></Link></motion.li>
                     <motion.li className={styles.menu_item} initial={framerLi.hidden} animate={framerLi.show}>
                         <Button
                             onClick={handleClick}
