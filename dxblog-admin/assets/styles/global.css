@@ -109,18 +109,18 @@ input[type=file]::file-selector-button {
 }
 
 .input-file > strong {
-    display: inline-block;
-    background-color: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: 6px;
     padding: .5rem 1rem;
     cursor: pointer;
-    color: #FFF;
+    color: var(--primary);
     font-weight: 400;
     transition: background-color .2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 
 .input-file:hover > strong {
-    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--secondary);
 }
 /* C S S   R E S E T */
 
