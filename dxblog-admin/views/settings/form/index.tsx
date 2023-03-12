@@ -1,8 +1,8 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Box, FormControl, FormErrorMessage, FormLabel, Heading, HStack, Input, Switch, Button, useToast } from '@chakra-ui/react';
+import { Box, Text, FormControl, FormErrorMessage, FormLabel, HStack, Input, Switch, Button, useToast } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
-import { MdOutlineSave } from 'react-icons/md';
+import { MdOutlineSave, MdOutlineUploadFile } from 'react-icons/md';
 import { editSettings, useSettings } from '@/apis/setting';
 import Locales from '@/assets/data/locales-codes.json';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
@@ -66,75 +66,75 @@ const SettingsForm = () => {
 
     return (
         <Box pb="3rem">
-            <header>
-                <Heading size="md">Settings</Heading>
-                <Box as="p" mb={25}>Here is the settings of your blog</Box>
-            </header>
-
-            <Box id="settings_form" as="form" onSubmit={handleSubmit(handleSettings)} noValidate>
-                <FormControl isInvalid={!!errors.title} isRequired mb={5} _last={{ mb: 0 }}>
-                    <FormLabel htmlFor="title_blog">Title of blog</FormLabel>
-                    <Input
-                        type="text"
-                        placeholder="Title of blog"
-                        id="title_blog"
-                        autoComplete="off"
-                        {...register('title', { required: 'Please provide the title' })}
-                    />
-                    <FormErrorMessage fontSize="xs">{(errors.title ? errors.title.message : null) as unknown as ReactNode}</FormErrorMessage>
-                </FormControl>
-
-                <FormControl>
-                    <label className="input-file">
+            <HStack id="settings_form" as="form" onSubmit={handleSubmit(handleSettings)} noValidate gap={10}>
+                <FormControl w={256}>
+                    <Text as="label" display="block" w="100%" className="input-file">
                         {logo && <Image src={logo} layout="responsive" width={512} height={512} />}
-                        <strong>Upload a logo</strong>
+                        <Text as="strong" display="flex" alignItems="center" justifyContent="center">
+                            <MdOutlineUploadFile size={18} /> Upload a logo
+                        </Text>
                         <input type="file" {...register('logo')} hidden onChange={handleUpload} />
-                    </label>
+                    </Text>
                 </FormControl>
-
-                <FormControl isInvalid={!!errors.locales} mb="1.5rem">
-                    <FormLabel htmlFor="post_locale">Language</FormLabel>
-                    <Controller
-                        render={({ field: f }: any) => (
-                            <Select
-                                options={localeList}
-                                id="locale"
-                                {...f}
-                                isMulti
-                                value={f.value}
-                            />
-                        )}
-                        control={control}
-                        onChange={(val: { value: string }) => console.log(val)}
-                        {...register('locales', { required: 'Please select the language of blog' })}
-                    />
-                    <FormErrorMessage fontSize="xs">{(errors.locales ? errors.locales.message : null) as unknown as ReactNode}</FormErrorMessage>
-                </FormControl>
-
-                <HStack>
-                    <FormControl display="flex" alignItems="center">
-                        <Switch id="under_construction" {...register('under_construction')} />
-                        <FormLabel htmlFor="under_construction" ml={5} mb={0} lineHeight={1}>Under construction</FormLabel>
+                <Box width="calc(100% - 256px - 10px)">
+                    <FormControl isInvalid={!!errors.title} isRequired mb={5} _last={{ mb: 0 }}>
+                        <FormLabel htmlFor="title_blog">Title of blog</FormLabel>
+                        <Input
+                            type="text"
+                            placeholder="Title of blog"
+                            id="title_blog"
+                            autoComplete="off"
+                            {...register('title', { required: 'Please provide the title' })}
+                        />
+                        <FormErrorMessage fontSize="xs">{(errors.title ? errors.title.message : null) as unknown as ReactNode}</FormErrorMessage>
                     </FormControl>
 
-                    <FormControl display="flex" alignItems="center">
-                        <Switch id="under_maintenance" {...register('under_maintenance')} />
-                        <FormLabel htmlFor="under_maintenance" ml={5} mb={0} lineHeight={1}>Under maintenance</FormLabel>
+                    <FormControl isInvalid={!!errors.locales} mb="1.5rem">
+                        <FormLabel htmlFor="post_locale">Language</FormLabel>
+                        <Controller
+                            render={({ field: f }: any) => (
+                                <Select
+                                    options={localeList}
+                                    id="locale"
+                                    {...f}
+                                    isMulti
+                                    value={f.value}
+                                />
+                            )}
+                            control={control}
+                            onChange={(val: { value: string }) => console.log(val)}
+                            {...register('locales', { required: 'Please select the language of blog' })}
+                        />
+                        <FormErrorMessage fontSize="xs">{(errors.locales ? errors.locales.message : null) as unknown as ReactNode}</FormErrorMessage>
                     </FormControl>
-                </HStack>
 
-                <Button
-                    id="save_button"
-                    colorScheme="blue"
-                    mt={10}
-                    leftIcon={<MdOutlineSave size={18} />}
-                    type="submit"
-                    loadingText="Updating..."
-                    isLoading={loading}
-                >
-                    Save
-                </Button>
-            </Box>
+                    <HStack>
+                        <FormControl display="flex" alignItems="center">
+                            <Switch id="under_construction" {...register('under_construction')} />
+                            <FormLabel htmlFor="under_construction" ml={5} mb={0} lineHeight={1}>Under construction</FormLabel>
+                        </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                            <Switch id="under_maintenance" {...register('under_maintenance')} />
+                            <FormLabel htmlFor="under_maintenance" ml={5} mb={0} lineHeight={1}>Under maintenance</FormLabel>
+                        </FormControl>
+                    </HStack>
+
+                    <HStack as="footer" justifyContent="flex-end">
+                        <Button
+                            id="save_button"
+                            colorScheme="blue"
+                            mt={10}
+                            leftIcon={<MdOutlineSave size={18} />}
+                            type="submit"
+                            loadingText="Updating..."
+                            isLoading={loading}
+                        >
+                            Save
+                        </Button>
+                    </HStack>
+                </Box>
+            </HStack>
         </Box>
     );
 };
