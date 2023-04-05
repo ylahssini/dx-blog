@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '@chakra-ui/react';
 import { useFirstInstallTime } from '@/apis/auth';
 import Loading from '@/components/loading';
@@ -21,12 +20,10 @@ export default function HomeView() {
     }
 
     if (!data) {
-        return <Loading />;
+        return <Loading text="Loading component..." />;
     }
 
     return (
-        <Suspense fallback={<Loading text="Loading component..." />}>
-            {!data.exist ? <Installation /> : <Login />}
-        </Suspense>
+        !data.exist ? <Installation /> : <Login />
     );
 }

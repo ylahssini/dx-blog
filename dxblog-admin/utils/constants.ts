@@ -21,3 +21,11 @@ export const ERROR_TOAST_PARAMS: UseToastOptions = {
     isClosable: true,
     position: 'top',
 };
+
+
+export const USER_PERMISSIONS = {
+    users: ['write'],
+    categories: ['write'],
+    blogposts: ['write'],
+    settings: ['write'],
+};

@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import ControlSelect from '@/components/entry/control-select';
 import { createAdminUser, useFirstInstallTime } from '@/apis/auth';
-import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
+import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS, USER_PERMISSIONS } from '@/utils/constants';
 import Locales from '@/assets/data/locales-codes.json';
 import fields from './fields';
 
@@ -28,6 +28,7 @@ export default function Form() {
 
             const result = await createAdminUser({
                 ...values,
+                roles: Object.entries(USER_PERMISSIONS).map(([section, permissions]) => ({ section, permissions })),
                 locales: values.locales.map((locale) => locale.value),
             });
 
@@ -41,7 +42,7 @@ export default function Form() {
             }
         } catch (error) {
             console.log(error);
-            toast({ ...ERROR_TOAST_PARAMS, description: error.response.data.message });
+            toast({ ...ERROR_TOAST_PARAMS, description: error?.response.data.message || 'Something wrong' });
             setPosting(false);
         }
     }
@@ -70,7 +71,8 @@ export default function Form() {
                             {
                                 field.type === 'select' ? (
                                     <Controller
-                                        ref={refs[field.key]}
+                                        name={field.key}
+                                        rules={{ ...field.validation, validate }}
                                         render={({ field: f }: any) => (
                                             <Select
                                                 placeholder={field.placeholder}
@@ -85,7 +87,6 @@ export default function Form() {
                                             />
                                         )}
                                         control={control}
-                                        {...register(field.key, { ...field.validation, validate })}
                                     />
                                 ) : (
                                     <Input

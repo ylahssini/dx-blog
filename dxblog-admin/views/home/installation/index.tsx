@@ -1,7 +1,7 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 
-const Form = dynamic(() => import('./form'), { ssr: false });
+const Form = dynamic(() => import('./form'), { ssr: true });
 
 export default function Installation() {
     return (

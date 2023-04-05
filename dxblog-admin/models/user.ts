@@ -26,11 +26,10 @@ const UserSchema = new mongoose.Schema(
             match: [/^\S+@\S+\.\S+$/, 'Please fill a valid email address'],
         },
 
-        role: {
-            type: String,
-            enum: [null, 'admin', 'sales', 'order'],
-            default: 'order',
-        },
+        role: [{
+            section: String,
+            permissions: [String],
+        }],
 
         password: {
             type: String,
@@ -87,7 +86,10 @@ export interface ModelUser extends Document {
     first_name: string;
     last_name: string;
     email: string;
-    role: null | 'admin' | 'sales' | 'order',
+    roles: {
+        section: 'users' | 'categories' | 'blogposts' | 'settings' | 'menu';
+        permissions: string[];
+    }[];
     picture: string | null;
     password: string;
     status: boolean;

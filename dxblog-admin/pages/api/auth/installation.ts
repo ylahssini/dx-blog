@@ -24,7 +24,7 @@ export default function Installation(request: NextApiRequest, response: NextApiR
                             last_name: body.last_name,
                             email: body.email,
                             password: body.password,
-                            role: 'admin',
+                            roles: body.roles,
                             status: true,
                         });
                         await user.save();
