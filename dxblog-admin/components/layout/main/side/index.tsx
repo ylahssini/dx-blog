@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Box, Button, Spinner, Text, useToast } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import Cookies from 'universal-cookie';
-import { MdOutlineFrontHand, MdOutlineArticle, MdOutlineSettings, MdLogout, MdOutlineCategory } from 'react-icons/md';
+import { MdOutlineFrontHand, MdOutlineArticle, MdOutlineSettings, MdLogout, MdOutlineCategory, MdOutlineSupervisedUserCircle } from 'react-icons/md';
 import { logout } from '@/apis/auth';
 import { useIsConnected } from '@/utils/hooks';
 import { COOKIE_OPTIONS } from '@/utils/constants';
@@ -17,6 +17,7 @@ const menu = [
     { href: '/_/welcome', text: 'Welcome', icon: <MdOutlineFrontHand /> },
     { href: '/_/categories', text: 'Categories', icon: <MdOutlineCategory /> },
     { href: '/_/posts', text: 'Posts', icon: <MdOutlineArticle /> },
+    { href: '/_/users', text: 'Users', icon: <MdOutlineSupervisedUserCircle /> }
 ];
 
 const framerUl = {

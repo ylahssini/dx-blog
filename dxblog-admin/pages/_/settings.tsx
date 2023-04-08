@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import MainLayout from '@/components/layout/main';
 import SettingsView from '@/views/settings';
 
-export default function Welcome() {
+export default function Settings() {
     return (
         <Box as="section" pt="2rem">
             <Head>
@@ -15,4 +15,4 @@ export default function Welcome() {
     );
 }
 
-Welcome.getLayout = (page) => <MainLayout title="Settings">{page}</MainLayout>;
+Settings.getLayout = (page) => <MainLayout title="Settings">{page}</MainLayout>;

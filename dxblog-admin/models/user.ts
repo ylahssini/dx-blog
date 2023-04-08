@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema(
             match: [/^\S+@\S+\.\S+$/, 'Please fill a valid email address'],
         },
 
-        role: [{
+        roles: [{
             section: String,
             permissions: [String],
         }],
@@ -52,7 +52,10 @@ const UserSchema = new mongoose.Schema(
         timestamps: {
             createdAt: 'created_at',
             updatedAt: 'updated_at',
-        }
+        },
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
+        collection: 'users',
     },
 );
 
@@ -81,10 +84,15 @@ UserSchema.methods.comparePassword = function (userPassword, next) {
     });
 };
 
+UserSchema.index({ first_name: 1, last_name: 1 });
+
+UserSchema.virtual('full_name').get(function() { return `${this.first_name} ${this.last_name}`; });
+
 export interface ModelUser extends Document {
     id: string;
     first_name: string;
     last_name: string;
+    full_name: string;
     email: string;
     roles: {
         section: 'users' | 'categories' | 'blogposts' | 'settings' | 'menu';
@@ -93,8 +101,8 @@ export interface ModelUser extends Document {
     picture: string | null;
     password: string;
     status: boolean;
-    createdAt: Date | number;
-    updatedAt: Date | number;
+    created_at: Date | number;
+    updated_at: Date | number;
 }
 
 const User = (
