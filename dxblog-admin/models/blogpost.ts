@@ -60,8 +60,10 @@ const BlogPostSchema = new mongoose.Schema({
     collection: 'blog_posts',
 });
 
-BlogPostSchema.index({ 'content.locale': 1, 'content.path': 1 }, { unique: true }); // ! set index before virtual 🤔
+BlogPostSchema.index({ original_title: 1 }, { unique: true });
+BlogPostSchema.index({ 'content.locale': 1, 'content.path': 1 }, { unique: true });
 
+// ! virtual must be the last one to be set 🤔
 BlogPostSchema.virtual('category', {
     ref: 'Category',
     localField: 'category_id',
