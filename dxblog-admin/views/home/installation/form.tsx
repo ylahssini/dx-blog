@@ -106,7 +106,7 @@ export default function Form() {
                                     <Button h="1.75rem" size="sm" onClick={handleShow}>
                                         {show ? <TbEyeOff /> : <TbEye />}
                                     </Button>
-                              </InputRightElement>
+                                </InputRightElement>
                             ) : null}
                         </InputGroup>
                         <FormErrorMessage fontSize="xs">{(errors[field.key] ? errors[field.key].message : null) as unknown as ReactNode}</FormErrorMessage>
