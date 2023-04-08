@@ -18,12 +18,8 @@ function CategoryList(request: NextApiRequest, response: NextApiResponse) {
                         if (filters) {
                             const parseFilter = JSON.parse(filters as string);
 
-                            if (typeof parseFilter.name === 'string') {
-                                query.name = new RegExp(parseFilter.name, 'gi');
-                            }
-
-                            if (typeof parseFilter.description === 'string') {
-                                query.description = new RegExp(parseFilter.description, 'gi');
+                            if (typeof parseFilter.original_name === 'string') {
+                                query.original_name = new RegExp(parseFilter.original_name, 'gi');
                             }
 
                             if (['true', 'false'].includes(parseFilter.status)) {

@@ -1,15 +1,27 @@
 import mongoose, { Model } from 'mongoose';
 
 const CategorySchema = new mongoose.Schema({
-    name: {
+    original_name: {
         type: String,
-        required: [true, 'You must provide the name of product'],
-        index: 'text',
+        required: [true, 'You must provide the original name of the category'],
+        index: true,
     },
-    description: {
-        type: String,
-        default: '',
-        index: 'text2',
+    content: {
+        type: [
+            {
+                locale: String,
+                name: {
+                    type: String,
+                    required: [true, 'You must provide the name of the category']
+                },
+                description: {
+                    type: String,
+                    required: [true, 'You must provide the name of the category'],
+                    default: '',
+                },
+            },
+        ],
+        required: [true, 'Something missing in your category data'],
     },
     status: {
         type: Boolean,
@@ -30,10 +42,16 @@ const CategorySchema = new mongoose.Schema({
     autoIndex: true,
 });
 
+CategorySchema.index({ original_name: 1 }, { unique: true });
+
 export interface ModelCategory extends Document {
     _id: string;
-    name: string;
-    description: string;
+    original_name: string;
+    content: {
+        locale: string;
+        name: string;
+        description: string;
+    }[];
     status: boolean;
     created_at: Date | number;
     updated_at: Date | number;

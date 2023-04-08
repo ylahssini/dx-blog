@@ -1,10 +1,13 @@
-import { ReactNode, useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, Textarea, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, DrawerFooter, Box, FormControl, Switch, useToast } from '@chakra-ui/react';
 import { createCategory, editCategory, useCategories } from '@/apis/category';
+import { useSettings } from '@/apis/setting';
 import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { ModelCategory } from '@/models/category';
 import { useStore } from '@/store';
+import Name from './fields/name';
+import Description from './fields/description';
 
 interface CategoryForm {
     children: any;
@@ -17,19 +20,31 @@ interface CategoryForm {
 export default function Form({ children, title, mode = 'add', item = null }: CategoryForm) {
     const { paginate: { skip, limit }, filters } = useStore((state) => state.category);
     const { mutate } = useCategories({ skip, limit, filters });
-    const { isOpen, onOpen, onClose } = useDisclosure({ id: mode + '_category_form' });
+    const { isOpen, onOpen, onClose } = useDisclosure({ id: `${mode}_category_form` });
     const toast = useToast();
     const nameRef = useRef();
+    const { data: settings } = useSettings();
     const [posting, setPosting] = useState(false);
 
-    let defaultValues = { name: '', description: '', status: true };
-    if (mode === 'edit') {
-        defaultValues = {
-            name: item.name,
-            description: item.description,
-            status: item.status,
+    const defaultValues = useMemo(() => {
+        const locales = settings?.locales || [];
+
+        if (mode === 'edit') {
+            return {
+                original_name: item?.original_name,
+                ...locales.reduce((acc, locale) => ({ ...acc, [`name_${locale}`]: item?.content.find(item => item.locale === locale).name }), {}),
+                ...locales.reduce((acc, locale) => ({ ...acc, [`description_${locale}`]: item?.content.find(item => item.locale === locale).description }), {}),
+                status: item?.status,
+            };
+        }
+
+        return {
+            original_name: '',
+            ...locales.reduce((acc, locale) => ({ ...acc, [`name_${locale}`]: '' }), {}),
+            ...locales.reduce((acc, locale) => ({ ...acc, [`description_${locale}`]: '' }), {}),
+            status: true,
         };
-    }
+    }, [settings?.locales, mode, item?.original_name, item?.status, item?.content]);
 
     const { handleSubmit, register, reset, formState: { errors } } = useForm({ defaultValues });
 
@@ -46,11 +61,22 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
             setPosting(true);
 
             let response = null;
+            const locales = settings?.locales || [];
+
+            const body = {
+                original_name: values.original_name,
+                content: locales.map((locale) => ({
+                    locale,
+                    name: values[`name_${locale}`],
+                    description: values[`description_${locale}`],
+                })),
+                status: values.status,
+            };
 
             if (mode === 'add') {
-                response = await createCategory(values);
+                response = await createCategory(body);
             } else if (mode === 'edit') {
-                response = await editCategory({ ...values, category_id: item._id });
+                response = await editCategory({ ...body, category_id: item._id });
             }
 
             if (response?.status === 202) {
@@ -92,27 +118,8 @@ export default function Form({ children, title, mode = 'add', item = null }: Cat
                     <DrawerBody pt="1rem">
                         <Box id="category_form" as="form" onSubmit={handleSubmit(handleAdd)} noValidate>
                             <Stack spacing="24px">
-                                <FormControl isInvalid={!!errors.name} isRequired>
-                                    <FormLabel htmlFor="category_name">Name</FormLabel>
-                                    <Input
-                                        ref={nameRef}
-                                        id="category_name"
-                                        name="name"
-                                        autoComplete="off"
-                                        {...register('name', { required: 'Please provide the name of category' })}
-                                    />
-                                    <FormErrorMessage fontSize="xs">{(errors.name ? errors.name.message : null) as unknown as ReactNode}</FormErrorMessage>
-                                </FormControl>
-
-                                <FormControl>
-                                    <FormLabel htmlFor="category_description">Description</FormLabel>
-                                    <Textarea
-                                        name="category_description"
-                                        id="category_description"
-                                        resize="vertical"
-                                        {...register('description')}
-                                    />
-                                </FormControl>
+                                <Name register={register} errors={errors} />
+                                <Description register={register} errors={errors} />
 
                                 <FormControl display="flex" alignItems="center">
                                     <FormLabel htmlFor="category_status" mb="0">Status</FormLabel>

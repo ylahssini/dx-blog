@@ -18,8 +18,8 @@ function EditCategory(request: NextApiRequest, response: NextApiResponse) {
                         const user = await verify(request.session.user.token, true) as { id: string };
 
                         await Category.updateOne({ _id: new mongoose.Types.ObjectId(body.category_id) }, {
-                            name: body.name,
-                            description: body.description,
+                            original_name: body.original_name,
+                            content: body.content,
                             status: body.status,
                             created_by: new mongoose.Types.ObjectId(user.id),
                         });

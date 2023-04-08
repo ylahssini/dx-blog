@@ -27,7 +27,11 @@ interface State {
         paginate: Paginate;
         filters: FilterItem[];
         populate: 'category';
-    },
+    };
+    user: {
+        paginate: Paginate;
+        filters: FilterItem[];
+    };
 }
 
 interface Store {
@@ -68,8 +72,7 @@ export const globalState = {
     category: {
         paginate: { skip: 0, limit: 3 },
         filters: [
-            { key: 'name', label: 'Name', value: '', type: 'text' },
-            { key: 'description', label: 'Description', value: '', type: 'text' },
+            { key: 'original_name', label: 'Name', value: '', type: 'text' },
             {
                 key: 'status',
                 label: 'Status',
@@ -100,6 +103,23 @@ export const globalState = {
             }
         ],
         populate: 'category',
+    },
+    user: {
+        paginate: { skip: 0, limit: 3 },
+        filters: [
+            { key: 'name', label: 'Name', value: '', type: 'text' },
+            { key: 'role', label: 'Role', value: '', type: 'text' },
+            {
+                key: 'status',
+                label: 'Status',
+                value: '',
+                type: 'select',
+                options: [
+                    { label: 'Enabled', value: 'true' },
+                    { label: 'Disabled', value: 'false' },
+                ]
+            }
+        ],
     },
 };
 

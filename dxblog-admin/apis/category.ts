@@ -4,11 +4,11 @@ import client from '@/lib/client';
 import { queryString } from '@/utils/functions';
 import type { RequestPayload, RequestCast } from '@/utils/interfaces';
 
-export function createCategory(values: Record<string, string | boolean>) {
+export function createCategory(values: Record<string, any>) {
     return client.post('api/category/create', values);
 }
 
-export function editCategory(values: Record<string, string | boolean>) {
+export function editCategory(values: Record<string, any>) {
     return client.put('api/category/edit', values);
 }
 

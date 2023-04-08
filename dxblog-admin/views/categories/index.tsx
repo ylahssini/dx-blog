@@ -13,10 +13,9 @@ const Item = dynamic(() => import('./item'), { ssr: true });
 const Filters = dynamic(() => import('./filters'), { ssr: true });
 
 const columns = [
-    { label: 'Name', w: '30%' },
-    { label: 'Description', w: '35%' },
-    { label: 'Status', w: '7%' },
-    { label: 'Created at', w: '13%' },
+    { label: 'Name', w: '40%' },
+    { label: 'Status', w: '20%' },
+    { label: 'Created at', w: '25%' },
     { label: 'Actions', w: '15%', textAlign: 'right' },
 ];
 

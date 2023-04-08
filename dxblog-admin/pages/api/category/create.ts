@@ -18,10 +18,10 @@ function CreateCategory(request: NextApiRequest, response: NextApiResponse) {
                         const user = await verify(request.session.user.token, true) as { id: string };
 
                         const category = new Category({
-                            name: body.name,
-                            description: body.description,
+                            original_name: body.original_name,
+                            content: body.content,
                             status: body.status,
-                            created_by: new mongoose.Types.ObjectId(user.id)
+                            created_by: new mongoose.Types.ObjectId(user.id),
                         });
                         await category.save();
 
