@@ -17,7 +17,7 @@ function EditUser(request: NextApiRequest, response: NextApiResponse) {
                     try {
                         const user = await verify(request.session.user.token, true) as { id: string };
 
-                        await User.updateOne({ _id: new mongoose.Types.ObjectId(body.user_id) }, {
+                        await User.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(body.user_id) }, {
                             first_name: body.first_name,
                             last_name: body.last_name,
                             email: body.email,

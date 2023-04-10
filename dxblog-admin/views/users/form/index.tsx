@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, FormLabel, Input, DrawerFooter, Box, FormControl, FormErrorMessage, Switch, useToast } from '@chakra-ui/react';
 import { createUser, editUser, useUsers } from '@/apis/user';
@@ -6,6 +6,8 @@ import { ERROR_TOAST_PARAMS, SUCCESS_TOAST_PARAMS } from '@/utils/constants';
 import { ModelUser } from '@/models/user';
 import { useStore } from '@/store';
 import Fullname from './fields/fullname';
+import Password from './fields/password';
+import Roles from './fields/roles';
 
 interface UserForm {
     children: any;
@@ -22,28 +24,31 @@ export default function Form({ children, title, mode = 'add', item = null }: Use
     const toast = useToast();
     const [posting, setPosting] = useState(false);
 
-    let defaultValues = {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        confirm_password: '',
-        roles: [],
-        status: true,
-    };
-    if (mode === 'edit') {
-        defaultValues = {
-            first_name: item.first_name,
-            last_name: item.last_name,
-            email: item.email,
+    const defaultValues = useMemo(() => {
+        if (mode === 'edit') {
+            return {
+                first_name: item.first_name,
+                last_name: item.last_name,
+                email: item.email,
+                password: '',
+                confirm_password: '',
+                roles: item.roles.map((role) => ({ ...role, permissions: ['read', ...role.permissions] })),
+                status: item.status,
+            };
+        }
+
+        return {
+            first_name: '',
+            last_name: '',
+            email: '',
             password: '',
             confirm_password: '',
-            roles: item.roles,
-            status: item.status,
+            roles: [],
+            status: true,
         };
-    }
+    }, [item, mode]);
 
-    const { handleSubmit, register, reset, formState: { errors } } = useForm({ defaultValues });
+    const { handleSubmit, register, reset, formState: { errors }, watch, control } = useForm({ defaultValues });
 
     function resetMode() {
         if (mode === 'edit') {
@@ -58,11 +63,23 @@ export default function Form({ children, title, mode = 'add', item = null }: Use
             setPosting(true);
 
             let response = null;
+            const body = {
+                first_name: values.first_name,
+                last_name: values.last_name,
+                email: values.email,
+                password: values.password,
+                roles: values.roles.map((role) => ({ ...role, permissions: role.permissions.filter((r) => r !== 'read') })),
+                status: values.status,
+            };
 
             if (mode === 'add') {
-                response = await createUser(values);
+                response = await createUser(body);
             } else if (mode === 'edit') {
-                response = await editUser({ ...values, user_id: item._id });
+                if (body.password === '') {
+                    body.password = undefined;
+                }
+
+                response = await editUser({ ...body, user_id: item._id });
             }
 
             if (response?.status === 202) {
@@ -121,6 +138,10 @@ export default function Form({ children, title, mode = 'add', item = null }: Use
                                     />
                                     <FormErrorMessage fontSize="xs">{(errors.email ? errors.email.message : null) as unknown as ReactNode}</FormErrorMessage>
                                 </FormControl>
+
+                                <Password mode={mode} password={watch('password')} register={register} errors={errors} />
+
+                                <Roles control={control} />
 
                                 <FormControl display="flex" alignItems="center">
                                     <FormLabel htmlFor="user_status" mb="0">Status</FormLabel>

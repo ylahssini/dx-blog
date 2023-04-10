@@ -107,8 +107,9 @@ export const globalState = {
     user: {
         paginate: { skip: 0, limit: 3 },
         filters: [
-            { key: 'name', label: 'Name', value: '', type: 'text' },
-            { key: 'role', label: 'Role', value: '', type: 'text' },
+            { key: 'first_name', label: 'First name', value: '', type: 'text' },
+            { key: 'last_name', label: 'Last name', value: '', type: 'text' },
+            { key: 'email', label: 'Email address', value: '', type: 'text' },
             {
                 key: 'status',
                 label: 'Status',

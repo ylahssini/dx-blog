@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { FormControl, FormErrorMessage, FormLabel, Input, Card, CardHeader, CardBody, Heading } from '@chakra-ui/react';
 
 const Fullname = ({ register, errors }) => (
-    <Card variant="outline">
+    <Card variant="outline" size="sm">
         <CardHeader borderBottomWidth={1} borderColor="gray.100">
             <Heading size="sm">Full name</Heading>
         </CardHeader>

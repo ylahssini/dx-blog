@@ -18,12 +18,16 @@ function UserList(request: NextApiRequest, response: NextApiResponse) {
                         if (filters) {
                             const parseFilter = JSON.parse(filters as string);
 
-                            if (typeof parseFilter.name === 'string') {
-                                query.name = new RegExp(parseFilter.name, 'gi');
+                            if (typeof parseFilter.first_name === 'string') {
+                                query.first_name = new RegExp(parseFilter.first_name, 'gi');
                             }
 
-                            if (typeof parseFilter.description === 'string') {
-                                query.description = new RegExp(parseFilter.description, 'gi');
+                            if (typeof parseFilter.last_name === 'string') {
+                                query.last_name = new RegExp(parseFilter.last_name, 'gi');
+                            }
+
+                            if (typeof parseFilter.email === 'string') {
+                                query.email = new RegExp(parseFilter.email, 'gi');
                             }
 
                             if (['true', 'false'].includes(parseFilter.status)) {
@@ -35,7 +39,7 @@ function UserList(request: NextApiRequest, response: NextApiResponse) {
                         if (skip) options.skip = parseInt(skip as string, 10);
                         if (limit) options.limit = parseInt(limit as string, 10) || defaultLimit;
 
-                        const items = await User.find(query, null, options).exec();
+                        const items = await User.find(query, null, options).select('-password').exec();
                         const count = await User.find(query).count();
 
                         response.status(200).json({ success: true, list: { count, items } });

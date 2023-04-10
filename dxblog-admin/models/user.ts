@@ -1,7 +1,7 @@
-import mongoose, { Model, Document } from 'mongoose';
+import mongoose, { Model, Document, UpdateQuery } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const SALT = 12;
+const ROUNDS = 12;
 
 const UserSchema = new mongoose.Schema(
     {
@@ -64,7 +64,7 @@ UserSchema.pre('save', function (next) {
         return next();
     }
 
-    bcrypt.genSalt(SALT, (error, salt) => {
+    bcrypt.genSalt(ROUNDS, (error, salt) => {
         if (error) return next(error);
 
         bcrypt.hash(this.password, salt, (err, hash) => {
@@ -74,6 +74,22 @@ UserSchema.pre('save', function (next) {
             next();
         });
     });
+});
+
+UserSchema.pre('findOneAndUpdate', function (next) {
+    const update: UpdateQuery<any> = this.getUpdate();
+    if (update.password) {
+        bcrypt.genSalt(ROUNDS, (error, salt) => {
+            if (error) return next(error);
+    
+            bcrypt.hash(update.password, salt, (err, hash) => {
+                if (err) return next(err);
+                console.log('hash', hash);
+                this.setUpdate({ $set: { password: hash } });
+                next();
+            });
+        });
+    }
 });
 
 UserSchema.methods.comparePassword = function (userPassword, next) {
