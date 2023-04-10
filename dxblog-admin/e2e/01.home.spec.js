@@ -11,7 +11,7 @@ test.describe('Home page', () => {
         const parentField = fieldElement.locator('..').locator('..');
         const errorMessage = parentField.locator('.chakra-form__error-message');
         await expect(errorMessage).toBeVisible();
-        await expect(errorMessage, `#${section }_${field.key}`).toHaveText(field.validation[errorKey]);
+        await expect(errorMessage, `#${section}_${field.key}`).toHaveText(field.validation[errorKey]);
     }
 
     test('Test if the title is correct in the home page', async ({ page }) => {
@@ -254,8 +254,8 @@ test.describe('Home page', () => {
             }
 
             await page.locator('#login').click();
-            await page.goto(host + 'dashboard');
-            await expect(page).toHaveURL(host + 'dashboard');
+            await page.goto(`${host}dashboard`);
+            await expect(page).toHaveURL(`${host}dashboard`);
         });
 
         test('if it shows an error toast in case that server return an error', async ({ page }) => {

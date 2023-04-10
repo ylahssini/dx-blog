@@ -1,5 +1,5 @@
 export const port = process.env.PORT ||9090;
-export const host = `http://localhost:${port}/`;
+export const host = `http://localhost:${port}/_`;
 
 export const connectedUser = {
     data:{
